@@ -1,4 +1,4 @@
-# training_and_diet_app
+# my_health_digest_app
 
 A new Flutter project.
 
