@@ -12,7 +12,7 @@ final meals = [
           "\n",
       kiloCaloriesBurnt: "271",
       timeTaken: "10",
-      imagePath: "assets/Your_Health.jpg",
+      imagePath: "assets/health.png",
       ingredients: [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Elementum tempus egestas sed sed risus pretium quam. Platea dictumst quisque sagittis purus sit. Senectus et netus et malesuada fames ac turpis egestas sed. Nibh cras pulvinar mattis nunc. Amet consectetur adipiscing elit duis tristique. Interdum velit euismod in pellentesque massa placerat duis ultricies lacus. Lectus proin nibh nisl condimentum id venenatis. Sit amet massa vitae tortor condimentum lacinia quis vel eros. Sed adipiscing diam donec adipiscing tristique risus nec feugiat in. Enim tortor at auctor urna."
       ],
@@ -49,7 +49,7 @@ Ultricies lacus sed turpis tincidunt id aliquet risus feugiat. Vitae aliquet nec
       name: "Available\nSpecialties",
       kiloCaloriesBurnt: "612",
       timeTaken: "15",
-      imagePath: "assets/Specialist.jpg",
+      imagePath: "assets/docs.png",
       ingredients: [
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Elementum tempus egestas sed sed risus pretium quam. Platea dictumst quisque sagittis purus sit. Senectus et netus et malesuada fames ac turpis egestas sed. Nibh cras pulvinar mattis nunc. Amet consectetur adipiscing elit duis tristique. Interdum velit euismod in pellentesque massa placerat duis ultricies lacus. Lectus proin nibh nisl condimentum id venenatis. Sit amet massa vitae tortor condimentum lacinia quis vel eros. Sed adipiscing diam donec adipiscing tristique risus nec feugiat in. Enim tortor at auctor urna."
       ],
@@ -67,7 +67,7 @@ Ultricies lacus sed turpis tincidunt id aliquet risus feugiat. Vitae aliquet nec
       name: "Symptoms\nChecker",
       kiloCaloriesBurnt: "414",
       timeTaken: "16",
-      imagePath: "assets/Symptoms_Checker.jpg",
+      imagePath: "assets/symptom.png",
       ingredients: [
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Elementum tempus egestas sed sed risus pretium quam. Platea dictumst quisque sagittis purus sit. Senectus et netus et malesuada fames ac turpis egestas sed. Nibh cras pulvinar mattis nunc. Amet consectetur adipiscing elit duis tristique. Interdum velit euismod in pellentesque massa placerat duis ultricies lacus. Lectus proin nibh nisl condimentum id venenatis. Sit amet massa vitae tortor condimentum lacinia quis vel eros. Sed adipiscing diam donec adipiscing tristique risus nec feugiat in. Enim tortor at auctor urna."
       ],
@@ -86,7 +86,7 @@ Ultricies lacus sed turpis tincidunt id aliquet risus feugiat. Vitae aliquet nec
           "\n",
       kiloCaloriesBurnt: "414",
       timeTaken: "16",
-      imagePath: "assets/Calories.jpg",
+      imagePath: "assets/food.png",
       ingredients: [
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Elementum tempus egestas sed sed risus pretium quam. Platea dictumst quisque sagittis purus sit. Senectus et netus et malesuada fames ac turpis egestas sed. Nibh cras pulvinar mattis nunc. Amet consectetur adipiscing elit duis tristique. Interdum velit euismod in pellentesque massa placerat duis ultricies lacus. Lectus proin nibh nisl condimentum id venenatis. Sit amet massa vitae tortor condimentum lacinia quis vel eros. Sed adipiscing diam donec adipiscing tristique risus nec feugiat in. Enim tortor at auctor urna."
       ],
@@ -104,7 +104,7 @@ Ultricies lacus sed turpis tincidunt id aliquet risus feugiat. Vitae aliquet nec
       name: "Body Mass\nIndex",
       kiloCaloriesBurnt: "612",
       timeTaken: "15",
-      imagePath: "assets/Index.jpeg",
+      imagePath: "assets/bodyindex.png",
       ingredients: [
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Elementum tempus egestas sed sed risus pretium quam. Platea dictumst quisque sagittis purus sit. Senectus et netus et malesuada fames ac turpis egestas sed. Nibh cras pulvinar mattis nunc. Amet consectetur adipiscing elit duis tristique. Interdum velit euismod in pellentesque massa placerat duis ultricies lacus. Lectus proin nibh nisl condimentum id venenatis. Sit amet massa vitae tortor condimentum lacinia quis vel eros. Sed adipiscing diam donec adipiscing tristique risus nec feugiat in. Enim tortor at auctor urna."
       ],
@@ -123,7 +123,7 @@ Ultricies lacus sed turpis tincidunt id aliquet risus feugiat. Vitae aliquet nec
           "\n",
       kiloCaloriesBurnt: "414",
       timeTaken: "16",
-      imagePath: "assets/Clinic.jpg",
+      imagePath: "assets/TheClinic.png",
       ingredients: [
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Elementum tempus egestas sed sed risus pretium quam. Platea dictumst quisque sagittis purus sit. Senectus et netus et malesuada fames ac turpis egestas sed. Nibh cras pulvinar mattis nunc. Amet consectetur adipiscing elit duis tristique. Interdum velit euismod in pellentesque massa placerat duis ultricies lacus. Lectus proin nibh nisl condimentum id venenatis. Sit amet massa vitae tortor condimentum lacinia quis vel eros. Sed adipiscing diam donec adipiscing tristique risus nec feugiat in. Enim tortor at auctor urna."
       ],
@@ -142,7 +142,7 @@ Ultricies lacus sed turpis tincidunt id aliquet risus feugiat. Vitae aliquet nec
           "\n",
       kiloCaloriesBurnt: "414",
       timeTaken: "16",
-      imagePath: "assets/News.jpg",
+      imagePath: "assets/abc.png",
       ingredients: [
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Elementum tempus egestas sed sed risus pretium quam. Platea dictumst quisque sagittis purus sit. Senectus et netus et malesuada fames ac turpis egestas sed. Nibh cras pulvinar mattis nunc. Amet consectetur adipiscing elit duis tristique. Interdum velit euismod in pellentesque massa placerat duis ultricies lacus. Lectus proin nibh nisl condimentum id venenatis. Sit amet massa vitae tortor condimentum lacinia quis vel eros. Sed adipiscing diam donec adipiscing tristique risus nec feugiat in. Enim tortor at auctor urna."
       ],

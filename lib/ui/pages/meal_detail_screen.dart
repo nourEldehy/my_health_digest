@@ -15,7 +15,7 @@ class MealDetailScreen extends StatelessWidget {
           SliverAppBar(
             snap: true,
             floating: true,
-            backgroundColor: Color.fromRGBO(255, 108, 136, 1),
+            backgroundColor: Colors.transparent,
             expandedHeight: 300,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(40))),
             flexibleSpace: FlexibleSpaceBar(

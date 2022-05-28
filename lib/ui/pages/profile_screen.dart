@@ -2,9 +2,12 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:training_and_diet_app/model/meal.dart';
+import 'package:training_and_diet_app/ui/pages/symptoms.dart';
 import 'package:training_and_diet_app/ui/pages/meal_detail_screen.dart';
 import 'package:training_and_diet_app/ui/pages/workout_screen.dart';
+// import 'package:training_and_diet_app/ui/pages/profile_screen.dart';
 import 'package:vector_math/vector_math_64.dart' as math;
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfileScreen extends StatelessWidget {
   @override
@@ -20,7 +23,7 @@ class ProfileScreen extends StatelessWidget {
         child: BottomNavigationBar(
           iconSize: 40,
           selectedIconTheme: IconThemeData(
-            color: Color.fromRGBO(255, 10, 56, 1),
+            color: Color.fromRGBO(255, 10, 56, 1.0),
           ),
           unselectedIconTheme: IconThemeData(
             color: Colors.black12,
@@ -208,7 +211,14 @@ class ProfileScreen extends StatelessWidget {
                       },
                       closedBuilder: (context, VoidCallback openContainer) {
                         return GestureDetector(
-                          onTap: openContainer,
+                          onTap: (){Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Symptoms(
+                                //caloriesResult: calc.calculateDailyCal(),
+                              ),
+                            ),
+                          );},
                           child: Container(
                             margin: const EdgeInsets.only(bottom: 30, left: 32, right: 32),
                             decoration: BoxDecoration(
@@ -457,7 +467,6 @@ class _RadialPainter extends CustomPainter {
 
 class _MealCard extends StatelessWidget {
   final Meal meal;
-
   const _MealCard({Key key, @required this.meal}) : super(key: key);
 
   @override
@@ -486,7 +495,27 @@ class _MealCard extends StatelessWidget {
                 },
                 closedBuilder: (context, openContainer) {
                   return GestureDetector(
-                    onTap: openContainer,
+                    onTap: (meal.name == "Symptoms\nChecker") ?
+                        (){Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Symptoms(
+                          //caloriesResult: calc.calculateDailyCal(),
+                        ),
+                      ),
+                    );}
+                          : (meal.name == "The Clinic""\n") ?
+                        ()
+                    async {
+                      const url = 'https://thecliniconline.org/';
+                      if(await canLaunch(url)){
+                  await launch(url);  //forceWebView is true now
+                  }else {
+                  throw 'Could not launch $url';
+                  }
+                  }
+                  :
+                        openContainer,
                     child: ClipRRect(
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                       child: Image.asset(
