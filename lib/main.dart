@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:training_and_diet_app/ui/pages/profile_screen.dart';
-// import 'package:training_and_diet_app/ui/pages/symptoms.dart';
 
 
 void main() => runApp(MyApp());
