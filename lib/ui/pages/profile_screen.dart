@@ -5,9 +5,13 @@ import 'package:training_and_diet_app/model/meal.dart';
 import 'package:training_and_diet_app/ui/pages/symptoms.dart';
 import 'package:training_and_diet_app/ui/pages/meal_detail_screen.dart';
 import 'package:training_and_diet_app/ui/pages/workout_screen.dart';
-// import 'package:training_and_diet_app/ui/pages/profile_screen.dart';
+import 'package:training_and_diet_app/ui/pages/bmi.dart';
+import 'package:training_and_diet_app/ui/pages/calories_needed.dart';
+import 'package:training_and_diet_app/model/calculator_brain.dart';
 import 'package:vector_math/vector_math_64.dart' as math;
 import 'package:url_launcher/url_launcher.dart';
+
+int currentCalories = 6;
 
 class ProfileScreen extends StatelessWidget {
   @override
@@ -75,7 +79,8 @@ class ProfileScreen extends StatelessWidget {
               ),
               child: Container(
                 color: Colors.white,
-                padding: const EdgeInsets.only(top: 40, left: 32, right: 16, bottom: 10),
+                padding: const EdgeInsets.only(
+                    top: 40, left: 32, right: 16, bottom: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -105,7 +110,7 @@ class ProfileScreen extends StatelessWidget {
                         _RadialProgress(
                           width: width * 0.35,
                           height: width * 0.35,
-                          progress: 0.7,
+                          progress: 0.2,
                         ),
                         SizedBox(
                           width: 10,
@@ -178,7 +183,10 @@ class ProfileScreen extends StatelessWidget {
                     ),
                     child: Text(
                       " ",
-                      style: const TextStyle(color: Colors.blueGrey, fontSize: 16, fontWeight: FontWeight.w700),
+                      style: const TextStyle(
+                          color: Colors.blueGrey,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700),
                     ),
                   ),
                   Expanded(
@@ -211,18 +219,20 @@ class ProfileScreen extends StatelessWidget {
                       },
                       closedBuilder: (context, VoidCallback openContainer) {
                         return GestureDetector(
-                          onTap: (){Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Symptoms(
-                                //caloriesResult: calc.calculateDailyCal(),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Symptoms(),
                               ),
-                            ),
-                          );},
+                            );
+                          },
                           child: Container(
-                            margin: const EdgeInsets.only(bottom: 30, left: 32, right: 32),
+                            margin: const EdgeInsets.only(
+                                bottom: 30, left: 32, right: 32),
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(30)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(30)),
                               gradient: LinearGradient(
                                 begin: Alignment.topCenter,
                                 end: Alignment.bottomCenter,
@@ -239,7 +249,8 @@ class ProfileScreen extends StatelessWidget {
                                   width: 20,
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(top: 16.0, left: 16),
+                                  padding: const EdgeInsets.only(
+                                      top: 16.0, left: 16),
                                   child: Text(
                                     "YOUR NEXT WORKOUT",
                                     style: TextStyle(
@@ -250,7 +261,8 @@ class ProfileScreen extends StatelessWidget {
                                   ),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(top: 4.0, left: 16),
+                                  padding:
+                                      const EdgeInsets.only(top: 4.0, left: 16),
                                   child: Text(
                                     "Upper Body",
                                     style: TextStyle(
@@ -268,8 +280,10 @@ class ProfileScreen extends StatelessWidget {
                                       ),
                                       Container(
                                         decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.all(Radius.circular(25)),
-                                          color: Color.fromRGBO(255, 108, 136, 1),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(25)),
+                                          color:
+                                              Color.fromRGBO(255, 108, 136, 1),
                                         ),
                                         padding: const EdgeInsets.all(10),
                                         child: Image.asset(
@@ -284,8 +298,10 @@ class ProfileScreen extends StatelessWidget {
                                       ),
                                       Container(
                                         decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.all(Radius.circular(25)),
-                                          color: Color.fromRGBO(255, 108, 136, 1),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(25)),
+                                          color:
+                                              Color.fromRGBO(255, 108, 136, 1),
                                         ),
                                         padding: const EdgeInsets.all(10),
                                         child: Image.asset(
@@ -300,8 +316,10 @@ class ProfileScreen extends StatelessWidget {
                                       ),
                                       Container(
                                         decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.all(Radius.circular(25)),
-                                          color: Color.fromRGBO(255, 108, 136, 1),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(25)),
+                                          color:
+                                              Color.fromRGBO(255, 108, 136, 1),
                                         ),
                                         padding: const EdgeInsets.all(10),
                                         child: Image.asset(
@@ -340,7 +358,14 @@ class _IngredientProgress extends StatelessWidget {
   final double progress, width;
   final Color progressColor;
 
-  const _IngredientProgress({Key key, this.ingredient, this.leftAmount, this.progress, this.progressColor, this.width}) : super(key: key);
+  const _IngredientProgress(
+      {Key key,
+      this.ingredient,
+      this.leftAmount,
+      this.progress,
+      this.progressColor,
+      this.width})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -392,13 +417,14 @@ class _IngredientProgress extends StatelessWidget {
 class _RadialProgress extends StatelessWidget {
   final double height, width, progress;
 
-  const _RadialProgress({Key key, this.height, this.width, this.progress}) : super(key: key);
+  const _RadialProgress({Key key, this.height, this.width, this.progress})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
       painter: _RadialPainter(
-        progress: 0.7,
+        progress: currentCalories / c.val,
       ),
       child: Container(
         height: height,
@@ -409,7 +435,7 @@ class _RadialProgress extends StatelessWidget {
             text: TextSpan(
               children: [
                 TextSpan(
-                  text: "1700",
+                  text: c.getCal().toString(),
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.w700,
@@ -418,7 +444,7 @@ class _RadialProgress extends StatelessWidget {
                 ),
                 TextSpan(text: "\n"),
                 TextSpan(
-                  text: "Steps left",
+                  text: "Calories left",
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
@@ -486,7 +512,8 @@ class _MealCard extends StatelessWidget {
             Flexible(
               fit: FlexFit.tight,
               child: OpenContainer(
-                closedShape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
+                closedShape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
                 transitionDuration: const Duration(milliseconds: 1000),
                 openBuilder: (context, _) {
                   return MealDetailScreen(
@@ -495,27 +522,45 @@ class _MealCard extends StatelessWidget {
                 },
                 closedBuilder: (context, openContainer) {
                   return GestureDetector(
-                    onTap: (meal.name == "Symptoms\nChecker") ?
-                        (){Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Symptoms(
-                          //caloriesResult: calc.calculateDailyCal(),
-                        ),
-                      ),
-                    );}
-                          : (meal.name == "The Clinic""\n") ?
-                        ()
-                    async {
-                      const url = 'https://thecliniconline.org/';
-                      if(await canLaunch(url)){
-                  await launch(url);  //forceWebView is true now
-                  }else {
-                  throw 'Could not launch $url';
-                  }
-                  }
-                  :
-                        openContainer,
+                    onTap: (meal.name == "Symptoms\nChecker")
+                        ? () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Symptoms(),
+                              ),
+                            );
+                          }
+                        : (meal.name == "The Clinic" "\n")
+                            ? () async {
+                                const url = 'https://thecliniconline.org/';
+                                if (await canLaunch(url)) {
+                                  await launch(url); //forceWebView is true now
+                                } else {
+                                  throw 'Could not launch $url';
+                                }
+                              }
+                            : (meal.name ==
+                                    "Food Calories"
+                                        "\n")
+                                ? () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => CaloriesNeeded(),
+                                      ),
+                                    );
+                                  }
+                                : (meal.name == "Body Mass\nIndex")
+                                    ? () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => BMI(),
+                                          ),
+                                        );
+                                      }
+                                    : openContainer,
                     child: ClipRRect(
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                       child: Image.asset(
@@ -554,5 +599,17 @@ class _MealCard extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class Calories {
+  int val = 10;
+
+  int getCal() {
+    return val;
+  }
+
+  void setCal(int caloriesResult) {
+    val = caloriesResult;
   }
 }
