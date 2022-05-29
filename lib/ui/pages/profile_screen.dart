@@ -2,6 +2,7 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:training_and_diet_app/model/meal.dart';
+import 'package:training_and_diet_app/ui/pages/contact_us.dart';
 import 'package:training_and_diet_app/ui/pages/symptoms.dart';
 import 'package:training_and_diet_app/ui/pages/meal_detail_screen.dart';
 import 'package:training_and_diet_app/ui/pages/workout_screen.dart';
@@ -16,58 +17,64 @@ import 'package:training_and_diet_app/ui/pages/women.dart';
 
 int currentCalories = 6;
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({key}) : super(key: key);
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  int _selectedIndex = 0;
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+      (index == 1)
+          ? Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ContactUs(),
+              ),
+            )
+          : OpenContainer;
+
+      //print(index);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final today = DateTime.now();
-
+    _selectedIndex = 0;
     return Scaffold(
-      backgroundColor: const Color(0xFFE9E9E9),
-      bottomNavigationBar: ClipRRect(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(40)),
-        child: BottomNavigationBar(
-          iconSize: 40,
-          selectedIconTheme: IconThemeData(
-            color: Color.fromRGBO(255, 10, 56, 1.0),
-          ),
-          unselectedIconTheme: IconThemeData(
-            color: Colors.black12,
-          ),
-          items: [
-            BottomNavigationBarItem(
-              icon: Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: Icon(Icons.home),
-              ),
-              title: Text(
-                "Home",
-                style: const TextStyle(color: Colors.white),
-              ),
-            ),
-            BottomNavigationBarItem(
-              icon: Padding(
-                child: Icon(Icons.search),
-                padding: const EdgeInsets.only(top: 8.0),
-              ),
-              title: Text(
-                "Search",
-                style: const TextStyle(color: Colors.white),
-              ),
-            ),
-            BottomNavigationBarItem(
-              icon: Padding(
-                child: Icon(Icons.person),
-                padding: const EdgeInsets.only(top: 8.0),
-              ),
-              title: Text(
-                "Profile",
-                style: const TextStyle(color: Colors.white),
-              ),
-            ),
-          ],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        iconSize: 40,
+        selectedIconTheme: IconThemeData(
+          color: Color.fromRGBO(255, 10, 56, 1.0),
         ),
+        unselectedIconTheme: IconThemeData(
+          color: Colors.black12,
+        ),
+        items: [
+          BottomNavigationBarItem(
+            icon: Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Icon(Icons.home),
+            ),
+            label: "Home",
+          ),
+          BottomNavigationBarItem(
+            icon: Padding(
+              child: Icon(Icons.person),
+              padding: const EdgeInsets.only(top: 8.0),
+            ),
+            label: "Contact Us",
+          ),
+        ],
+        onTap: _onItemTapped,
       ),
       body: Stack(
         children: <Widget>[
