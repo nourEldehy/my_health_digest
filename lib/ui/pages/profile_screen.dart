@@ -10,6 +10,9 @@ import 'package:training_and_diet_app/ui/pages/calories_needed.dart';
 import 'package:training_and_diet_app/model/calculator_brain.dart';
 import 'package:vector_math/vector_math_64.dart' as math;
 import 'package:url_launcher/url_launcher.dart';
+import 'package:training_and_diet_app/ui/pages/women.dart';
+
+
 
 int currentCalories = 6;
 
@@ -551,15 +554,24 @@ class _MealCard extends StatelessWidget {
                                       ),
                                     );
                                   }
-                                : (meal.name == "Body Mass\nIndex")
-                                    ? () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => BMI(),
-                                          ),
-                                        );
-                                      }
+                        : (meal.name == "Body Mass\nIndex")
+                        ? () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => BMI(),
+                        ),
+                      );
+                    }: (meal.name == "Women"
+                        "\n")
+                        ? () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Women(),
+                        ),
+                      );
+                    }
                                     : openContainer,
                     child: ClipRRect(
                       borderRadius: BorderRadius.all(Radius.circular(20)),

@@ -19,13 +19,26 @@ class _BMIState extends State<BMI> {
     return Scaffold(
       appBar: AppBar(
         title: Text('BMI Calculator'),
+        backgroundColor: Colors.lightBlue,
+        foregroundColor: Colors.black,
+        // shadowColor: Color.fromRGBO(225, 77, 87, 1),
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Expanded(
-            child: Center(
+          SizedBox(
+            height: 370,
+            width: 300,
+            child: Container(
+              height: 190,
               child: HeightSlider(
+                maxHeight: 220,
+                minHeight: 110,
+                // primaryColor: Color.fromRGBO(255, 108, 136, 1),
+                // numberLineColor: Color.fromRGBO(255, 108, 136, 1),
+                // sliderCircleColor: Color.fromRGBO(255, 108, 136, 1),
+                // currentHeightTextColor: Color.fromRGBO(255, 37, 87, 1),
                 personImagePath: "assets/body.svg",
                 height: h,
                 onChange: (val) => setState(() => h = val),
@@ -33,12 +46,8 @@ class _BMIState extends State<BMI> {
               ),
             ),
           ),
-          // Container(
-          //   child: Image.asset("lib/assets/images/body.png"),
-          //),
-          SizedBox(
-            height: 60,
-            child: Container(
+            Container(
+              height: 175,
               child: WeightSlider(
                 weight: w,
                 minWeight: 40,
@@ -47,10 +56,10 @@ class _BMIState extends State<BMI> {
                 unit: 'kg', // optional
               ),
             ),
-          ),
-          BottomButton(
-            buttonTitle: 'CALCULATE',
-            onTap: () {
+          ElevatedButton(
+            child: const Text('Calculate',
+                style: TextStyle(color: Colors.black),),
+            onPressed: () {
               CalculatorBrain calc = CalculatorBrain(h: h, w: w);
 
               Navigator.push(
@@ -62,6 +71,14 @@ class _BMIState extends State<BMI> {
                 ),
               );
             },
+            style: ElevatedButton.styleFrom(
+                primary: Colors.lightBlue,
+                padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                textStyle: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold
+            )
+          ),
           ),
         ],
       ),
