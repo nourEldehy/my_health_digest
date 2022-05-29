@@ -579,7 +579,7 @@ class _MealCard extends StatelessWidget {
                         ),
                       );
                     }
-                                    : openContainer,
+                    : openContainer,
                     child: ClipRRect(
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                       child: Image.asset(
