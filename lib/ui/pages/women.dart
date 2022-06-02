@@ -98,7 +98,7 @@ class CustomCard extends StatelessWidget {
         margin: EdgeInsets.fromLTRB(60.0, 20.0, 60.0, 20.0),
         child: new Column(
           children: <Widget>[
-            // Image.asset(link.replaceAll(".pdf", ".jpg")),
+            Image.asset(link.replaceAll(".pdf", ".jpg")),
             new Padding(
                 padding: new EdgeInsets.all(10.0),
                 child: new Padding(
