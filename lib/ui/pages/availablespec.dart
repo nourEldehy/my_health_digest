@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
 List title=[];
 List link=[];
@@ -19,13 +20,14 @@ class _AvailablespecState extends State<Availablespec> {
 //Applying get request.
 
   getRequest() async {
+    String text;
     //replace your restFull API here.
-    String url = "http://10.0.2.2/api/pdfs/get-pdfs/en/available-specs";
-    final response = await http.get(url);
-
-    var responseData = json.decode(response.body);
+    // String url = "http://10.0.2.2/api/pdfs/get-pdfs/en/women";
+    // final response = await http.get(url);
+    final loadedData = await rootBundle.loadString('assets/Specs/specs.txt');
+    var responseData = loadedData;
     var response2 = responseData.toString().split(",");
-    for (var i = 0; i < response2.length; i++) {
+    for (var i = 0; i < response2.length-1; i++) {
 
       var temp =  response2[i].split(": ");
       title.add(temp[0].replaceAll("{", ""));
@@ -102,7 +104,8 @@ class CustomCard extends StatelessWidget {
         context,
         MaterialPageRoute<dynamic>(
           builder: (_) => PDFViewerFromAsset(
-            pdfAssetPath: 'assets/Feeding Pregnant Women.pdf',
+            pdfAssetPath: link,
+            name: title,
           ),
         ),
       ),
@@ -150,8 +153,9 @@ class PDFViewerFromUrl extends StatelessWidget {
 }
 
 class PDFViewerFromAsset extends StatelessWidget {
-  PDFViewerFromAsset({Key key, this.pdfAssetPath}) : super(key: key);
+  PDFViewerFromAsset({Key key, this.pdfAssetPath, this.name}) : super(key: key);
   final String pdfAssetPath;
+  final String name;
   final Completer<PDFViewController> _pdfViewController =
   Completer<PDFViewController>();
   final StreamController<String> _pageCountController =
@@ -161,7 +165,7 @@ class PDFViewerFromAsset extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('PDF From Asset'),
+        title: Text(name),
         actions: <Widget>[
           StreamBuilder<String>(
               stream: _pageCountController.stream,
@@ -172,7 +176,7 @@ class PDFViewerFromAsset extends StatelessWidget {
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Colors.blue[900],
+                        color: Color.fromRGBO(249,209,77,1),
                       ),
                       child: Text(snapshot.data),
                     ),
@@ -209,6 +213,7 @@ class PDFViewerFromAsset extends StatelessWidget {
               children: <Widget>[
                 FloatingActionButton(
                   heroTag: '-',
+                  backgroundColor: Color.fromRGBO(249,209,77,1),
                   child: const Text('-'),
                   onPressed: () async {
                     final PDFViewController pdfController = snapshot.data;
@@ -221,6 +226,7 @@ class PDFViewerFromAsset extends StatelessWidget {
                 ),
                 FloatingActionButton(
                   heroTag: '+',
+                  backgroundColor: Color.fromRGBO(249,209,77,1),
                   child: const Text('+'),
                   onPressed: () async {
                     final PDFViewController pdfController = snapshot.data;

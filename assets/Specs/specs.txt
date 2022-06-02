@@ -1,0 +1,1 @@
+Diabetes: assets/Specs/english/Diabetes.pdf,Arrhythmia: assets/Specs/english/arrhythmia-01-eng.pdf,

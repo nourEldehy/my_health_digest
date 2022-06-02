@@ -16,7 +16,8 @@ import 'package:training_and_diet_app/ui/pages/availablespec.dart';
 import 'package:skeleton_text/skeleton_text.dart';
 import 'package:floating_ribbon/floating_ribbon.dart';
 import 'package:training_and_diet_app/ui/pages/myhealth.dart';
-
+import 'package:training_and_diet_app/ui/pages/foodcalories.dart';
+import 'package:training_and_diet_app/ui/pages/medicine.dart';
 
 int currentCalories = 6;
 
@@ -530,6 +531,22 @@ class _MealCard extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) => Myhealth(),
+                        ),
+                      );
+                    }
+                    : (meal.name == "Food Calories\nDetection") ? () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => VideoPlayerApp(),
+                        ),
+                      );
+                    }
+                    : (meal.name == "Medicine\nReminder") ? () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => VideoApp(),
                         ),
                       );
                     }
