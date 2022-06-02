@@ -185,9 +185,9 @@ class _CupertinoTextFieldPres extends StatelessWidget {
       style: Theme.of(context)
           .textTheme
           .subtitle1
-          .copyWith(color: MyColors.lightestPink, fontFamily: 'lexenddeca'),
+          .copyWith(color: Colors.pink, fontFamily: 'lexenddeca'),
       maxLines: 1,
-      cursorColor: MyColors.white,
+      cursorColor: MyColors.lightPink,
       cursorWidth: 3,
       cursorRadius: Radius.circular(50),
       placeholder: placeholderTextList[placeholderTextIndex],
