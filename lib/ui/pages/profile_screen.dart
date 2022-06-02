@@ -12,7 +12,10 @@ import 'package:training_and_diet_app/model/calculator_brain.dart';
 import 'package:vector_math/vector_math_64.dart' as math;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:training_and_diet_app/ui/pages/women.dart';
-
+import 'package:training_and_diet_app/ui/pages/availablespec.dart';
+import 'package:skeleton_text/skeleton_text.dart';
+import 'package:floating_ribbon/floating_ribbon.dart';
+import 'package:training_and_diet_app/ui/pages/myhealth.dart';
 
 
 int currentCalories = 6;
@@ -177,7 +180,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
           Positioned(
-            top: height * 0.37,
+            top: height * 0.38,
             left: 0,
             right: 0,
             child: Container(
@@ -215,137 +218,78 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
+                  // SizedBox(
+                  //   height: 20,
+                  // ),
                   Expanded(
                     child: OpenContainer(
                       closedElevation: 0,
                       transitionType: ContainerTransitionType.fade,
                       transitionDuration: const Duration(milliseconds: 1000),
-                      closedColor: const Color(0xFFE9E9E9),
+                      // closedColor: const Color(0xFFE9E9E9),
                       openBuilder: (context, _) {
-                        return WorkoutScreen();
+                        // return WorkoutScreen();
                       },
                       closedBuilder: (context, VoidCallback openContainer) {
                         return GestureDetector(
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => Symptoms(),
-                              ),
-                            );
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) => Symptoms(),
+                            //   ),
+                            // );
                           },
-                          child: Container(
-                            margin: const EdgeInsets.only(
-                                bottom: 30, left: 32, right: 32),
-                            decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(30)),
-                              gradient: LinearGradient(
+                          child: Center(
+                            child: FloatingRibbon(
+                              ribbonSwatch: Colors.black,
+                              ribbonShadowSwatch: Colors.black45,
+                                height: 100,
+                                width: 350,
+                                childHeight: 90,
+                                childWidth: 320,
+                              child: Container(
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.only(top: 5.0, left: 7),
+                                  child: Center(
+                                    child: Text(
+                                      "Motion Capture",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 40,
+                                        fontWeight: FontWeight.w800,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              childDecoration: BoxDecoration(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(30)),
+                                gradient: LinearGradient(
                                 begin: Alignment.topCenter,
                                 end: Alignment.bottomCenter,
                                 colors: [
                                   Color.fromRGBO(255, 37, 87, 1),
-                                  Color.fromRGBO(255, 37, 87, 1),
+                                  Color.fromRGBO(25, 37, 87, 1),
                                 ],
                               ),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                SizedBox(
-                                  width: 20,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 16.0, left: 16),
+                              ),
+                              ribbon: SkeletonAnimation(
+                                child: Center(
                                   child: Text(
-                                    "YOUR NEXT WORKOUT",
+                                    'SOON',
                                     style: TextStyle(
-                                      color: Colors.white70,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w600,
+                                      fontSize: 18,
+                                      color: Colors.white60,
+                                      fontWeight: FontWeight.bold,
                                     ),
+                                    textAlign: TextAlign.center,
                                   ),
                                 ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.only(top: 4.0, left: 16),
-                                  child: Text(
-                                    "Upper Body",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w800,
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Row(
-                                    children: <Widget>[
-                                      SizedBox(
-                                        width: 60,
-                                      ),
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(25)),
-                                          color:
-                                              Color.fromRGBO(255, 108, 136, 1),
-                                        ),
-                                        padding: const EdgeInsets.all(10),
-                                        child: Image.asset(
-                                          "assets/chest.png",
-                                          width: 40,
-                                          height: 45,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(25)),
-                                          color:
-                                              Color.fromRGBO(255, 108, 136, 1),
-                                        ),
-                                        padding: const EdgeInsets.all(10),
-                                        child: Image.asset(
-                                          "assets/back.png",
-                                          width: 50,
-                                          height: 40,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(25)),
-                                          color:
-                                              Color.fromRGBO(255, 108, 136, 1),
-                                        ),
-                                        padding: const EdgeInsets.all(10),
-                                        child: Image.asset(
-                                          "assets/biceps.png",
-                                          width: 50,
-                                          height: 40,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
+                              ),
+                              shadowHeight: 5,
                             ),
                           ),
                         );
@@ -532,8 +476,8 @@ class _MealCard extends StatelessWidget {
                 },
                 closedBuilder: (context, openContainer) {
                   return GestureDetector(
-                    onTap: (meal.name == "Symptoms\nChecker")
-                        ? () {
+                    onTap:
+                    (meal.name == "Symptoms\nChecker") ? () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -541,8 +485,7 @@ class _MealCard extends StatelessWidget {
                               ),
                             );
                           }
-                        : (meal.name == "The Clinic" "\n")
-                            ? () async {
+                    : (meal.name == "The Clinic" "\n") ? () async {
                                 const url = 'https://thecliniconline.org/';
                                 if (await canLaunch(url)) {
                                   await launch(url); //forceWebView is true now
@@ -550,10 +493,7 @@ class _MealCard extends StatelessWidget {
                                   throw 'Could not launch $url';
                                 }
                               }
-                            : (meal.name ==
-                                    "Food Calories"
-                                        "\n")
-                                ? () {
+                    : (meal.name == "Food Calories""\n") ? () {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -561,21 +501,35 @@ class _MealCard extends StatelessWidget {
                                       ),
                                     );
                                   }
-                        : (meal.name == "Body Mass\nIndex")
-                        ? () {
+                    : (meal.name == "Body Mass\nIndex") ? () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => BMI(),
                         ),
                       );
-                    }: (meal.name == "Women"
-                        "\n")
-                        ? () {
+                    }
+                    : (meal.name == "Women""\n") ? () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => Women(),
+                        ),
+                      );
+                    }
+                    : (meal.name == "Available\nSpecialties") ? () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Availablespec(),
+                        ),
+                      );
+                    }
+                    : (meal.name == "Your Health""\n") ? () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Myhealth(),
                         ),
                       );
                     }

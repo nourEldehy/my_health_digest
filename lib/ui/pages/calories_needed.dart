@@ -56,51 +56,61 @@ class _CaloriesNeededState extends State<CaloriesNeeded> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Daily Calories Needed Calculator'),
+        backgroundColor: Color(0xFFEB1555),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Expanded(
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Expanded(
-                child: ReusableCard(
-                  onPress: () {
-                    setState(() {
-                      selectedGender = Gender.male;
-                    });
-                  },
-                  colour: selectedGender == Gender.male
-                      ? kActiveCardColour
-                      : kInactiveCardColour,
-                  cardChild: IconContent(
-                    icon: FontAwesomeIcons.mars,
-                    label: 'MALE',
+            InkWell(
+            onTap: () {
+              setState(() {
+                selectedGender = Gender.male;
+              });
+            },
+            child: Container(
+              // height: 30,
+              width: 200,
+              child: Card(
+                color: selectedGender == Gender.male
+                    ? kActiveCardColour
+                    : kInactiveCardColour,
+                child: IconContent(
+                  icon: FontAwesomeIcons.mars,
+                  label: 'MALE',
                   ),
                 ),
               ),
-              Expanded(
-                child: ReusableCard(
-                  onPress: () {
-                    setState(() {
-                      selectedGender = Gender.female;
-                    });
-                  },
-                  colour: selectedGender == Gender.female
-                      ? kActiveCardColour
-                      : kInactiveCardColour,
-                  cardChild: IconContent(
-                    icon: FontAwesomeIcons.venus,
-                    label: 'FEMALE',
+            ),
+              InkWell(
+                onTap: () {
+                  setState(() {
+                    selectedGender = Gender.female;
+                  });
+                },
+                child: Container(
+                  // height: 30,
+                  width: 200,
+                  child: Card(
+                    color: selectedGender == Gender.female
+                        ? kActiveCardColour
+                        : kInactiveCardColour,
+                    child: IconContent(
+                      icon: FontAwesomeIcons.venus,
+                      label: 'FEMALE',
+                    ),
                   ),
                 ),
               ),
             ],
           )), //gender
           Expanded(
-            child: ReusableCard(
-              colour: kInactiveCardColour,
-              cardChild: Column(
+            child: Card(
+              color: kInactiveCardColour,
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
@@ -133,15 +143,18 @@ class _CaloriesNeededState extends State<CaloriesNeeded> {
                       overlayShape:
                           RoundSliderOverlayShape(overlayRadius: 30.0),
                     ),
-                    child: Slider(
-                      value: height,
-                      min: 120.0,
-                      max: 220.0,
-                      onChanged: (double newValue) {
-                        setState(() {
-                          height = newValue;
-                        });
-                      },
+                    child: Container(
+                      height: 35,
+                      child: Slider(
+                        value: height,
+                        min: 120.0,
+                        max: 220.0,
+                        onChanged: (double newValue) {
+                          setState(() {
+                            height = newValue;
+                          });
+                        },
+                      ),
                     ),
                   ),
                 ],
@@ -152,9 +165,9 @@ class _CaloriesNeededState extends State<CaloriesNeeded> {
             child: Row(
               children: <Widget>[
                 Expanded(
-                  child: ReusableCard(
-                    colour: kInactiveCardColour,
-                    cardChild: Column(
+                  child: Card(
+                    color: kInactiveCardColour,
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text(
@@ -193,9 +206,9 @@ class _CaloriesNeededState extends State<CaloriesNeeded> {
                   ),
                 ),
                 Expanded(
-                  child: ReusableCard(
-                    colour: kInactiveCardColour,
-                    cardChild: Column(
+                  child: Card(
+                    color: kInactiveCardColour,
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text(
@@ -239,9 +252,9 @@ class _CaloriesNeededState extends State<CaloriesNeeded> {
             ),
           ), //weight and age
           Expanded(
-            child: ReusableCard(
-              colour: kInactiveCardColour,
-              cardChild: Column(
+            child: Card(
+              color: kInactiveCardColour,
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
@@ -270,37 +283,40 @@ class _CaloriesNeededState extends State<CaloriesNeeded> {
                       overlayShape:
                           RoundSliderOverlayShape(overlayRadius: 30.0),
                     ),
-                    child: Slider(
-                      divisions: 4,
-                      value: c.toDouble(),
-                      min: 1,
-                      max: 5,
-                      onChanged: (double newValue) {
-                        setState(() {
-                          if (newValue == 1) {
-                            _activity = sa.physicalActivity;
-                            multiplier = sa.activityMult;
-                            _desc = sa.description;
-                          } else if (newValue == 2) {
-                            _activity = la.physicalActivity;
-                            multiplier = la.activityMult;
-                            _desc = la.description;
-                          } else if (newValue == 3) {
-                            _activity = ma.physicalActivity;
-                            multiplier = ma.activityMult;
-                            _desc = ma.description;
-                          } else if (newValue == 4) {
-                            _activity = va.physicalActivity;
-                            multiplier = va.activityMult;
-                            _desc = va.description;
-                          } else {
-                            _activity = ea.physicalActivity;
-                            multiplier = ea.activityMult;
-                            _desc = ea.description;
-                          }
-                          c = newValue.toInt();
-                        });
-                      },
+                    child: Container(
+                      height: 35,
+                      child: Slider(
+                        divisions: 4,
+                        value: c.toDouble(),
+                        min: 1,
+                        max: 5,
+                        onChanged: (double newValue) {
+                          setState(() {
+                            if (newValue == 1) {
+                              _activity = sa.physicalActivity;
+                              multiplier = sa.activityMult;
+                              _desc = sa.description;
+                            } else if (newValue == 2) {
+                              _activity = la.physicalActivity;
+                              multiplier = la.activityMult;
+                              _desc = la.description;
+                            } else if (newValue == 3) {
+                              _activity = ma.physicalActivity;
+                              multiplier = ma.activityMult;
+                              _desc = ma.description;
+                            } else if (newValue == 4) {
+                              _activity = va.physicalActivity;
+                              multiplier = va.activityMult;
+                              _desc = va.description;
+                            } else {
+                              _activity = ea.physicalActivity;
+                              multiplier = ea.activityMult;
+                              _desc = ea.description;
+                            }
+                            c = newValue.toInt();
+                          });
+                        },
+                      ),
                     ),
                   ),
                   Text(
@@ -312,25 +328,29 @@ class _CaloriesNeededState extends State<CaloriesNeeded> {
             ),
           ),
 
-          BottomButton(
-            buttonTitle: 'CALCULATE',
-            onTap: () {
+          ElevatedButton(
+            child: const Text('CALCULATE'),
+            onPressed: () {
               CalculatorBrain calc = CalculatorBrain(
-                  height: height,
-                  weight: weight,
-                  selectedGender: selectedGender,
-                  multiplier: multiplier,
-                  age: age);
-
+              height: height,
+              weight: weight,
+              selectedGender: selectedGender,
+              multiplier: multiplier,
+              age: age);
               Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ResultsCalories(
-                    caloriesResult: calc.calculateDailyCal(),
+              context,
+              MaterialPageRoute(
+              builder: (context) => ResultsCalories(
+              caloriesResult: calc.calculateDailyCal(),
                   ),
                 ),
               );
             },
+            style: ElevatedButton.styleFrom( // set the background color
+              primary: Color(0xFFEB1555),
+              elevation: 4,
+              shadowColor: Colors.grey,
+            ),
           ),
         ],
       ),

@@ -36,6 +36,8 @@ dependencies:
   get: ^4.6.1
   http: ^0.12.0+4
   flutter_cached_pdfview: ^0.3.5
+  floating_ribbon: any
+  skeleton_text: any
 
 dev_dependencies:
   flutter_test:
@@ -57,6 +59,10 @@ flutter:
   assets:
    - assets/
    - assets/icons/
+   - assets/Back/
+   - assets/Front/
+   - assets/Women/women.txt
+   - assets/Women/english/
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

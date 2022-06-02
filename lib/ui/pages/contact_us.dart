@@ -76,9 +76,9 @@ class _ContactUsState extends State<ContactUs> {
               "assets/expand.png",
               scale: 0.1,
             ),
-            const SizedBox(
-              height: 35,
-            ),
+            // const SizedBox(
+            //   height: 35,
+            // ),
             Column(
               children: [
                 Card(
@@ -103,7 +103,7 @@ class _ContactUsState extends State<ContactUs> {
                           '             ->Cairo: 17 Emarat El Madfaeya, City Stars st.infront of masged El kwat ElMosalaha,Nasr City'
                           "         (Gulf Office):",
                           style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 18,
                               wordSpacing: 5,
                               fontWeight: FontWeight.bold),
                         ),
@@ -130,7 +130,7 @@ class _ContactUsState extends State<ContactUs> {
                         subtitle: Text(
                           '->Dubai: Damac Business tower 1-Business Bay- UAE',
                           style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 18,
                               wordSpacing: 5,
                               fontWeight: FontWeight.bold),
                         ),
@@ -140,9 +140,9 @@ class _ContactUsState extends State<ContactUs> {
                 ),
               ],
             ),
-            const SizedBox(
-              height: 15,
-            ),
+            // const SizedBox(
+            //   height: 15,
+            // ),
             const Card(
               child: ListTile(
                 leading: Icon(
@@ -157,11 +157,11 @@ class _ContactUsState extends State<ContactUs> {
               ),
             ),
             const SizedBox(
-              height: 100,
+              height: 20,
             ),
             const Text("Don't hesitate, just call us",
                 style: TextStyle(
-                  fontSize: 25,
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: Color.fromRGBO(255, 37, 87, 1),
                 )),
