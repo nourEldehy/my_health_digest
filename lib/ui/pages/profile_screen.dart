@@ -534,7 +534,7 @@ class _MealCard extends StatelessWidget {
                         ),
                       );
                     }
-                    : (meal.name == "Food Calories\nDetection") ? () {
+                    : (meal.name == "Food Calories\nDetection""\n") ? () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -542,7 +542,7 @@ class _MealCard extends StatelessWidget {
                         ),
                       );
                     }
-                    : (meal.name == "Medicine\nReminder") ? () {
+                    : (meal.name == "Medicine\nReminder""\n") ? () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
