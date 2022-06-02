@@ -63,6 +63,9 @@ flutter:
    - assets/Front/
    - assets/Women/women.txt
    - assets/Women/english/
+   - assets/Yourhealth/yourhealth.txt
+   - assets/Yourhealth/
+   - assets/Yourhealth/english/
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
