@@ -245,10 +245,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             child: FloatingRibbon(
                               ribbonSwatch: Colors.black,
                               ribbonShadowSwatch: Colors.black45,
-                                height: 100,
-                                width: 350,
-                                childHeight: 90,
-                                childWidth: 320,
+                              height: 100,
+                              width: 350,
+                              childHeight: 90,
+                              childWidth: 320,
                               child: Container(
                                 child: Padding(
                                   padding:
@@ -267,15 +267,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                               childDecoration: BoxDecoration(
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(30)),
+                                    BorderRadius.all(Radius.circular(30)),
                                 gradient: LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: [
-                                  Color.fromRGBO(255, 37, 87, 1),
-                                  Color.fromRGBO(25, 37, 87, 1),
-                                ],
-                              ),
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    Color.fromRGBO(255, 37, 87, 1),
+                                    Color.fromRGBO(25, 37, 87, 1),
+                                  ],
+                                ),
                               ),
                               ribbon: SkeletonAnimation(
                                 child: Center(
@@ -477,8 +477,8 @@ class _MealCard extends StatelessWidget {
                 },
                 closedBuilder: (context, openContainer) {
                   return GestureDetector(
-                    onTap:
-                    (meal.name == "Symptoms\nChecker") ? () {
+                    onTap: (meal.name == "Symptoms\nChecker")
+                        ? () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -486,7 +486,8 @@ class _MealCard extends StatelessWidget {
                               ),
                             );
                           }
-                    : (meal.name == "The Clinic" "\n") ? () async {
+                        : (meal.name == "The Clinic" "\n")
+                            ? () async {
                                 const url = 'https://thecliniconline.org/';
                                 if (await canLaunch(url)) {
                                   await launch(url); //forceWebView is true now
@@ -494,7 +495,8 @@ class _MealCard extends StatelessWidget {
                                   throw 'Could not launch $url';
                                 }
                               }
-                    : (meal.name == "Food Calories""\n") ? () {
+                            : (meal.name == "Food Calories" "\n")
+                                ? () {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -502,55 +504,71 @@ class _MealCard extends StatelessWidget {
                                       ),
                                     );
                                   }
-                    : (meal.name == "Body Mass\nIndex") ? () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => BMI(),
-                        ),
-                      );
-                    }
-                    : (meal.name == "Women""\n") ? () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Women(),
-                        ),
-                      );
-                    }
-                    : (meal.name == "Available\nSpecialties") ? () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Availablespec(),
-                        ),
-                      );
-                    }
-                    : (meal.name == "Your Health""\n") ? () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Myhealth(),
-                        ),
-                      );
-                    }
-                    : (meal.name == "Food Calories\nDetection""\n") ? () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => VideoPlayerApp(),
-                        ),
-                      );
-                    }
-                    : (meal.name == "Medicine\nReminder""\n") ? () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => VideoApp(),
-                        ),
-                      );
-                    }
-                    : openContainer,
+                                : (meal.name == "Body Mass\nIndex")
+                                    ? () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => BMI(),
+                                          ),
+                                        );
+                                      }
+                                    : (meal.name == "Women" "\n")
+                                        ? () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) => Women(),
+                                              ),
+                                            );
+                                          }
+                                        : (meal.name ==
+                                                "Available\nSpecialties")
+                                            ? () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        Availablespec(),
+                                                  ),
+                                                );
+                                              }
+                                            : (meal.name == "Your Health" "\n")
+                                                ? () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            Myhealth(),
+                                                      ),
+                                                    );
+                                                  }
+                                                : (meal.name ==
+                                                        "Food Calories\nDetection"
+                                                            "\n")
+                                                    ? () {
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                VideoPlayerApp(),
+                                                          ),
+                                                        );
+                                                      }
+                                                    : (meal.name ==
+                                                            "Medicine\nReminder"
+                                                                "\n")
+                                                        ? () {
+                                                            Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        MedicineReminder(),
+                                                              ),
+                                                            );
+                                                          }
+                                                        : openContainer,
                     child: ClipRRect(
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                       child: Image.asset(
