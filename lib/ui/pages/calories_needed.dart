@@ -63,28 +63,28 @@ class _CaloriesNeededState extends State<CaloriesNeeded> {
         children: <Widget>[
           Expanded(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-            InkWell(
-            onTap: () {
-              setState(() {
-                selectedGender = Gender.male;
-              });
-            },
-            child: Container(
-              // height: 30,
-              width: 200,
-              child: Card(
-                color: selectedGender == Gender.male
-                    ? kActiveCardColour
-                    : kInactiveCardColour,
-                child: IconContent(
-                  icon: FontAwesomeIcons.mars,
-                  label: 'MALE',
+              InkWell(
+                onTap: () {
+                  setState(() {
+                    selectedGender = Gender.male;
+                  });
+                },
+                child: Container(
+                  // height: 30,
+                  width: 200,
+                  child: Card(
+                    color: selectedGender == Gender.male
+                        ? kActiveCardColour
+                        : kInactiveCardColour,
+                    child: IconContent(
+                      icon: FontAwesomeIcons.mars,
+                      label: 'MALE',
+                    ),
                   ),
                 ),
               ),
-            ),
               InkWell(
                 onTap: () {
                   setState(() {
@@ -332,21 +332,22 @@ class _CaloriesNeededState extends State<CaloriesNeeded> {
             child: const Text('CALCULATE'),
             onPressed: () {
               CalculatorBrain calc = CalculatorBrain(
-              height: height,
-              weight: weight,
-              selectedGender: selectedGender,
-              multiplier: multiplier,
-              age: age);
+                  height: height,
+                  weight: weight,
+                  selectedGender: selectedGender,
+                  multiplier: multiplier,
+                  age: age);
               Navigator.push(
-              context,
-              MaterialPageRoute(
-              builder: (context) => ResultsCalories(
-              caloriesResult: calc.calculateDailyCal(),
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ResultsCalories(
+                    caloriesResult: calc.calculateDailyCal(),
                   ),
                 ),
               );
             },
-            style: ElevatedButton.styleFrom( // set the background color
+            style: ElevatedButton.styleFrom(
+              // set the background color
               primary: Color(0xFFEB1555),
               elevation: 4,
               shadowColor: Colors.grey,

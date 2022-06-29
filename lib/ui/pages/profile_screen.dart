@@ -2,6 +2,7 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:training_and_diet_app/model/meal.dart';
+import 'package:training_and_diet_app/ui/pages/appointment.dart';
 import 'package:training_and_diet_app/ui/pages/contact_us.dart';
 import 'package:training_and_diet_app/ui/pages/symptoms.dart';
 import 'package:training_and_diet_app/ui/pages/meal_detail_screen.dart';
@@ -568,7 +569,20 @@ class _MealCard extends StatelessWidget {
                                                               ),
                                                             );
                                                           }
-                                                        : openContainer,
+                                                        : (meal.name ==
+                                                                "Doctor's \nAppointment \nReminder"
+                                                                    "\n")
+                                                            ? () {
+                                                                Navigator.push(
+                                                                  context,
+                                                                  MaterialPageRoute(
+                                                                    builder:
+                                                                        (context) =>
+                                                                            AppointmentReminder(),
+                                                                  ),
+                                                                );
+                                                              }
+                                                            : openContainer,
                     child: ClipRRect(
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                       child: Image.asset(
