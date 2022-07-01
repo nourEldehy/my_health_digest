@@ -45,6 +45,8 @@ dependencies:
   flare_flutter: ^3.0.2
   shared_preferences: ^0.5.12+4
   path_provider: ^1.6.28
+  email_validator: ^2.0.1
+  flutter_search_bar: ^2.1.0
 
 dev_dependencies:
   flutter_test:
