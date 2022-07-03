@@ -6,6 +6,7 @@ List<DropdownMenuItem<String>> get dropdownItems {
     DropdownMenuItem(child: Text("Days"), value: "Days"),
     DropdownMenuItem(child: Text("Weeks"), value: "Weeks"),
     DropdownMenuItem(child: Text("Months"), value: "Months"),
+    DropdownMenuItem(child: Text("Lifetime"), value: "Lifetime"),
   ];
   return menuItems;
 }
