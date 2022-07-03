@@ -267,7 +267,7 @@ class _AddMedicineState extends State<AddMedicine> {
                                   ),
                                 ),
                                 SizedBox(
-                                  width: 100,
+                                  width: 110,
                                   child: DropdownButtonFormField(
                                       decoration: InputDecoration(
                                         enabledBorder: OutlineInputBorder(
@@ -490,9 +490,7 @@ class _AddMedicineState extends State<AddMedicine> {
                           Navigator.pop(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => MedicineReminder(
-                                med: newMed.mName,
-                              ),
+                              builder: (context) => MedicineReminder(),
                             ),
                           );
                         });

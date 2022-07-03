@@ -56,7 +56,7 @@ class _CaloriesNeededState extends State<CaloriesNeeded> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Daily Calories Needed Calculator'),
-        backgroundColor: Color(0xFFEB1555),
+        backgroundColor: Colors.blue,
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -135,8 +135,8 @@ class _CaloriesNeededState extends State<CaloriesNeeded> {
                   SliderTheme(
                     data: SliderTheme.of(context).copyWith(
                       inactiveTrackColor: Color(0xFF8D8E98),
-                      activeTrackColor: Color(0xFFEB1555),
-                      thumbColor: Color(0xFFEB1555),
+                      activeTrackColor: Colors.blue,
+                      thumbColor: Colors.blue,
                       overlayColor: Color(0x29EB1555),
                       thumbShape:
                           RoundSliderThumbShape(enabledThumbRadius: 15.0),
@@ -275,8 +275,8 @@ class _CaloriesNeededState extends State<CaloriesNeeded> {
                   SliderTheme(
                     data: SliderTheme.of(context).copyWith(
                       inactiveTrackColor: Color(0xFF8D8E98),
-                      activeTrackColor: Color(0xFFEB1555),
-                      thumbColor: Color(0xFFEB1555),
+                      activeTrackColor: Colors.blue,
+                      thumbColor: Colors.blue,
                       overlayColor: Color(0x29EB1555),
                       thumbShape:
                           RoundSliderThumbShape(enabledThumbRadius: 15.0),
@@ -348,7 +348,7 @@ class _CaloriesNeededState extends State<CaloriesNeeded> {
             },
             style: ElevatedButton.styleFrom(
               // set the background color
-              primary: Color(0xFFEB1555),
+              primary: Colors.blue,
               elevation: 4,
               shadowColor: Colors.grey,
             ),

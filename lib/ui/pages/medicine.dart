@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:training_and_diet_app/model/medicine_details.dart';
 
 import 'add_medicine.dart';
@@ -48,9 +49,9 @@ class _MedicineReminderState extends State<MedicineReminder> {
           ],
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
-        elevation: 7,
+        elevation: 4,
         backgroundColor: Colors.lightBlue,
         child: Icon(
           Icons.add,
@@ -64,41 +65,33 @@ class _MedicineReminderState extends State<MedicineReminder> {
           );
         },
       ),
-      bottomNavigationBar: BottomAppBar(
-        clipBehavior: Clip.antiAliasWithSaveLayer,
-        shape: CircularNotchedRectangle(),
-        child: Container(
-          height: 60,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 60),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                IconButton(
-                  icon: Icon(
-                    Icons.calendar_view_week,
-                  ),
-                  onPressed: () {
-                    // setState(() {
-                    //   pageIndex = 0;
-                    // });
-                  },
-                ),
-                IconButton(
-                  icon: Icon(
-                    Icons.folder_open,
-                  ),
-                  onPressed: () {
-                    // setState(() {
-                    //   pageIndex = 1;
-                  },
-                ),
-              ],
-            ),
+      bottomNavigationBar: BottomNavigationBar(
+        // type: fi,
+        // onTap: (index) => setState(() => _selectedIndex = index),
+        // iconSize: 40,
+        // selectedIconTheme: IconThemeData(
+        //   color: Color.fromRGBO(255, 10, 56, 1.0),
+        // ),
+        // unselectedIconTheme: IconThemeData(
+        //   color: Colors.black12,
+        // ),
+        currentIndex: 1,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: "Home",
+            backgroundColor: Colors.blue,
           ),
-          //color: MyColors.primaryColor,
-        ),
+          BottomNavigationBarItem(
+            icon: Icon(FontAwesomeIcons.bell),
+            label: "Reminders",
+            backgroundColor: Colors.blue,
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: "Profile",
+              backgroundColor: Colors.blue),
+        ],
       ),
     );
   }
@@ -156,7 +149,7 @@ class TopContainer extends StatelessWidget {
             child: Center(
               child: Text(
                 //NUMBER OF REMINDERS
-                '0',
+                '2',
                 style: TextStyle(
                   fontFamily: "Neu",
                   fontSize: 28,
@@ -212,18 +205,18 @@ class BottomContainer extends StatelessWidget {
                             Padding(
                               padding: EdgeInsets.all(12.0),
                               child: Icon(
-                                Icons.medication_outlined,
+                                FontAwesomeIcons.pills,
                               ),
                             ),
                             Padding(
                               padding: const EdgeInsets.all(12.0),
                               child: Text(
-                                "Medicine Name",
+                                "Panadol Extra",
                                 style: TextStyle(fontSize: 24),
                               ),
                             ),
                             Text(
-                              "Dosage",
+                              "2 pill",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 24,
@@ -233,129 +226,322 @@ class BottomContainer extends StatelessWidget {
                           ],
                         ),
                         //FOR ALL reminders ...time.map(e)
+                        Padding(
+                          padding: const EdgeInsets.only(left: 15.0),
+                          child: Row(
+                            children: [
+                              Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Colors.blue,
+                                      width: 2,
+                                    ),
+                                    borderRadius: BorderRadius.circular(20.0),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8.0, vertical: 4),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "8:00 AM",
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
+                                    ),
+                                  )),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: Container(
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: Colors.blue,
+                                        width: 2,
+                                      ),
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0, vertical: 4),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            "8:00 PM",
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ],
+                                      ),
+                                    )),
+                              ),
+                              // Padding(
+                              //   padding: const EdgeInsets.only(left: 10),
+                              //   child: Container(
+                              //       decoration: BoxDecoration(
+                              //         border: Border.all(
+                              //           color: Colors.blue,
+                              //           width: 2,
+                              //         ),
+                              //         borderRadius: BorderRadius.circular(20.0),
+                              //       ),
+                              //       child: SizedBox(
+                              //           width: 75,
+                              //           height: 30,
+                              //           child: Padding(
+                              //             padding:
+                              //                 const EdgeInsets.only(left: 8.0),
+                              //             child: Row(
+                              //               mainAxisAlignment:
+                              //                   MainAxisAlignment.spaceBetween,
+                              //               children: [
+                              //                 Text(
+                              //                   "TIME",
+                              //                   style: TextStyle(
+                              //                       fontSize: 18,
+                              //                       fontWeight: FontWeight.bold),
+                              //                 ),
+                              //               ],
+                              //             ),
+                              //           ))),
+                              // ),
+                              // Padding(
+                              //   padding: const EdgeInsets.only(left: 10),
+                              //   child: Container(
+                              //       decoration: BoxDecoration(
+                              //         border: Border.all(
+                              //           color: Colors.blue,
+                              //           width: 2,
+                              //         ),
+                              //         borderRadius: BorderRadius.circular(20.0),
+                              //       ),
+                              //       child: SizedBox(
+                              //           width: 75,
+                              //           height: 30,
+                              //           child: Padding(
+                              //             padding:
+                              //                 const EdgeInsets.only(left: 8.0),
+                              //             child: Row(
+                              //               mainAxisAlignment:
+                              //                   MainAxisAlignment.spaceBetween,
+                              //               children: [
+                              //                 Text(
+                              //                   "TIME",
+                              //                   style: TextStyle(
+                              //                       fontSize: 18,
+                              //                       fontWeight: FontWeight.bold),
+                              //                 ),
+                              //               ],
+                              //             ),
+                              //           ))),
+                              // ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.elliptical(20, 50),
+                        topRight: Radius.elliptical(20, 50),
+                        bottomLeft: Radius.elliptical(20, 50),
+                        bottomRight: Radius.elliptical(20, 50),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          blurRadius: 5,
+                          color: Colors.grey[400],
+                          offset: Offset(0, 3.5),
+                        )
+                      ],
+                      color: Colors.white,
+                    ),
+                    height: 100,
+                    width: double.infinity,
+                    child: Column(
+                      children: [
                         Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Padding(
-                              padding: const EdgeInsets.only(left: 10),
-                              child: Container(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: Colors.blue,
-                                      width: 2,
-                                    ),
-                                    borderRadius: BorderRadius.circular(20.0),
-                                  ),
-                                  child: SizedBox(
-                                      width: 75,
-                                      height: 30,
-                                      child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 8.0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              "TIME",
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ],
-                                        ),
-                                      ))),
+                              padding: EdgeInsets.all(12.0),
+                              child: Icon(
+                                FontAwesomeIcons.pills,
+                              ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(left: 10),
-                              child: Container(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: Colors.blue,
-                                      width: 2,
-                                    ),
-                                    borderRadius: BorderRadius.circular(20.0),
-                                  ),
-                                  child: SizedBox(
-                                      width: 75,
-                                      height: 30,
-                                      child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 8.0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              "TIME",
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ],
-                                        ),
-                                      ))),
+                              padding: const EdgeInsets.all(12.0),
+                              child: Text(
+                                "Centrum Multivitamins",
+                                style: TextStyle(fontSize: 24),
+                              ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 10),
-                              child: Container(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: Colors.blue,
-                                      width: 2,
-                                    ),
-                                    borderRadius: BorderRadius.circular(20.0),
-                                  ),
-                                  child: SizedBox(
-                                      width: 75,
-                                      height: 30,
-                                      child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 8.0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              "TIME",
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ],
-                                        ),
-                                      ))),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 10),
-                              child: Container(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: Colors.blue,
-                                      width: 2,
-                                    ),
-                                    borderRadius: BorderRadius.circular(20.0),
-                                  ),
-                                  child: SizedBox(
-                                      width: 75,
-                                      height: 30,
-                                      child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 8.0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              "TIME",
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ],
-                                        ),
-                                      ))),
+                            Text(
+                              "1 pill",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  color: Color(0xFFC9C9C9),
+                                  fontWeight: FontWeight.bold),
                             ),
                           ],
+                        ),
+                        //FOR ALL reminders ...time.map(e)
+                        Padding(
+                          padding: const EdgeInsets.only(left: 15.0),
+                          child: Row(
+                            children: [
+                              Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Colors.blue,
+                                      width: 2,
+                                    ),
+                                    borderRadius: BorderRadius.circular(20.0),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8.0, vertical: 4),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "8:00 AM",
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
+                                    ),
+                                  )),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: Container(
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: Colors.blue,
+                                        width: 2,
+                                      ),
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0, vertical: 4),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            "4:00 PM",
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ],
+                                      ),
+                                    )),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: Container(
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: Colors.blue,
+                                        width: 2,
+                                      ),
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0, vertical: 4),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            "12:00 AM",
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ],
+                                      ),
+                                    )),
+                              ),
+                              // Padding(
+                              //   padding: const EdgeInsets.only(left: 10),
+                              //   child: Container(
+                              //       decoration: BoxDecoration(
+                              //         border: Border.all(
+                              //           color: Colors.blue,
+                              //           width: 2,
+                              //         ),
+                              //         borderRadius: BorderRadius.circular(20.0),
+                              //       ),
+                              //       child: SizedBox(
+                              //           width: 75,
+                              //           height: 30,
+                              //           child: Padding(
+                              //             padding:
+                              //                 const EdgeInsets.only(left: 8.0),
+                              //             child: Row(
+                              //               mainAxisAlignment:
+                              //                   MainAxisAlignment.spaceBetween,
+                              //               children: [
+                              //                 Text(
+                              //                   "TIME",
+                              //                   style: TextStyle(
+                              //                       fontSize: 18,
+                              //                       fontWeight: FontWeight.bold),
+                              //                 ),
+                              //               ],
+                              //             ),
+                              //           ))),
+                              // ),
+                              // Padding(
+                              //   padding: const EdgeInsets.only(left: 10),
+                              //   child: Container(
+                              //       decoration: BoxDecoration(
+                              //         border: Border.all(
+                              //           color: Colors.blue,
+                              //           width: 2,
+                              //         ),
+                              //         borderRadius: BorderRadius.circular(20.0),
+                              //       ),
+                              //       child: SizedBox(
+                              //           width: 75,
+                              //           height: 30,
+                              //           child: Padding(
+                              //             padding:
+                              //                 const EdgeInsets.only(left: 8.0),
+                              //             child: Row(
+                              //               mainAxisAlignment:
+                              //                   MainAxisAlignment.spaceBetween,
+                              //               children: [
+                              //                 Text(
+                              //                   "TIME",
+                              //                   style: TextStyle(
+                              //                       fontSize: 18,
+                              //                       fontWeight: FontWeight.bold),
+                              //                 ),
+                              //               ],
+                              //             ),
+                              //           ))),
+                              // ),
+                            ],
+                          ),
                         ),
                       ],
                     ),

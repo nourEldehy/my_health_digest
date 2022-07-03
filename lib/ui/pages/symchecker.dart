@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:training_and_diet_app/model/search_symptoms.dart';
+import 'package:training_and_diet_app/ui/pages/search_symptoms.dart';
 
 class Symchecker extends StatefulWidget {
   @override
@@ -122,13 +122,32 @@ class _SymcheckerState extends State<Symchecker> {
                     ),
                   ), //Result here
             Expanded(
-              child: ListView.builder(
-                  itemCount: allPDFs.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text(allPDFs[index]),
-                    );
-                  }),
+              child: (selectedSymptoms.contains("Cough") &&
+                      selectedSymptoms.contains("fever"))
+                  ? ListView.builder(
+                      itemCount: 1,
+                      itemBuilder: (context, index) {
+                        return Column(
+                          children: [
+                            ListTile(
+                              title: Text(allPDFs[2]),
+                            ),
+                            Divider(),
+                          ],
+                        );
+                      })
+                  : ListView.builder(
+                      itemCount: allPDFs.length,
+                      itemBuilder: (context, index) {
+                        return Column(
+                          children: [
+                            ListTile(
+                              title: Text(allPDFs[index]),
+                            ),
+                            Divider(),
+                          ],
+                        );
+                      }),
             ),
           ],
         ),
@@ -139,13 +158,23 @@ class _SymcheckerState extends State<Symchecker> {
 
 final List<String> allPDFs = [
   //load el pdfs here from db
-  'pdf1',
-  'pdf2',
-  'pdf3',
-  'pdf4',
-  'pdf5',
-  'pdf6',
-  'pdf7',
+  'Bipolar Disorder',
+  'Cavities',
+  'Covid 19',
+  'Coronary Heart disease',
+  'Influenza',
+  'Dislocation',
+  'Gum Infection',
+  'Cold flu',
+  'Genetic Disorder',
+  'Food Poisoning',
+  'Esophageal Cancer',
+  'Ear Infection',
+  'Cystic Fibrosis',
+  'Heart Attack',
+  'Hypertension',
+  'Mouth Cancer',
+  'Liver Cancer',
 ];
 
 final List<String> allSym = [
@@ -154,6 +183,8 @@ final List<String> allSym = [
   'Suggested Symptom 2',
   'Suggested Symptom 3',
   'Suggested Symptom 4',
+  'loss of taste or smell',
+  'fever',
   'Cough',
   'Chest pain',
   'Asthma',

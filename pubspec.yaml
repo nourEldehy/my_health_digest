@@ -47,6 +47,7 @@ dependencies:
   path_provider: ^1.6.28
   email_validator: ^2.0.1
   flutter_search_bar: ^2.1.0
+  flutter_custom_cards: ^0.2.1
 
 dev_dependencies:
   flutter_test:

@@ -1,9 +1,11 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:training_and_diet_app/model/meal.dart';
 import 'package:training_and_diet_app/ui/pages/appointment.dart';
 import 'package:training_and_diet_app/ui/pages/contact_us.dart';
+import 'package:training_and_diet_app/ui/pages/reminders.dart';
 import 'package:training_and_diet_app/ui/pages/symptoms.dart';
 import 'package:training_and_diet_app/ui/pages/meal_detail_screen.dart';
 import 'package:training_and_diet_app/ui/pages/workout_screen.dart';
@@ -38,10 +40,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ? Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => ContactUs(),
+                builder: (context) => Reminders(),
               ),
             )
-          : OpenContainer;
+          : (index == 2)
+              ? Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ContactUs(),
+                  ),
+                )
+              : OpenContainer;
 
       //print(index);
     });
@@ -55,253 +64,298 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _selectedIndex = 0;
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
+        // type: fi,
+        // onTap: (index) => setState(() => _selectedIndex = index),
+        // iconSize: 40,
+        // selectedIconTheme: IconThemeData(
+        //   color: Color.fromRGBO(255, 10, 56, 1.0),
+        // ),
+        // unselectedIconTheme: IconThemeData(
+        //   color: Colors.black12,
+        // ),
         currentIndex: _selectedIndex,
-        iconSize: 40,
-        selectedIconTheme: IconThemeData(
-          color: Color.fromRGBO(255, 10, 56, 1.0),
-        ),
-        unselectedIconTheme: IconThemeData(
-          color: Colors.black12,
-        ),
         items: [
           BottomNavigationBarItem(
-            icon: Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Icon(Icons.home),
-            ),
+            icon: Icon(Icons.home),
             label: "Home",
+            backgroundColor: Colors.blue,
           ),
           BottomNavigationBarItem(
-            icon: Padding(
-              child: Icon(Icons.person),
-              padding: const EdgeInsets.only(top: 8.0),
-            ),
-            label: "Contact Us",
+            icon: Icon(FontAwesomeIcons.bell),
+            label: "Reminders",
+            backgroundColor: Colors.blue,
           ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: "Profile",
+              backgroundColor: Colors.blue),
         ],
-        onTap: _onItemTapped,
       ),
-      body: Stack(
+      body: ListView(
         children: <Widget>[
-          Positioned(
-            top: -20,
-            height: height * 0.395, //Height for
-            left: 0,
-            right: 0,
-            child: ClipRRect(
-              borderRadius: const BorderRadius.vertical(
-                bottom: const Radius.circular(40),
-              ),
-              child: Container(
-                color: Colors.white,
-                padding: const EdgeInsets.only(
-                    top: 40, left: 32, right: 16, bottom: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    ListTile(
-                      title: Text(
-                        "${DateFormat("EEEE").format(today)}, ${DateFormat("d MMMM").format(today)}",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w300,
-                          fontSize: 14,
-                        ),
-                      ),
-                      subtitle: Text(
-                        "Hello, Noureldin",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w800,
-                          fontSize: 20,
-                          color: Colors.black,
-                        ),
-                      ),
-                      trailing: ClipOval(child: Image.asset("assets/User.jpg")),
-                    ),
-                    SizedBox(
-                      height: 2,
-                    ),
-                    Row(
-                      children: <Widget>[
-                        _RadialProgress(
-                          width: width * 0.35,
-                          height: width * 0.35,
-                          progress: 0.2,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          mainAxisSize: MainAxisSize.max,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            _IngredientProgress(
-                              ingredient: "Protein",
-                              progress: 0.3,
-                              progressColor: Colors.green,
-                              leftAmount: 72,
-                              width: width * 0.28,
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            _IngredientProgress(
-                              ingredient: "Carbs",
-                              progress: 0.2,
-                              progressColor: Colors.red,
-                              leftAmount: 252,
-                              width: width * 0.28,
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            _IngredientProgress(
-                              ingredient: "Fat",
-                              progress: 0.1,
-                              progressColor: Colors.yellow,
-                              leftAmount: 61,
-                              width: width * 0.28,
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            _IngredientProgress(
-                              ingredient: "Water",
-                              progress: 0.2,
-                              progressColor: Colors.blue,
-                              leftAmount: 252,
-                              width: width * 0.28,
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-              ),
+          ClipRRect(
+            borderRadius: const BorderRadius.vertical(
+              bottom: const Radius.circular(40),
             ),
-          ),
-          Positioned(
-            top: height * 0.38,
-            left: 0,
-            right: 0,
             child: Container(
-              height: height * 0.55,
+              color: Colors.white,
+              padding: const EdgeInsets.only(
+                  top: 8, left: 32, right: 16, bottom: 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      bottom: 8,
-                      left: 32,
-                      right: 16,
-                    ),
-                    child: Text(
-                      " ",
-                      style: const TextStyle(
-                          color: Colors.blueGrey,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700),
-                    ),
-                  ),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: <Widget>[
-                          SizedBox(
-                            width: 32,
-                          ),
-                          for (int i = 0; i < meals.length; i++)
-                            _MealCard(
-                              meal: meals[i],
-                            ),
-                        ],
+                  ListTile(
+                    title: Text(
+                      "${DateFormat("EEEE").format(today)}, ${DateFormat("d MMMM").format(today)}",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w300,
+                        fontSize: 14,
                       ),
                     ),
-                  ),
-                  // SizedBox(
-                  //   height: 20,
-                  // ),
-                  Expanded(
-                    child: OpenContainer(
-                      closedElevation: 0,
-                      transitionType: ContainerTransitionType.fade,
-                      transitionDuration: const Duration(milliseconds: 1000),
-                      // closedColor: const Color(0xFFE9E9E9),
-                      openBuilder: (context, _) {
-                        // return WorkoutScreen();
-                      },
-                      closedBuilder: (context, VoidCallback openContainer) {
-                        return GestureDetector(
-                          onTap: () {
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) => Symptoms(),
-                            //   ),
-                            // );
-                          },
-                          child: Center(
-                            child: FloatingRibbon(
-                              ribbonSwatch: Colors.black,
-                              ribbonShadowSwatch: Colors.black45,
-                              height: 100,
-                              width: 350,
-                              childHeight: 90,
-                              childWidth: 320,
-                              child: Container(
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.only(top: 5.0, left: 7),
-                                  child: Center(
-                                    child: Text(
-                                      "Motion Capture",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 40,
-                                        fontWeight: FontWeight.w800,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              childDecoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(30)),
-                                gradient: LinearGradient(
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                  colors: [
-                                    Color.fromRGBO(255, 37, 87, 1),
-                                    Color.fromRGBO(25, 37, 87, 1),
-                                  ],
-                                ),
-                              ),
-                              ribbon: SkeletonAnimation(
-                                child: Center(
-                                  child: Text(
-                                    'SOON',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      color: Colors.white60,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                              ),
-                              shadowHeight: 5,
-                            ),
-                          ),
-                        );
-                      },
+                    subtitle: Text(
+                      "Hello, Noureldin",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w800,
+                        fontSize: 20,
+                        color: Colors.black,
+                      ),
                     ),
+                    // trailing: ClipOval(child: Image.asset("assets/User.jpg")),
+                  ),
+                  SizedBox(
+                    height: 2,
+                  ),
+                  Row(
+                    children: <Widget>[
+                      _RadialProgress(
+                        width: width * 0.35,
+                        height: width * 0.35,
+                        progress: 0.2,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisSize: MainAxisSize.max,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          _IngredientProgress(
+                            ingredient: "Protein",
+                            progress: 0.3,
+                            progressColor: Colors.green,
+                            leftAmount: 72,
+                            width: width * 0.28,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          _IngredientProgress(
+                            ingredient: "Carbs",
+                            progress: 0.2,
+                            progressColor: Colors.red,
+                            leftAmount: 252,
+                            width: width * 0.28,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          _IngredientProgress(
+                            ingredient: "Fat",
+                            progress: 0.1,
+                            progressColor: Colors.yellow,
+                            leftAmount: 61,
+                            width: width * 0.28,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          _IngredientProgress(
+                            ingredient: "Water",
+                            progress: 0.2,
+                            progressColor: Colors.blue,
+                            leftAmount: 252,
+                            width: width * 0.28,
+                          ),
+                        ],
+                      )
+                    ],
                   ),
                 ],
               ),
             ),
           ),
+          Padding(
+            padding: EdgeInsets.all(20.0),
+            child: Column(
+              children: [
+                for (int i = 0; i < meals.length; i += 2)
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            _MealCard(meal: meals[i]),
+                            if (i + 1 < meals.length)
+                              _MealCard(meal: meals[i + 1])
+                          ],
+                        )
+
+                        // Container(
+                        //     decoration: BoxDecoration(
+                        //       color: Colors.redAccent,
+                        //       border: Border.all(
+                        //         color: Colors.blue,
+                        //         width: 2,
+                        //       ),
+                        //       borderRadius: BorderRadius.circular(20.0),
+                        //     ),
+                        //     child: SizedBox(
+                        //         width: 150,
+                        //         height: 30,
+                        //         child: Padding(
+                        //           padding: const EdgeInsets.only(left: 8.0),
+                        //           child: Row(
+                        //             mainAxisAlignment:
+                        //                 MainAxisAlignment.spaceBetween,
+                        //             children: [
+                        //               Text(
+                        //                 e.name,
+                        //                 style: TextStyle(fontSize: 20),
+                        //               ),
+                        //             ],
+                        //           ),
+                        //         ))),
+                      ],
+                    ),
+                  ),
+              ],
+            ),
+          )
+
+          // Positioned(
+          //   top: height * 0.38,
+          //   left: 0,
+          //   right: 0,
+          //   child: Container(
+          //     height: height * 0.55,
+          //     child: Column(
+          //       crossAxisAlignment: CrossAxisAlignment.start,
+          //       children: <Widget>[
+          //         Padding(
+          //           padding: const EdgeInsets.only(
+          //             bottom: 8,
+          //             left: 32,
+          //             right: 16,
+          //           ),
+          //           child: Text(
+          //             " ",
+          //             style: const TextStyle(
+          //                 color: Colors.blueGrey,
+          //                 fontSize: 16,
+          //                 fontWeight: FontWeight.w700),
+          //           ),
+          //         ),
+          //         Expanded(
+          //           child: Column(
+          //             children: <Widget>[
+          //               SizedBox(
+          //                 width: 32,
+          //               ),
+          //               for (int i = 0; i < 1; i++)
+          //                 _MealCard(
+          //                   meal: meals[i],
+          //                 ),
+          //             ],
+          //           ),
+          //         ),
+          //         // SizedBox(
+          //         //   height: 20,
+          //         // ),
+          //         // Expanded(
+          //         //   child: OpenContainer(
+          //         //     closedElevation: 0,
+          //         //     transitionType: ContainerTransitionType.fade,
+          //         //     transitionDuration: const Duration(milliseconds: 1000),
+          //         //     // closedColor: const Color(0xFFE9E9E9),
+          //         //     openBuilder: (context, _) {
+          //         //       // return WorkoutScreen();
+          //         //     },
+          //         //     closedBuilder: (context, VoidCallback openContainer) {
+          //         //       return GestureDetector(
+          //         //         onTap: () {
+          //         //           // Navigator.push(
+          //         //           //   context,
+          //         //           //   MaterialPageRoute(
+          //         //           //     builder: (context) => Symptoms(),
+          //         //           //   ),
+          //         //           // );
+          //         //         },
+          //         //         child: Center(
+          //         //           child: FloatingRibbon(
+          //         //             ribbonSwatch: Colors.black,
+          //         //             ribbonShadowSwatch: Colors.black45,
+          //         //             height: 100,
+          //         //             width: 350,
+          //         //             childHeight: 90,
+          //         //             childWidth: 320,
+          //         //             child: Container(
+          //         //               child: Padding(
+          //         //                 padding:
+          //         //                     const EdgeInsets.only(top: 5.0, left: 7),
+          //         //                 child: Center(
+          //         //                   child: Text(
+          //         //                     "Motion Capture",
+          //         //                     style: TextStyle(
+          //         //                       color: Colors.white,
+          //         //                       fontSize: 40,
+          //         //                       fontWeight: FontWeight.w800,
+          //         //                     ),
+          //         //                   ),
+          //         //                 ),
+          //         //               ),
+          //         //             ),
+          //         //             childDecoration: BoxDecoration(
+          //         //               borderRadius:
+          //         //                   BorderRadius.all(Radius.circular(30)),
+          //         //               gradient: LinearGradient(
+          //         //                 begin: Alignment.topCenter,
+          //         //                 end: Alignment.bottomCenter,
+          //         //                 colors: [
+          //         //                   Color.fromRGBO(255, 37, 87, 1),
+          //         //                   Color.fromRGBO(25, 37, 87, 1),
+          //         //                 ],
+          //         //               ),
+          //         //             ),
+          //         //             ribbon: SkeletonAnimation(
+          //         //               child: Center(
+          //         //                 child: Text(
+          //         //                   'SOON',
+          //         //                   style: TextStyle(
+          //         //                     fontSize: 18,
+          //         //                     color: Colors.white60,
+          //         //                     fontWeight: FontWeight.bold,
+          //         //                   ),
+          //         //                   textAlign: TextAlign.center,
+          //         //                 ),
+          //         //               ),
+          //         //             ),
+          //         //             shadowHeight: 5,
+          //         //           ),
+          //         //         ),
+          //         //       );
+          //         //     },
+          //         //   ),
+          //         // ),
+          //       ],
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );
@@ -391,7 +445,7 @@ class _RadialProgress extends StatelessWidget {
             text: TextSpan(
               children: [
                 TextSpan(
-                  text: c.getCal().toString(),
+                  text: "1850",
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.w700,
@@ -465,8 +519,7 @@ class _MealCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Flexible(
-              fit: FlexFit.tight,
+            Container(
               child: OpenContainer(
                 closedShape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(20))),
@@ -587,7 +640,8 @@ class _MealCard extends StatelessWidget {
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                       child: Image.asset(
                         meal.imagePath,
-                        width: 120,
+                        width: 150,
+                        height: 130,
                         fit: BoxFit.fill,
                       ),
                     ),
@@ -595,8 +649,7 @@ class _MealCard extends StatelessWidget {
                 },
               ),
             ),
-            Flexible(
-              fit: FlexFit.tight,
+            Container(
               child: Padding(
                 padding: const EdgeInsets.only(left: 9.0),
                 child: Column(
@@ -625,7 +678,7 @@ class _MealCard extends StatelessWidget {
 }
 
 class Calories {
-  int val = 10;
+  int val = 1850;
 
   int getCal() {
     return val;
