@@ -1,54 +1,44 @@
 import 'dart:async';
-
+import 'dart:io';
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:video_player/video_player.dart';
+// Take picture page
+class TakePicturePage extends StatefulWidget {
+  final CameraDescription camera;
 
-void main() => runApp(const VideoPlayerApp());
-
-class VideoPlayerApp extends StatelessWidget {
-  const VideoPlayerApp({key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'Video Player Demo',
-      home: VideoPlayerScreen(),
-    );
-  }
-}
-
-class VideoPlayerScreen extends StatefulWidget {
-  const VideoPlayerScreen({key});
+  const TakePicturePage({
+    Key key,
+    @required this.camera,
+  }) : super(key: key);
 
   @override
-  _VideoPlayerScreenState createState() => _VideoPlayerScreenState();
+  TakePicturePageState createState() => TakePicturePageState();
 }
 
-class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
-  VideoPlayerController _controller;
-  Future<void> _initializeVideoPlayerFuture;
+
+// Take picture page state
+class TakePicturePageState extends State<TakePicturePage> {
+  CameraController _controller;
+  Future<void> _initializeControllerFuture;
 
   @override
   void initState() {
+    // Init
     super.initState();
+    _controller = CameraController(
+      // Camera settings
+      widget.camera,
+      ResolutionPreset.max,
+    );
 
-    // Create and store the VideoPlayerController. The VideoPlayerController
-    // offers several different constructors to play videos from assets, files,
-    // or the internet.
-    _controller = VideoPlayerController.asset("assets/Fooddetection.mp4");
-
-    // Initialize the controller and store the Future for later use.
-    _initializeVideoPlayerFuture = _controller.initialize();
-
-    // Use the controller to loop the video.
-    _controller.setLooping(true);
+    // Initialize the controller
+    _initializeControllerFuture = _controller.initialize();
   }
 
+  // Dispose of the controller when the widget is disposed
   @override
   void dispose() {
-    // Ensure disposing of the VideoPlayerController to free up resources.
     _controller.dispose();
-
     super.dispose();
   }
 
@@ -56,50 +46,85 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Food Detection'),
-        backgroundColor: Color.fromRGBO(255, 108, 136, 1),
+          title: Text("Take a picture demo")
       ),
-      // Use a FutureBuilder to display a loading spinner while waiting for the
-      // VideoPlayerController to finish initializing.
-      body: FutureBuilder(
-        future: _initializeVideoPlayerFuture,
+      body: FutureBuilder<void>(
+        future: _initializeControllerFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            // If the VideoPlayerController has finished initialization, use
-            // the data it provides to limit the aspect ratio of the video.
-            return AspectRatio(
-              aspectRatio: 1.5,
-              // Use the VideoPlayer widget to display the video.
-              child: VideoPlayer(_controller),
-            );
-          } else {
-            // If the VideoPlayerController is still initializing, show a
-            // loading spinner.
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return CameraPreview(_controller);
+          }
+          else {
+            return Center(child: CircularProgressIndicator());
           }
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Wrap the play or pause in a call to `setState`. This ensures the
-          // correct icon is shown.
-          setState(() {
-            // If the video is playing, pause it.
-            if (_controller.value.isPlaying) {
-              _controller.pause();
-            } else {
-              // If the video is paused, play it.
-              _controller.play();
-            }
-          });
-        },
-        // Display the correct icon depending on the state of the player.
-        child: Icon(
-          _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+
+      floatingActionButton: Container(
+        height: 75.0,
+        width: 75.0,
+        child: FittedBox(
+          child: FloatingActionButton(
+              backgroundColor: Colors.white,
+              child: Icon(
+                Icons.camera_alt_rounded,
+                color: Colors.black,
+              ),
+              onPressed: () async {
+                try {
+                  await _initializeControllerFuture;
+                  final image = await _controller.takePicture();
+
+                  // If the picture was taken
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DisplayPicturePage(
+                        imagePath: image?.path,
+                      ),
+                    ),
+                  );
+
+                  print("My Image Path:");
+                  print(image?.path);
+                }
+                catch (error) {
+                  print(error);
+                }
+              }
+          ),
         ),
       ),
+
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
+  }
+}
+
+
+// A new page for displaying the picture
+class DisplayPicturePage extends StatelessWidget {
+  final String imagePath;
+  const DisplayPicturePage({Key key, this.imagePath}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+            title: Text("Display the picture")
+        ),
+        body: Center(
+            child: Column(
+              children: <Widget>[
+                Text("$imagePath"),
+                Container(
+                  width: MediaQuery.of(context).size.width/2,
+                  height: MediaQuery.of(context).size.height/2,
+                  child: Image.file(File(imagePath)),
+                ),
+              ],
+            )
+        )
     );
   }
 }

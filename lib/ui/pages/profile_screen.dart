@@ -1,5 +1,7 @@
 import 'package:animations/animations.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:training_and_diet_app/model/meal.dart';
 import 'package:training_and_diet_app/ui/pages/contact_us.dart';
@@ -17,7 +19,9 @@ import 'package:skeleton_text/skeleton_text.dart';
 import 'package:floating_ribbon/floating_ribbon.dart';
 import 'package:training_and_diet_app/ui/pages/myhealth.dart';
 import 'package:training_and_diet_app/ui/pages/foodcalories.dart';
-import 'package:training_and_diet_app/ui/pages/medicine.dart';
+import 'package:training_and_diet_app/ui/pages/medicinereminder.dart';
+
+import 'add_medicine.dart';
 
 int currentCalories = 6;
 
@@ -54,31 +58,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _selectedIndex = 0;
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
+        // type: fi,
+        // onTap: (index) => setState(() => _selectedIndex = index),
+        // iconSize: 40,
+        // selectedIconTheme: IconThemeData(
+        //   color: Color.fromRGBO(255, 10, 56, 1.0),
+        // ),
+        // unselectedIconTheme: IconThemeData(
+        //   color: Colors.black12,
+        // ),
         currentIndex: _selectedIndex,
-        iconSize: 40,
-        selectedIconTheme: IconThemeData(
-          color: Color.fromRGBO(255, 10, 56, 1.0),
-        ),
-        unselectedIconTheme: IconThemeData(
-          color: Colors.black12,
-        ),
         items: [
           BottomNavigationBarItem(
-            icon: Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Icon(Icons.home),
-            ),
+            icon: Icon(Icons.home),
             label: "Home",
+            backgroundColor: Colors.blue,
           ),
           BottomNavigationBarItem(
-            icon: Padding(
-              child: Icon(Icons.person),
-              padding: const EdgeInsets.only(top: 8.0),
-            ),
-            label: "Contact Us",
+            icon: Icon(FontAwesomeIcons.bell),
+            label: "Reminders",
+            backgroundColor: Colors.blue,
           ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: "Profile",
+              backgroundColor: Colors.blue),
         ],
-        onTap: _onItemTapped,
       ),
       body: Stack(
         children: <Widget>[
@@ -394,7 +399,7 @@ class _RadialProgress extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.w700,
-                    color: Color.fromRGBO(255, 108, 136, 1),
+                    color: Colors.blue,
                   ),
                 ),
                 TextSpan(text: "\n"),
@@ -403,7 +408,7 @@ class _RadialProgress extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
-                    color: Color.fromRGBO(255, 108, 136, 1),
+                    color: Colors.blue,
                   ),
                 ),
               ],
@@ -424,7 +429,7 @@ class _RadialPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint()
       ..strokeWidth = 10
-      ..color = Color.fromRGBO(255, 108, 136, 1)
+      ..color = Colors.blue
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
 
@@ -448,7 +453,7 @@ class _RadialPainter extends CustomPainter {
 
 class _MealCard extends StatelessWidget {
   final Meal meal;
-  const _MealCard({Key key, @required this.meal}) : super(key: key);
+  const   _MealCard({Key key, @required this.meal}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -464,124 +469,135 @@ class _MealCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Flexible(
-              fit: FlexFit.tight,
-              child: OpenContainer(
-                closedShape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20))),
-                transitionDuration: const Duration(milliseconds: 1000),
-                openBuilder: (context, _) {
-                  return MealDetailScreen(
-                    meal: meal,
-                  );
-                },
-                closedBuilder: (context, openContainer) {
-                  return GestureDetector(
-                    onTap:
-                    (meal.name == "Symptoms\nChecker") ? () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => Symptoms(),
-                              ),
-                            );
-                          }
-                    : (meal.name == "The Clinic" "\n") ? () async {
-                                const url = 'https://thecliniconline.org/';
-                                if (await canLaunch(url)) {
-                                  await launch(url); //forceWebView is true now
-                                } else {
-                                  throw 'Could not launch $url';
-                                }
-                              }
-                    : (meal.name == "Food Calories""\n") ? () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => CaloriesNeeded(),
-                                      ),
-                                    );
+            Container(
+              child: Flexible(
+                fit: FlexFit.tight,
+                child: OpenContainer(
+                  closedShape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20))),
+                  transitionDuration: const Duration(milliseconds: 1000),
+                  openBuilder: (context, _) {
+                    return MealDetailScreen(
+                      meal: meal,
+                    );
+                  },
+                  closedBuilder: (context, openContainer) {
+                    return GestureDetector(
+                      onTap:
+                      (meal.name == "Symptoms\nChecker") ? () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Symptoms(),
+                                ),
+                              );
+                            }
+                      : (meal.name == "The Clinic" "\n") ? () async {
+                                  const url = 'https://thecliniconline.org/';
+                                  if (await canLaunch(url)) {
+                                    await launch(url); //forceWebView is true now
+                                  } else {
+                                    throw 'Could not launch $url';
                                   }
-                    : (meal.name == "Body Mass\nIndex") ? () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => BMI(),
+                                }
+                      : (meal.name == "Food Calories""\n") ? () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => CaloriesNeeded(),
+                                        ),
+                                      );
+                                    }
+                      : (meal.name == "Body Mass\nIndex") ? () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => BMI(),
+                          ),
+                        );
+                      }
+                      : (meal.name == "Women""\n") ? () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Women(),
+                          ),
+                        );
+                      }
+                      : (meal.name == "Available\nSpecialties") ? () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Availablespec(),
+                          ),
+                        );
+                      }
+                      : (meal.name == "Your Health""\n") ? () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Myhealth(),
+                          ),
+                        );
+                      }
+                      : (meal.name == "Food Calories\nDetection""\n") ? () async{
+                        WidgetsFlutterBinding.ensureInitialized();
+
+                        // Obtain a list of available cameras
+                        final cameras = await availableCameras();
+
+                        // Get a specific camera (first one)
+                        final firstCamera = cameras.first;
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => TakePicturePage(camera: firstCamera,),
+                          ),
+                        );
+                      }
+                      : (meal.name == "Medicine\nReminder""\n") ? () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AddMedicine(),
+                          ),
+                        );
+                      }
+                      : openContainer,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                        child: Image.asset(
+                          meal.imagePath,
+                          width: 120,
+                          fit: BoxFit.fill,
                         ),
-                      );
-                    }
-                    : (meal.name == "Women""\n") ? () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Women(),
-                        ),
-                      );
-                    }
-                    : (meal.name == "Available\nSpecialties") ? () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Availablespec(),
-                        ),
-                      );
-                    }
-                    : (meal.name == "Your Health""\n") ? () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Myhealth(),
-                        ),
-                      );
-                    }
-                    : (meal.name == "Food Calories\nDetection""\n") ? () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => VideoPlayerApp(),
-                        ),
-                      );
-                    }
-                    : (meal.name == "Medicine\nReminder""\n") ? () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => VideoApp(),
-                        ),
-                      );
-                    }
-                    : openContainer,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      child: Image.asset(
-                        meal.imagePath,
-                        width: 120,
-                        fit: BoxFit.fill,
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
             ),
-            Flexible(
-              fit: FlexFit.tight,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 9.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(height: 10),
-                    Text(
-                      meal.name,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 14,
-                        // color: Colors.black12,
+            Container(
+              child: Flexible(
+                fit: FlexFit.tight,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 9.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(height: 10),
+                      Text(
+                        meal.name,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w900,
+                          fontSize: 14,
+                          // color: Colors.black12,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 10),
-                  ],
+                      SizedBox(height: 10),
+                    ],
+                  ),
                 ),
               ),
             ),
