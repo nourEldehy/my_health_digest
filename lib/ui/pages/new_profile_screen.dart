@@ -85,94 +85,109 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       body: ListView(
         children: <Widget>[
-          ClipRRect(
-            borderRadius: const BorderRadius.vertical(
-              bottom: const Radius.circular(40),
-            ),
-            child: Container(
-              color: Colors.white,
-              padding: const EdgeInsets.only(
-                  top: 8, left: 32, right: 16, bottom: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  ListTile(
-                    title: Text(
-                      "${DateFormat("EEEE").format(today)}, ${DateFormat("d MMMM").format(today)}",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w300,
-                        fontSize: 14,
-                      ),
-                    ),
-                    subtitle: Text(
-                      "Hello, Noureldin",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w800,
-                        fontSize: 20,
-                        color: Colors.black,
-                      ),
-                    ),
-                    // trailing: ClipOval(child: Image.asset("assets/User.jpg")),
-                  ),
-                  SizedBox(
-                    height: 2,
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(right: 8.0),
-                        child: _RadialProgress(
-                          width: width * 0.35,
-                          height: width * 0.35,
-                          progress: 0.2,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        mainAxisSize: MainAxisSize.max,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          _IngredientProgress(
-                            ingredient: "Protein",
-                            progress: 0.3,
-                            progressColor: Colors.green,
-                            leftAmount: 42,
-                            width: width * 0.28,
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          _IngredientProgress(
-                            ingredient: "Carbs",
-                            progress: 0.6,
-                            progressColor: Colors.red,
-                            leftAmount: 150,
-                            width: width * 0.28,
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          _IngredientProgress(
-                            ingredient: "Fat",
-                            progress: 0.4,
-                            progressColor: Colors.yellow,
-                            leftAmount: 34,
-                            width: width * 0.28,
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                ],
+          // ClipRRect(
+          //   borderRadius: const BorderRadius.vertical(
+          //     bottom: const Radius.circular(50),
+          //   ),
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.elliptical(50, 50),
+                bottomRight: Radius.elliptical(50, 50),
               ),
+              boxShadow: [
+                BoxShadow(
+                  blurRadius: 5,
+                  color: Colors.grey[400],
+                  offset: Offset(0, 3.5),
+                )
+              ],
+              color: Colors.white,
+            ),
+            width: double.infinity,
+            // color: Colors.white,
+            padding:
+                const EdgeInsets.only(top: 8, left: 32, right: 16, bottom: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                ListTile(
+                  title: Text(
+                    "${DateFormat("EEEE").format(today)}, ${DateFormat("d MMMM").format(today)}",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w300,
+                      fontSize: 14,
+                    ),
+                  ),
+                  subtitle: Text(
+                    "Hello, Noureldin",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w800,
+                      fontSize: 20,
+                      color: Colors.black,
+                    ),
+                  ),
+                  // trailing: ClipOval(child: Image.asset("assets/User.jpg")),
+                ),
+                SizedBox(
+                  height: 2,
+                ),
+                Row(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: _RadialProgress(
+                        width: width * 0.35,
+                        height: width * 0.35,
+                        progress: 0.2,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisSize: MainAxisSize.max,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        _IngredientProgress(
+                          ingredient: "Protein",
+                          progress: 0.3,
+                          progressColor: Colors.green,
+                          leftAmount: 42,
+                          width: width * 0.28,
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        _IngredientProgress(
+                          ingredient: "Carbs",
+                          progress: 0.6,
+                          progressColor: Colors.red,
+                          leftAmount: 150,
+                          width: width * 0.28,
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        _IngredientProgress(
+                          ingredient: "Fat",
+                          progress: 0.4,
+                          progressColor: Colors.yellow,
+                          leftAmount: 34,
+                          width: width * 0.28,
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ],
             ),
           ),
+
           Padding(
             padding: EdgeInsets.all(20.0),
             child: Column(
