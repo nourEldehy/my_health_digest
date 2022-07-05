@@ -1,29 +1,39 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:training_and_diet_app/components/round_icon_button.dart';
 import 'package:training_and_diet_app/model/PanelTitle.dart';
-import 'package:training_and_diet_app/model/constants.dart';
 import 'package:training_and_diet_app/model/dropdown.dart';
 import 'package:training_and_diet_app/model/labeledcheckbox.dart';
 import 'package:training_and_diet_app/model/medicine_details.dart';
-import 'package:training_and_diet_app/ui/pages/medicine.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:http/http.dart' as http;
+import 'dart:async';
+import 'dart:convert';
+import 'package:flutter/services.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:training_and_diet_app/ui/pages/medicine_reminder.dart';
+
+var englishName = " ";
 
 class AddMedicine extends StatefulWidget {
+  TextEditingController b;
+
   @override
   _AddMedicineState createState() => _AddMedicineState();
 }
 
+@override
 class _AddMedicineState extends State<AddMedicine> {
   final _formKey = GlobalKey<FormState>();
 
-  //List<dynamic> selectedList = [];
+  var b = TextEditingController();
   final newMed = new MedDetails();
   int dosage = 1;
+  var savedtoken = "";
   String selectedValue;
   String Frequency = '';
+  String _scanBarcode = 'Unknown';
 
   List<String> freq = [];
   List<String> reminders = [];
@@ -37,6 +47,46 @@ class _AddMedicineState extends State<AddMedicine> {
     LabeledCheckbox(label: 'Friday', abv: 'Fri'),
     LabeledCheckbox(label: 'Saturday', abv: 'Sat'),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  // Platform messages are asynchronous, so we initialize in an async method.
+  Future<void> scanBarcodeNormal() async {
+    String barcodeScanRes;
+    final storage = FlutterSecureStorage();
+    final token = await storage.read(key: "token");
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+          '#ff6666', 'Cancel', true, ScanMode.BARCODE);
+      http.Response response = await getmedicinename(barcodeScanRes, token);
+      Map<String, dynamic> map = json.decode(response.body)[0];
+      setState(() {
+        englishName = map['enName'];
+        b.text = englishName;
+        newMed.mName = englishName;
+      });
+      print("Scanned Barcode: ");
+      print(barcodeScanRes);
+      print("Received Medicine Name: " + map['enName']);
+    } on PlatformException {
+      barcodeScanRes = 'Failed to get platform version.';
+    } on RangeError {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Unsuccessful')),
+      );
+      print("Unsuccessful");
+    }
+    if (!mounted) return;
+
+    setState(() {
+      _scanBarcode = barcodeScanRes;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -73,7 +123,7 @@ class _AddMedicineState extends State<AddMedicine> {
                 isRequired: true,
               ),
               TextFormField(
-                maxLength: 20,
+                controller: b,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter medicine name';
@@ -83,17 +133,12 @@ class _AddMedicineState extends State<AddMedicine> {
                 onChanged: (String value) {
                   newMed.mName = value;
                 },
+                // newMed.mName = value;
                 style: TextStyle(
                   fontSize: 16,
                 ),
                 textCapitalization: TextCapitalization.words,
                 decoration: InputDecoration(
-                  suffixIcon: IconButton(
-                    icon: const Icon(Icons.qr_code_scanner_rounded),
-                    onPressed: () {
-                      print('Search');
-                    },
-                  ),
                   hintText: ("Enter Medicine Name"),
                   hintStyle: TextStyle(fontSize: 18, color: Colors.grey),
                   enabledBorder: OutlineInputBorder(
@@ -106,6 +151,34 @@ class _AddMedicineState extends State<AddMedicine> {
                   ),
                   filled: true,
                 ),
+              ),
+              Row(children: <Widget>[
+                Expanded(
+                    child: Divider(
+                  height: 10,
+                  thickness: 2,
+                  indent: 65,
+                  endIndent: 5,
+                  color: Colors.grey,
+                )),
+                Text("OR", style: TextStyle(fontSize: 18, color: Colors.grey)),
+                Expanded(
+                    child: Divider(
+                  height: 10,
+                  thickness: 2,
+                  indent: 5,
+                  endIndent: 60,
+                  color: Colors.grey,
+                )),
+              ]),
+              ElevatedButton.icon(
+                onPressed: () {
+                  setState(() {
+                    scanBarcodeNormal();
+                  });
+                },
+                label: Text("Scan Barcode"),
+                icon: const Icon(Icons.document_scanner),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 5.0),
@@ -266,39 +339,42 @@ class _AddMedicineState extends State<AddMedicine> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(
-                                  width: 110,
-                                  child: DropdownButtonFormField(
-                                      decoration: InputDecoration(
-                                        enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.blue, width: 2),
-                                          borderRadius:
-                                              BorderRadius.circular(20),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 3),
+                                  child: SizedBox(
+                                    width: 110,
+                                    child: DropdownButtonFormField(
+                                        decoration: InputDecoration(
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.blue, width: 2),
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                          border: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.blue, width: 2),
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                          filled: true,
                                         ),
-                                        border: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.blue, width: 2),
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                        ),
-                                        filled: true,
-                                      ),
-                                      //dropdownColor: Colors.blueAccent,
-                                      value: selectedValue,
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return '';
-                                        }
-                                        return null;
-                                      },
-                                      onChanged: (String newValue) {
-                                        setState(() {
-                                          selectedValue = newValue;
-                                          newMed.dwm = selectedValue;
-                                        });
-                                      },
-                                      items: dropdownItems),
+                                        //dropdownColor: Colors.blueAccent,
+                                        value: selectedValue,
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return '';
+                                          }
+                                          return null;
+                                        },
+                                        onChanged: (String newValue) {
+                                          setState(() {
+                                            selectedValue = newValue;
+                                            newMed.dwm = selectedValue;
+                                          });
+                                        },
+                                        items: dropdownItems),
+                                  ),
                                 ),
                               ],
                             )
@@ -447,53 +523,31 @@ class _AddMedicineState extends State<AddMedicine> {
                         );
                       }
                       if (_formKey.currentState.validate() && x == 1) {
-                        // If the form is valid, display a snackbar. In the real world,
-                        // you'd often call a server or save the information in a database.
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              duration: Duration(seconds: 3),
-                              content: Text('Processing Data')),
-                        );
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                              duration: Duration(seconds: 2),
-                              content: Row(
-                                children: [
-                                  Icon(
-                                    Icons.check,
-                                    color: Colors.green,
-                                  ),
-                                  Text(
-                                    'A new medicine is successfully added !',
-                                    style: TextStyle(color: Colors.green),
-                                  ),
-                                ],
-                              )),
-                        );
-                      }
-                      //SEND TO DB
-                      //newMed.mName = myController.text;
-                      newMed.dosage = dosage;
-                      newMed.freq = freq;
-                      newMed.reminders = reminders;
-                      print(newMed.mName);
-                      // print(newMed.dosage);
-                      // print(newMed.numDays);
-                      // print(newMed.dwm);
-                      // print(newMed.freq);
-                      // print(newMed.reminders);
-                      // print("bafhajfbafjafahglkahlkaafkakfalkfakjlf");
-                      // print(newMed);
+                        //SEND TO DB
+                        newMed.dosage = dosage;
+                        newMed.freq = freq;
+                        newMed.reminders = reminders;
+                        print(newMed.mName);
+                        // final storage = FlutterSecureStorage();
+                        // final token = await storage.read(key: "token");
+                        // http.Response received = await remindersaver(
+                        //     newMed.mName,
+                        //     newMed.dosage,
+                        //     newMed.numDays,
+                        //     newMed.dwm,
+                        //     newMed.freq,
+                        //     newMed.reminders,
+                        //     token);
 
-                      if (x == 1)
-                        await Future.delayed(const Duration(seconds: 6), () {
-                          Navigator.pop(
+                        await Future.delayed(const Duration(seconds: 0), () {
+                          Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                               builder: (context) => MedicineReminder(),
                             ),
                           );
                         });
+                      }
                     },
                     child: const Text(
                       'Confirm',
@@ -604,11 +658,11 @@ class _AddMedicineState extends State<AddMedicine> {
                 ),
               ),
               child: Padding(
-                padding: const EdgeInsets.all(25.0),
+                padding: const EdgeInsets.fromLTRB(25.0, 0.0, 25.0, 0),
                 child: Column(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 10),
+                      padding: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 2),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
@@ -726,4 +780,34 @@ class _AddMedicineState extends State<AddMedicine> {
       },
     );
   }
+}
+
+Future<http.Response> getmedicinename(String barcode, String token) {
+  return http.post(
+    Uri.parse('http://192.168.43.113/api/barcode/check'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': token,
+    },
+    body: jsonEncode(<String, String>{"barcode": barcode}),
+  );
+}
+
+Future<http.Response> remindersaver(String enName, int dosage, int duration,
+    String durationunit, List frequency, List time, String token) {
+  Map<String, dynamic> data = {
+    "name": enName,
+    "dosage": dosage,
+    "duration": {"value": duration, "unit": durationunit},
+    "frequency": frequency,
+    "time": time
+  };
+  return http.post(
+    Uri.parse('http://10.0.2.2/api/med-reminder/add'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': token,
+    },
+    body: jsonEncode(data),
+  );
 }

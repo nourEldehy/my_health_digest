@@ -1,23 +1,46 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:training_and_diet_app/model/medicine_details.dart';
+import 'package:training_and_diet_app/ui/pages/contact_us.dart';
 
+import 'new_profile_screen.dart';
 import 'add_medicine.dart';
 
 class MedicineReminder extends StatefulWidget {
   //static String id = "homePatient";
-  MedicineReminder({@required this.med});
-  final String med;
 
   @override
-  _MedicineReminderState createState() => _MedicineReminderState(this.med);
+  _MedicineReminderState createState() => _MedicineReminderState();
 }
 
 class _MedicineReminderState extends State<MedicineReminder> {
+  int _selectedIndex = 1;
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+      (index == 0)
+          ? Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ProfileScreen(),
+              ),
+            )
+          : (index == 2)
+              ? Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ContactUs(),
+                  ),
+                )
+              : OpenContainer;
+
+      //print(index);
+    });
+  }
+
   final List<MedDetails> allMedicines = [];
-  final String med;
-  _MedicineReminderState(this.med);
 
   @override
   Widget build(BuildContext context) {
@@ -66,16 +89,8 @@ class _MedicineReminderState extends State<MedicineReminder> {
         },
       ),
       bottomNavigationBar: BottomNavigationBar(
-        // type: fi,
-        // onTap: (index) => setState(() => _selectedIndex = index),
-        // iconSize: 40,
-        // selectedIconTheme: IconThemeData(
-        //   color: Color.fromRGBO(255, 10, 56, 1.0),
-        // ),
-        // unselectedIconTheme: IconThemeData(
-        //   color: Colors.black12,
-        // ),
         currentIndex: 1,
+        onTap: _onItemTapped,
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),

@@ -6,7 +6,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:training_and_diet_app/ui/pages/new/new_profile_screen.dart';
+import 'package:training_and_diet_app/ui/pages/new_profile_screen.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -30,20 +30,19 @@ class _LoginState extends State<Login> {
         body: Container(
           decoration: BoxDecoration(
               gradient: LinearGradient(
-                begin: Alignment.topRight,
-                end: Alignment.bottomLeft,
-                colors: [
-                  // Color.fromRGBO(255, 37, 87, 1),
-                  // Color.fromRGBO(255, 37, 87, 1),
-                  // Colors.black54,
-                  // Color.fromRGBO(255, 37, 87, 1),
-                  Colors.blue,
-                  //Colors.white70,
-                  // Color(0xFF380f90),
-                  Color.fromRGBO(255, 255, 255, 1),
-                ],
-              )
-          ),
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            colors: [
+              // Color.fromRGBO(255, 37, 87, 1),
+              // Color.fromRGBO(255, 37, 87, 1),
+              // Colors.black54,
+              // Color.fromRGBO(255, 37, 87, 1),
+              Colors.blue,
+              //Colors.white70,
+              // Color(0xFF380f90),
+              Color.fromRGBO(255, 255, 255, 1),
+            ],
+          )),
           // color: Color(0xFFf5f0f1),
           child: ListView(
             children: [
@@ -109,19 +108,20 @@ class _LoginState extends State<Login> {
                               hintStyle:
                                   TextStyle(fontSize: 18, color: Colors.grey),
                               enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Color(0xFFfdca01), width: 2),
+                                borderSide: BorderSide(
+                                    color: Color(0xFFfdca01), width: 2),
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               border: OutlineInputBorder(
-                                borderSide:
-                                    const BorderSide(color: Colors.white, width: 2),
+                                borderSide: const BorderSide(
+                                    color: Colors.white, width: 2),
                                 borderRadius: BorderRadius.circular(20),
                               ),
-                              focusedBorder:OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Color(0xFFfdca01), width: 2),
-                                borderRadius: BorderRadius.circular(20),),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color(0xFFfdca01), width: 2),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
                               filled: true,
                             ),
                           ),
@@ -137,10 +137,9 @@ class _LoginState extends State<Login> {
                               }
                               return null;
                             },
-
                             onChanged: (String value) {
                               setState(() {
-                                password=value;
+                                password = value;
                               });
                             },
                             style: TextStyle(
@@ -153,7 +152,7 @@ class _LoginState extends State<Login> {
                                   _isObscure
                                       ? Icons.visibility
                                       : Icons.visibility_off,
-                                color: Colors.grey,
+                                  color: Colors.grey,
                                 ),
                                 onPressed: () {
                                   setState(() {
@@ -166,8 +165,8 @@ class _LoginState extends State<Login> {
                               hintStyle:
                                   TextStyle(fontSize: 18, color: Colors.grey),
                               enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Color(0xFFfdca01), width: 2),
+                                borderSide: BorderSide(
+                                    color: Color(0xFFfdca01), width: 2),
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               border: OutlineInputBorder(
@@ -175,10 +174,11 @@ class _LoginState extends State<Login> {
                                     BorderSide(color: Colors.white, width: 2),
                                 borderRadius: BorderRadius.circular(20),
                               ),
-                              focusedBorder:OutlineInputBorder(
-                                borderSide:
-                                BorderSide(color: Color(0xFFfdca01), width: 2),
-                                borderRadius: BorderRadius.circular(20),),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color(0xFFfdca01), width: 2),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
                               filled: true,
                             ),
                           ),
@@ -216,18 +216,20 @@ class _LoginState extends State<Login> {
                                 style: ElevatedButton.styleFrom(
                                   primary: Color(0xFFfdca01),
                                   shape: RoundedRectangleBorder(
-                                side: const BorderSide(
-                                color: Colors.transparent,
-                                ),
-                                borderRadius: BorderRadius.circular(50)),
+                                      side: const BorderSide(
+                                        color: Colors.transparent,
+                                      ),
+                                      borderRadius: BorderRadius.circular(50)),
                                 ),
                                 onPressed: () async {
                                   if (_formKey.currentState.validate()) {
-                                    http.Response response = await authentication(email,password);
-                                    print("Status Code  " + response.statusCode.toString());
+                                    http.Response response =
+                                        await authentication(email, password);
+                                    print("Status Code  " +
+                                        response.statusCode.toString());
                                     if (response.statusCode == 200) {
-                                      Map<String, dynamic> map = json.decode(
-                                          response.body);
+                                      Map<String, dynamic> map =
+                                          json.decode(response.body);
                                       var token = map['token'];
                                       await _storage.write(
                                           key: "token", value: token);
@@ -239,20 +241,13 @@ class _LoginState extends State<Login> {
                                           builder: (context) => ProfileScreen(),
                                         ),
                                       );
-                                    }
-                                    else if (response.statusCode == 400)
-                                    {
+                                    } else if (response.statusCode == 400) {
                                       print("Invalid Credentials");
-                                    }
-                                    else if (response.statusCode == 408)
-                                    {
+                                    } else if (response.statusCode == 408) {
                                       print("Request Timeout");
-                                    }
-                                    else if (response.statusCode == 500)
-                                    {
+                                    } else if (response.statusCode == 500) {
                                       print("Internal Server Error");
-                                    }
-                                    else{
+                                    } else {
                                       print("Generic Error");
                                     }
                                   }
@@ -276,13 +271,15 @@ class _LoginState extends State<Login> {
                             indent: 20,
                             endIndent: 8,
                           )),
-                          Text("continue with",
+                          Text(
+                            "continue with",
                             style: TextStyle(
-                            fontFamily: "Raleway",
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: Colors.black,
-                          ),),
+                              fontFamily: "Raleway",
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              color: Colors.black,
+                            ),
+                          ),
                           Expanded(
                               child: Divider(
                             thickness: 4,
@@ -297,11 +294,11 @@ class _LoginState extends State<Login> {
                             Container(
                               //color: Colors.red,
                               decoration: BoxDecoration(
-                                  border:
-                                      Border.all(color: Colors.transparent, width: 3),
+                                  border: Border.all(
+                                      color: Colors.transparent, width: 3),
                                   borderRadius: BorderRadius.circular(10)),
                               child: SizedBox(
-                                 child: Image.asset("assets/gmail.png"),
+                                child: Image.asset("assets/gmail.png"),
                                 // Icon(
                                 //     FontAwesomeIcons.google,
                                 //     color: Colors.blue, size: 40.0),
@@ -329,8 +326,8 @@ class _LoginState extends State<Login> {
                             Container(
                               //color: Colors.red,
                               decoration: BoxDecoration(
-                                  border:
-                                      Border.all(color: Colors.transparent, width: 3),
+                                  border: Border.all(
+                                      color: Colors.transparent, width: 3),
                                   borderRadius: BorderRadius.circular(10)),
                               child: SizedBox(
                                 child: Icon(FontAwesomeIcons.facebook,

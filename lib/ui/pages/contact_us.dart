@@ -1,10 +1,8 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:training_and_diet_app/ui/pages/profile_screen.dart';
+import 'package:training_and_diet_app/ui/pages/new_profile_screen.dart';
 import 'package:training_and_diet_app/ui/pages/reminders.dart';
-
-import 'medicine.dart';
 
 class ContactUs extends StatefulWidget {
   const ContactUs({key}) : super(key: key);
@@ -14,34 +12,34 @@ class ContactUs extends StatefulWidget {
 
 class _ContactUsState extends State<ContactUs> {
   int _selectedIndex = 2;
-  // void _onItemTapped(int index) {
-  //   setState(() {
-  //     _selectedIndex = index;
-  //     (index == 0)
-  //         ? Navigator.pop(
-  //             context,
-  //             MaterialPageRoute(
-  //               builder: (context) => ProfileScreen(),
-  //             ),
-  //           )
-  //         : (index == 1)
-  //             ? Navigator.push(
-  //                 context,
-  //                 MaterialPageRoute(
-  //                   builder: (context) => Reminders(),
-  //                 ),
-  //               )
-  //             : OpenContainer;
-  //
-  //     // print(index);
-  //   });
-  // }
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+      (index == 0)
+          ? Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ProfileScreen(),
+              ),
+            )
+          : (index == 1)
+              ? Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Reminders(),
+                  ),
+                )
+              : OpenContainer;
+
+      // print(index);
+    });
+  }
 
   @override
   Widget build(BuildContext context) => Scaffold(
         bottomNavigationBar: BottomNavigationBar(
           // type: fi,
-          // onTap: (index) => setState(() => _selectedIndex = index),
+          onTap: _onItemTapped,
           // iconSize: 40,
           // selectedIconTheme: IconThemeData(
           //   color: Color.fromRGBO(255, 10, 56, 1.0),

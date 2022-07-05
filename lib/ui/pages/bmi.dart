@@ -19,7 +19,7 @@ class _BMIState extends State<BMI> {
     return Scaffold(
       appBar: AppBar(
         title: Text('BMI Calculator'),
-        backgroundColor: Colors.lightBlue,
+        backgroundColor: Colors.blue,
         foregroundColor: Colors.black,
         // shadowColor: Color.fromRGBO(225, 77, 87, 1),
       ),
@@ -46,19 +46,21 @@ class _BMIState extends State<BMI> {
               ),
             ),
           ),
-            Container(
-              height: 175,
-              child: WeightSlider(
-                weight: w,
-                minWeight: 40,
-                maxWeight: 120,
-                onChange: (val) => setState(() => this.w = val),
-                unit: 'kg', // optional
-              ),
+          Container(
+            height: 175,
+            child: WeightSlider(
+              weight: w,
+              minWeight: 40,
+              maxWeight: 120,
+              onChange: (val) => setState(() => this.w = val),
+              unit: 'kg', // optional
             ),
+          ),
           ElevatedButton(
-            child: const Text('Calculate',
-                style: TextStyle(color: Colors.black),),
+            child: const Text(
+              'Calculate',
+              style: TextStyle(color: Colors.black),
+            ),
             onPressed: () {
               CalculatorBrain calc = CalculatorBrain(h: h, w: w);
 
@@ -72,13 +74,10 @@ class _BMIState extends State<BMI> {
               );
             },
             style: ElevatedButton.styleFrom(
-                primary: Colors.lightBlue,
+                primary: Colors.blue,
                 padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-                textStyle: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold
-            )
-          ),
+                textStyle:
+                    TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
           ),
         ],
       ),

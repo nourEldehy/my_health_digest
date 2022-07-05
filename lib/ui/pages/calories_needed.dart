@@ -137,7 +137,7 @@ class _CaloriesNeededState extends State<CaloriesNeeded> {
                       inactiveTrackColor: Color(0xFF8D8E98),
                       activeTrackColor: Colors.blue,
                       thumbColor: Colors.blue,
-                      overlayColor: Color(0x29EB1555),
+                      overlayColor: Colors.lightBlueAccent,
                       thumbShape:
                           RoundSliderThumbShape(enabledThumbRadius: 15.0),
                       overlayShape:
@@ -277,7 +277,7 @@ class _CaloriesNeededState extends State<CaloriesNeeded> {
                       inactiveTrackColor: Color(0xFF8D8E98),
                       activeTrackColor: Colors.blue,
                       thumbColor: Colors.blue,
-                      overlayColor: Color(0x29EB1555),
+                      overlayColor: Colors.lightBlueAccent,
                       thumbShape:
                           RoundSliderThumbShape(enabledThumbRadius: 15.0),
                       overlayShape:

@@ -1,6 +1,8 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
+import 'package:training_and_diet_app/ui/pages/contact_us.dart';
+import 'package:training_and_diet_app/ui/pages/new_profile_screen.dart';
 import 'add_appointment.dart';
 
 class AppointmentReminder extends StatefulWidget {
@@ -11,11 +13,35 @@ class AppointmentReminder extends StatefulWidget {
 }
 
 class _AppointmentReminderState extends State<AppointmentReminder> {
+  int _selectedIndex = 1;
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+      (index == 0)
+          ? Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ProfileScreen(),
+              ),
+            )
+          : (index == 2)
+              ? Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ContactUs(),
+                  ),
+                )
+              : OpenContainer;
+
+      //print(index);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.lightBlue,
+        backgroundColor: Colors.blue,
         elevation: 0.0,
       ),
       body: Container(
@@ -62,6 +88,7 @@ class _AppointmentReminderState extends State<AppointmentReminder> {
         // unselectedIconTheme: IconThemeData(
         //   color: Colors.black12,
         // ),
+        onTap: _onItemTapped,
         currentIndex: 1,
         items: [
           BottomNavigationBarItem(
