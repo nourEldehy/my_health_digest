@@ -2,6 +2,14 @@ import 'dart:async';
 import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:path/path.dart';
+import 'package:async/async.dart';
+import 'dart:convert';
+
+import 'package:training_and_diet_app/ui/pages/New/reminders.dart';
+
+
 // Take picture page
 class TakePicturePage extends StatefulWidget {
   final CameraDescription camera;
@@ -74,18 +82,55 @@ class TakePicturePageState extends State<TakePicturePage> {
                 try {
                   await _initializeControllerFuture;
                   final image = await _controller.takePicture();
-
+                  // String name = upload(File(image.path)).toString();
+                  // print("nameeeeeee" + name);
+                  // String name = upload(File(image.path)) as String;
                   // If the picture was taken
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DisplayPicturePage(
-                        imagePath: image?.path,
-                      ),
-                    ),
-                  );
+                  //   Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //       builder: (context) => DisplayPicturePage(
+                  //         imagePath: image?.path,
+                  //       ),
+                  //     ),
+                  //   );
+                    FutureBuilder(future: upload(File(image.path)),
+                        builder: (context, snapshot) {
+                          print(" aho ya 7odaaaaa" + jsonDecode(snapshot.data.body));
+                          if (snapshot.connectionState == ConnectionState.done) {
+                            if (snapshot.hasData){
+                              print(" aho ya 7odaaaaa" + jsonDecode(snapshot.data.body));
+                            }
+                            return Center(
+                                    child: Column(
+                                      children: <Widget>[
+                                        Text("$image?.path"),
+                                        Container(
+                                          width: MediaQuery.of(context).size.width/2,
+                                          height: MediaQuery.of(context).size.height/2,
+                                          child: Image.file(File(image?.path)),
+                                        ),
+                                        SizedBox(height: 30,),
+                                        Text("hello",
+                                          style: TextStyle(
+                                            fontFamily: "Angel",
+                                            fontSize: 40,
+                                            color: Colors.blue,
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                ); // Your UI here
+                          } else if (snapshot.hasError) {
+                            return Text('Error');
+                          } else {
+                            return CircularProgressIndicator();
+                          }
+                        }
+                    );
 
-                  print("My Image Path:");
+
+                print("My Image Path:");
                   print(image?.path);
                 }
                 catch (error) {
@@ -122,9 +167,52 @@ class DisplayPicturePage extends StatelessWidget {
                   height: MediaQuery.of(context).size.height/2,
                   child: Image.file(File(imagePath)),
                 ),
+                SizedBox(height: 30,),
+                Text("hello",
+                  style: TextStyle(
+                    fontFamily: "Angel",
+                    fontSize: 40,
+                    color: Colors.blue,
+                  ),
+                ),
               ],
             )
         )
     );
   }
+}
+
+upload(File imageFile) async {
+  Map<String, dynamic> map;
+  // open a bytestream
+  var stream = new http.ByteStream(DelegatingStream.typed(imageFile.openRead()));
+  // get file length
+  var length = await imageFile.length();
+
+  // string to uri
+  var uri = Uri.parse("http://10.0.2.2/api/imagerecog/upload");
+
+  // create multipart request
+  var request = new http.MultipartRequest("POST", uri);
+
+  // multipart that takes file
+  var multipartFile = new http.MultipartFile('pic', stream, length,
+      filename: basename(imageFile.path));
+
+  // add file to multipart
+  request.files.add(multipartFile);
+
+  // send
+  var response = await request.send();
+  print(response.statusCode);
+
+
+  // listen for response
+  response.stream.transform(utf8.decoder).listen((value) {
+    print(jsonDecode(value));
+    map = json.decode(value);
+    print(map['Name']);
+  }
+  );
+  // return map['Name'];
 }
