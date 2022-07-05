@@ -63,28 +63,28 @@ class _CaloriesNeededState extends State<CaloriesNeeded> {
         children: <Widget>[
           Expanded(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-            InkWell(
-            onTap: () {
-              setState(() {
-                selectedGender = Gender.male;
-              });
-            },
-            child: Container(
-              // height: 30,
-              width: 200,
-              child: Card(
-                color: selectedGender == Gender.male
-                    ? kActiveCardColour
-                    : kInactiveCardColour,
-                child: IconContent(
-                  icon: FontAwesomeIcons.mars,
-                  label: 'MALE',
+              InkWell(
+                onTap: () {
+                  setState(() {
+                    selectedGender = Gender.male;
+                  });
+                },
+                child: Container(
+                  // height: 30,
+                  width: 200,
+                  child: Card(
+                    color: selectedGender == Gender.male
+                        ? kActiveCardColour
+                        : kInactiveCardColour,
+                    child: IconContent(
+                      icon: FontAwesomeIcons.mars,
+                      label: 'MALE',
+                    ),
                   ),
                 ),
               ),
-            ),
               InkWell(
                 onTap: () {
                   setState(() {
@@ -134,10 +134,10 @@ class _CaloriesNeededState extends State<CaloriesNeeded> {
                   ),
                   SliderTheme(
                     data: SliderTheme.of(context).copyWith(
-                      inactiveTrackColor: Colors.blue,
+                      inactiveTrackColor: Color(0xFF8D8E98),
                       activeTrackColor: Colors.blue,
                       thumbColor: Colors.blue,
-                      overlayColor: Colors.blueGrey,
+                      overlayColor: Colors.lightBlueAccent,
                       thumbShape:
                           RoundSliderThumbShape(enabledThumbRadius: 15.0),
                       overlayShape:
@@ -277,7 +277,7 @@ class _CaloriesNeededState extends State<CaloriesNeeded> {
                       inactiveTrackColor: Color(0xFF8D8E98),
                       activeTrackColor: Colors.blue,
                       thumbColor: Colors.blue,
-                      overlayColor: Colors.blueGrey,
+                      overlayColor: Colors.lightBlueAccent,
                       thumbShape:
                           RoundSliderThumbShape(enabledThumbRadius: 15.0),
                       overlayShape:
@@ -332,21 +332,22 @@ class _CaloriesNeededState extends State<CaloriesNeeded> {
             child: const Text('CALCULATE'),
             onPressed: () {
               CalculatorBrain calc = CalculatorBrain(
-              height: height,
-              weight: weight,
-              selectedGender: selectedGender,
-              multiplier: multiplier,
-              age: age);
+                  height: height,
+                  weight: weight,
+                  selectedGender: selectedGender,
+                  multiplier: multiplier,
+                  age: age);
               Navigator.push(
-              context,
-              MaterialPageRoute(
-              builder: (context) => ResultsCalories(
-              caloriesResult: calc.calculateDailyCal(),
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ResultsCalories(
+                    caloriesResult: calc.calculateDailyCal(),
                   ),
                 ),
               );
             },
-            style: ElevatedButton.styleFrom( // set the background color
+            style: ElevatedButton.styleFrom(
+              // set the background color
               primary: Colors.blue,
               elevation: 4,
               shadowColor: Colors.grey,

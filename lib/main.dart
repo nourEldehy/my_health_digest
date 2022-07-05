@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:training_and_diet_app/ui/pages/firstpage.dart';
+import 'package:training_and_diet_app/ui/pages/new_profile_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Homepage(),
-    );///
+      home: ProfileScreen(),
+    );
   }
 }

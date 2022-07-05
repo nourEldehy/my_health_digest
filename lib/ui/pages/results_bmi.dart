@@ -13,7 +13,7 @@ class ResultsBMI extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('BMI Calculator'),
-        backgroundColor: Colors.lightBlue,
+        backgroundColor: Colors.blue,
         foregroundColor: Color.fromRGBO(0, 0, 0, 1),
       ),
       body: Column(
@@ -180,19 +180,18 @@ class ResultsBMI extends StatelessWidget {
             ),
           ),
           ElevatedButton(
-            child: const Text('Calculate',
-              style: TextStyle(color: Colors.black),),
+            child: const Text(
+              'Calculate',
+              style: TextStyle(color: Colors.black),
+            ),
             onPressed: () {
               Navigator.pop(context);
             },
             style: ElevatedButton.styleFrom(
-                primary: Colors.lightBlue,
+                primary: Colors.blue,
                 padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-                textStyle: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold
-                )
-            ),
+                textStyle:
+                    TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
           ),
         ],
       ),

@@ -12,8 +12,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
-import 'medicines.dart';
+import 'package:training_and_diet_app/ui/pages/medicine_reminder.dart';
 
 var englishName = " ";
 
@@ -173,13 +172,14 @@ class _AddMedicineState extends State<AddMedicine> {
                 )),
               ]),
               ElevatedButton.icon(
-                  onPressed: () {
-                    setState(() {
-                      scanBarcodeNormal();
-                    });
-                  },
-                  label: Text("Scan Barcode"),
-                  icon: const Icon(Icons.document_scanner),),
+                onPressed: () {
+                  setState(() {
+                    scanBarcodeNormal();
+                  });
+                },
+                label: Text("Scan Barcode"),
+                icon: const Icon(Icons.document_scanner),
+              ),
               Padding(
                 padding: const EdgeInsets.only(top: 5.0),
                 child: Row(
@@ -523,41 +523,23 @@ class _AddMedicineState extends State<AddMedicine> {
                         );
                       }
                       if (_formKey.currentState.validate() && x == 1) {
-                        // If the form is valid, display a snackbar. In the real world,
-                        // you'd often call a server or save the information in a database.
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              duration: Duration(seconds: 3),
-                              content: Text('Processing Data')),
-                        );
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                              duration: Duration(seconds: 2),
-                              content: Row(
-                                children: [
-                                  Icon(
-                                    Icons.check,
-                                    color: Colors.green,
-                                  ),
-                                  Text(
-                                    'A new medicine is successfully added !',
-                                    style: TextStyle(color: Colors.green),
-                                  ),
-                                ],
-                              )),
-                        );
-                      }
-                      //SEND TO DB
-                      newMed.dosage = dosage;
-                      newMed.freq = freq;
-                      newMed.reminders = reminders;
-                      print(newMed.mName);
-                      final storage = FlutterSecureStorage();
-                      final token = await storage.read(key: "token");
-                      http.Response received = await remindersaver(newMed.mName, newMed.dosage, newMed.numDays, newMed.dwm, newMed.freq, newMed.reminders, token);
+                        //SEND TO DB
+                        newMed.dosage = dosage;
+                        newMed.freq = freq;
+                        newMed.reminders = reminders;
+                        print(newMed.mName);
+                        // final storage = FlutterSecureStorage();
+                        // final token = await storage.read(key: "token");
+                        // http.Response received = await remindersaver(
+                        //     newMed.mName,
+                        //     newMed.dosage,
+                        //     newMed.numDays,
+                        //     newMed.dwm,
+                        //     newMed.freq,
+                        //     newMed.reminders,
+                        //     token);
 
-                      if (x == 1) {
-                        await Future.delayed(const Duration(seconds: 2), () {
+                        await Future.delayed(const Duration(seconds: 0), () {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
@@ -811,7 +793,8 @@ Future<http.Response> getmedicinename(String barcode, String token) {
   );
 }
 
-Future<http.Response> remindersaver(String enName, int dosage, int duration, String durationunit, List frequency, List time, String token) {
+Future<http.Response> remindersaver(String enName, int dosage, int duration,
+    String durationunit, List frequency, List time, String token) {
   Map<String, dynamic> data = {
     "name": enName,
     "dosage": dosage,

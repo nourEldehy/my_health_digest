@@ -7,8 +7,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:training_and_diet_app/ui/pages/appointment.dart';
 import 'package:training_and_diet_app/ui/pages/contact_us.dart';
-import 'package:training_and_diet_app/ui/pages/new/medicine2.dart';
-import 'package:training_and_diet_app/ui/pages/new/profile_screen.dart';
+import 'package:training_and_diet_app/ui/pages/medicine_reminder.dart';
+import 'package:training_and_diet_app/ui/pages/new_profile_screen.dart';
 
 class Reminders extends StatefulWidget {
   @override
@@ -21,14 +21,14 @@ class _RemindersState extends State<Reminders> {
     setState(() {
       _selectedIndex = index;
       (index == 0)
-          ? Navigator.push(
+          ? Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                 builder: (context) => ProfileScreen(),
               ),
             )
           : (index == 2)
-              ? Navigator.push(
+              ? Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                     builder: (context) => ContactUs(),
@@ -47,22 +47,12 @@ class _RemindersState extends State<Reminders> {
 
   @override
   Widget build(BuildContext context) {
-    _selectedIndex = 1;
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         bottomNavigationBar: BottomNavigationBar(
-          // type: fi,
-          // onTap: (index) => setState(() => _selectedIndex = index),
-          // iconSize: 40,
-          // selectedIconTheme: IconThemeData(
-          //   color: Color.fromRGBO(255, 10, 56, 1.0),
-          // ),
-          // unselectedIconTheme: IconThemeData(
-          //   color: Colors.black12,
-          // ),
-          currentIndex: 1,
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
           items: [
             BottomNavigationBarItem(
               icon: Icon(Icons.home),

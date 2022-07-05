@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:training_and_diet_app/model/meal.dart';
-import 'package:training_and_diet_app/ui/pages/New/reminders.dart';
+import 'package:training_and_diet_app/ui/pages/add_appointment.dart';
+import 'package:training_and_diet_app/ui/pages/reminders.dart';
 import 'package:training_and_diet_app/ui/pages/appointment.dart';
 import 'package:training_and_diet_app/ui/pages/contact_us.dart';
-import 'package:training_and_diet_app/ui/pages/symptoms.dart';
+import 'package:training_and_diet_app/ui/pages/symchecker.dart';
 import 'package:training_and_diet_app/ui/pages/meal_detail_screen.dart';
 import 'package:training_and_diet_app/ui/pages/workout_screen.dart';
 import 'package:training_and_diet_app/ui/pages/bmi.dart';
@@ -22,8 +23,7 @@ import 'package:floating_ribbon/floating_ribbon.dart';
 import 'package:training_and_diet_app/ui/pages/myhealth.dart';
 import 'package:training_and_diet_app/ui/pages/foodcalories.dart';
 
-import '../add_medicine.dart';
-import '../medicines.dart';
+import 'add_medicine.dart';
 
 int currentCalories = 6;
 
@@ -40,14 +40,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
     setState(() {
       _selectedIndex = index;
       (index == 1)
-          ? Navigator.push(
+          ? Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                 builder: (context) => Reminders(),
               ),
             )
           : (index == 2)
-              ? Navigator.push(
+              ? Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                     builder: (context) => ContactUs(),
@@ -64,130 +64,130 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final today = DateTime.now();
-    _selectedIndex = 0;
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
-        // type: fi,
-        // onTap: (index) => setState(() => _selectedIndex = index),
-        // iconSize: 40,
-        // selectedIconTheme: IconThemeData(
-        //   color: Color.fromRGBO(255, 10, 56, 1.0),
-        // ),
-        // unselectedIconTheme: IconThemeData(
-        //   color: Colors.black12,
-        // ),
-        currentIndex: _selectedIndex,
+        currentIndex: 0,
+        onTap: _onItemTapped,
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: "Home",
-            backgroundColor: Colors.blue,
           ),
           BottomNavigationBarItem(
             icon: Icon(FontAwesomeIcons.bell),
             label: "Reminders",
-            backgroundColor: Colors.blue,
           ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: "Profile",
-              backgroundColor: Colors.blue),
+            icon: Icon(Icons.person),
+            label: "Profile",
+          ),
         ],
       ),
       body: ListView(
         children: <Widget>[
-          ClipRRect(
-            borderRadius: const BorderRadius.vertical(
-              bottom: const Radius.circular(40),
-            ),
-            child: Container(
+          // ClipRRect(
+          //   borderRadius: const BorderRadius.vertical(
+          //     bottom: const Radius.circular(50),
+          //   ),
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.elliptical(50, 50),
+                bottomRight: Radius.elliptical(50, 50),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  blurRadius: 5,
+                  color: Colors.grey[400],
+                  offset: Offset(0, 3.5),
+                )
+              ],
               color: Colors.white,
-              padding: const EdgeInsets.only(
-                  top: 8, left: 32, right: 16, bottom: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  ListTile(
-                    title: Text(
-                      "${DateFormat("EEEE").format(today)}, ${DateFormat("d MMMM").format(today)}",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w300,
-                        fontSize: 14,
-                      ),
+            ),
+            width: double.infinity,
+            // color: Colors.white,
+            padding:
+                const EdgeInsets.only(top: 8, left: 32, right: 16, bottom: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                ListTile(
+                  title: Text(
+                    "${DateFormat("EEEE").format(today)}, ${DateFormat("d MMMM").format(today)}",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w300,
+                      fontSize: 14,
                     ),
-                    subtitle: Text(
-                      "Hello, Noureldin",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w800,
-                        fontSize: 20,
-                        color: Colors.black,
-                      ),
+                  ),
+                  subtitle: Text(
+                    "Hello, Noureldin",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w800,
+                      fontSize: 20,
+                      color: Colors.black,
                     ),
-                    // trailing: ClipOval(child: Image.asset("assets/User.jpg")),
                   ),
-                  SizedBox(
-                    height: 2,
-                  ),
-                  Row(
-                    children: <Widget>[
-                      _RadialProgress(
+                  // trailing: ClipOval(child: Image.asset("assets/User.jpg")),
+                ),
+                SizedBox(
+                  height: 2,
+                ),
+                Row(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: _RadialProgress(
                         width: width * 0.35,
                         height: width * 0.35,
                         progress: 0.2,
                       ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        mainAxisSize: MainAxisSize.max,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          _IngredientProgress(
-                            ingredient: "Protein",
-                            progress: 0.3,
-                            progressColor: Colors.green,
-                            leftAmount: 72,
-                            width: width * 0.28,
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          _IngredientProgress(
-                            ingredient: "Carbs",
-                            progress: 0.2,
-                            progressColor: Colors.red,
-                            leftAmount: 252,
-                            width: width * 0.28,
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          _IngredientProgress(
-                            ingredient: "Fat",
-                            progress: 0.1,
-                            progressColor: Colors.yellow,
-                            leftAmount: 61,
-                            width: width * 0.28,
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          _IngredientProgress(
-                            ingredient: "Water",
-                            progress: 0.2,
-                            progressColor: Colors.blue,
-                            leftAmount: 252,
-                            width: width * 0.28,
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisSize: MainAxisSize.max,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        _IngredientProgress(
+                          ingredient: "Protein",
+                          progress: 0.3,
+                          progressColor: Colors.green,
+                          leftAmount: 42,
+                          width: width * 0.28,
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        _IngredientProgress(
+                          ingredient: "Carbs",
+                          progress: 0.6,
+                          progressColor: Colors.red,
+                          leftAmount: 150,
+                          width: width * 0.28,
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        _IngredientProgress(
+                          ingredient: "Fat",
+                          progress: 0.4,
+                          progressColor: Colors.yellow,
+                          leftAmount: 34,
+                          width: width * 0.28,
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ],
             ),
           ),
+
           Padding(
             padding: EdgeInsets.all(20.0),
             child: Column(
@@ -195,7 +195,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 for (int i = 0; i < meals.length; i += 2)
                   Padding(
                     padding: const EdgeInsets.only(
-    top: 8, left: 30, right:1, bottom: 10),
+                        top: 8, left: 30, right: 1, bottom: 10),
                     child: Column(
                       children: [
                         Row(
@@ -436,7 +436,7 @@ class _RadialProgress extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomPaint(
       painter: _RadialPainter(
-        progress: currentCalories / c.val,
+        progress: 0.7,
       ),
       child: Container(
         height: height,
@@ -538,7 +538,7 @@ class _MealCard extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => Symptoms(),
+                                builder: (context) => Symchecker(),
                               ),
                             );
                           }
@@ -599,21 +599,31 @@ class _MealCard extends StatelessWidget {
                                                       ),
                                                     );
                                                   }
-                        : (meal.name == "Food Calories\nDetection""\n") ? () async{
-                      WidgetsFlutterBinding.ensureInitialized();
+                                                : (meal.name ==
+                                                        "Food Calories\nDetection"
+                                                            "\n")
+                                                    ? () async {
+                                                        WidgetsFlutterBinding
+                                                            .ensureInitialized();
 
-                      // Obtain a list of available cameras
-                      final cameras = await availableCameras();
+                                                        // Obtain a list of available cameras
+                                                        final cameras =
+                                                            await availableCameras();
 
-                      // Get a specific camera (first one)
-                      final firstCamera = cameras.first;
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => TakePicturePage(camera: firstCamera,),
-                        ),
-                      );
-                    }
+                                                        // Get a specific camera (first one)
+                                                        final firstCamera =
+                                                            cameras.first;
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                TakePicturePage(
+                                                              camera:
+                                                                  firstCamera,
+                                                            ),
+                                                          ),
+                                                        );
+                                                      }
                                                     : (meal.name ==
                                                             "Medicine\nReminder"
                                                                 "\n")
@@ -636,7 +646,7 @@ class _MealCard extends StatelessWidget {
                                                                   MaterialPageRoute(
                                                                     builder:
                                                                         (context) =>
-                                                                            AppointmentReminder(),
+                                                                            AddAppointment(),
                                                                   ),
                                                                 );
                                                               }
