@@ -1,6 +1,6 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
-import 'package:training_and_diet_app/ui/pages/profile_screen.dart';
+import 'package:training_and_diet_app/ui/pages/new/profile_screen.dart';
 
 class ContactUs extends StatefulWidget {
   const ContactUs({key}) : super(key: key);

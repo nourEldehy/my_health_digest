@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:training_and_diet_app/ui/pages/calories_needed.dart';
-import 'package:training_and_diet_app/ui/pages/profile_screen.dart';
+import 'package:training_and_diet_app/ui/pages/new/profile_screen.dart';
 
 Calories c = new Calories();
 

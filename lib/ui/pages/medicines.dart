@@ -173,7 +173,7 @@ class TopContainer extends StatelessWidget {
             child: Center(
               child: Text(
                 //NUMBER OF REMINDERS
-                '0',
+                cardscount.toString(),
                 style: TextStyle(
                   fontFamily: "Neu",
                   fontSize: 28,

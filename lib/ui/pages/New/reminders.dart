@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:training_and_diet_app/ui/pages/appointment.dart';
 import 'package:training_and_diet_app/ui/pages/contact_us.dart';
 import 'package:training_and_diet_app/ui/pages/new/medicine2.dart';
-import 'package:training_and_diet_app/ui/pages/profile_screen.dart';
+import 'package:training_and_diet_app/ui/pages/new/profile_screen.dart';
 
 class Reminders extends StatefulWidget {
   @override

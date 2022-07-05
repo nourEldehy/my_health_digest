@@ -557,7 +557,7 @@ class _AddMedicineState extends State<AddMedicine> {
                       http.Response received = await remindersaver(newMed.mName, newMed.dosage, newMed.numDays, newMed.dwm, newMed.freq, newMed.reminders, token);
 
                       if (x == 1) {
-                        await Future.delayed(const Duration(seconds: 6), () {
+                        await Future.delayed(const Duration(seconds: 2), () {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
