@@ -107,7 +107,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             width: double.infinity,
             // color: Colors.white,
             padding:
-                const EdgeInsets.only(top: 8, left: 32, right: 16, bottom: 10),
+                const EdgeInsets.only(top: 8, left: 32, right: 16, bottom: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -515,6 +515,7 @@ class _MealCard extends StatelessWidget {
         bottom: 10,
       ),
       child: Material(
+        color: Colors.white,
         borderRadius: BorderRadius.all(Radius.circular(20)),
         elevation: 4,
         child: Column(
