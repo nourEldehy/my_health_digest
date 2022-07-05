@@ -1,56 +1,72 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:training_and_diet_app/model/medicine_details.dart';
-import 'package:training_and_diet_app/ui/pages/old/medicinereminder.dart';
+import 'add_medicine.dart';
+import 'package:http/http.dart' as http;
+import 'dart:async';
+import 'dart:convert';
+import 'package:flutter/services.dart';
+
+var map;
+int cardscount;
+var url;
+var savedtoken;
 
 class MedicineReminder extends StatefulWidget {
-  //static String id = "homePatient";
-  MedicineReminder({@required this.med});
-  final String med;
-
   @override
-  _MedicineReminderState createState() => _MedicineReminderState(this.med);
+  _MedicineReminderState createState() => _MedicineReminderState();
 }
 
 class _MedicineReminderState extends State<MedicineReminder> {
   final List<MedDetails> allMedicines = [];
-  final String med;
-  _MedicineReminderState(this.med);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // body: Container(
-      //     child: Image(
-      //   image: AssetImage('assets/medicine.png'),
-      //   fit: BoxFit.cover,
-      // )),
       appBar: AppBar(
         backgroundColor: Colors.lightBlue,
         elevation: 0.0,
       ),
       body: Container(
         color: Color(0xFFF6F8FC),
-        child: Column(
-          children: <Widget>[
-            Flexible(
-              flex: 3,
-              child: TopContainer(),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Flexible(
-              flex: 5,
-              child: BottomContainer(),
-            ),
-          ],
+        child: Center(
+          child: FutureBuilder(
+              future: getreminder(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  if (snapshot.hasData) {
+                    print(jsonDecode(snapshot.data.body));
+                  }
+                  return Container(
+                    color: Color(0xFFF6F8FC),
+                    child: Column(
+                      children: <Widget>[
+                        Flexible(
+                          flex: 3,
+                          child: TopContainer(),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Flexible(
+                          flex: 5,
+                          child: BottomContainer(),
+                        ),
+                      ],
+                    ),
+                  ); // Your UI here
+                } else if (snapshot.hasError) {
+                  return Text('Error');
+                } else {
+                  return CircularProgressIndicator();
+                }
+              }),
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        elevation: 4,
+        elevation: 7,
         backgroundColor: Colors.lightBlue,
         child: Icon(
           Icons.add,
@@ -59,38 +75,46 @@ class _MedicineReminderState extends State<MedicineReminder> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => Medicine(),
+              builder: (context) => AddMedicine(),
             ),
           );
         },
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        // type: fi,
-        // onTap: (index) => setState(() => _selectedIndex = index),
-        // iconSize: 40,
-        // selectedIconTheme: IconThemeData(
-        //   color: Color.fromRGBO(255, 10, 56, 1.0),
-        // ),
-        // unselectedIconTheme: IconThemeData(
-        //   color: Colors.black12,
-        // ),
-        currentIndex: 1,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: "Home",
-            backgroundColor: Colors.blue,
+      bottomNavigationBar: BottomAppBar(
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        shape: CircularNotchedRectangle(),
+        child: Container(
+          height: 60,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 60),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                IconButton(
+                  icon: Icon(
+                    Icons.calendar_view_week,
+                  ),
+                  onPressed: () {
+                    // setState(() {
+                    //   pageIndex = 0;
+                    // });
+                  },
+                ),
+                IconButton(
+                  icon: Icon(
+                    Icons.folder_open,
+                  ),
+                  onPressed: () {
+                    // setState(() {
+                    //   pageIndex = 1;
+                  },
+                ),
+              ],
+            ),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(FontAwesomeIcons.bell),
-            label: "Reminders",
-            backgroundColor: Colors.blue,
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: "Profile",
-              backgroundColor: Colors.blue),
-        ],
+          //color: MyColors.primaryColor,
+        ),
       ),
     );
   }
@@ -126,7 +150,7 @@ class TopContainer extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: "Angel",
-                fontSize: 64,
+                fontSize: 50,
                 color: Colors.white,
               ),
             ),
@@ -148,7 +172,7 @@ class TopContainer extends StatelessWidget {
             child: Center(
               child: Text(
                 //NUMBER OF REMINDERS
-                '2',
+                '0',
                 style: TextStyle(
                   fontFamily: "Neu",
                   fontSize: 28,
@@ -175,256 +199,52 @@ class BottomContainer extends StatelessWidget {
             color: Color(0xFFF6F8FC),
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.elliptical(20, 50),
-                        topRight: Radius.elliptical(20, 50),
-                        bottomLeft: Radius.elliptical(20, 50),
-                        bottomRight: Radius.elliptical(20, 50),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          blurRadius: 5,
-                          color: Colors.grey[400],
-                          offset: Offset(0, 3.5),
-                        )
-                      ],
-                      color: Colors.white,
-                    ),
-                    height: 100,
-                    width: double.infinity,
-                    child: Column(
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.all(12.0),
-                              child: Icon(
-                                FontAwesomeIcons.pills,
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: Text(
-                                "Panadol Extra",
-                                style: TextStyle(fontSize: 24),
-                              ),
-                            ),
-                            Text(
-                              "2 pill",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 24,
-                                  color: Color(0xFFC9C9C9),
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ],
+                for (var i = 0; i < cardscount; i++)
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.elliptical(20, 50),
+                          topRight: Radius.elliptical(20, 50),
+                          bottomLeft: Radius.elliptical(20, 50),
+                          bottomRight: Radius.elliptical(20, 50),
                         ),
-                        //FOR ALL reminders ...time.map(e)
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15.0),
-                          child: Row(
+                        boxShadow: [
+                          BoxShadow(
+                            blurRadius: 5,
+                            color: Colors.grey[400],
+                            offset: Offset(0, 3.5),
+                          )
+                        ],
+                        color: Colors.white,
+                      ),
+                      height: 100,
+                      width: double.infinity,
+                      child: Column(
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Container(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: Colors.blue,
-                                      width: 2,
-                                    ),
-                                    borderRadius: BorderRadius.circular(20.0),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8.0, vertical: 4),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "8:00 AM",
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ],
-                                    ),
-                                  )),
                               Padding(
-                                padding: const EdgeInsets.only(left: 10),
-                                child: Container(
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: Colors.blue,
-                                        width: 2,
-                                      ),
-                                      borderRadius: BorderRadius.circular(20.0),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 8.0, vertical: 4),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            "8:00 PM",
-                                            style: TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ],
-                                      ),
-                                    )),
+                                padding: const EdgeInsets.all(12.0),
+                                child: Text(
+                                  map[i]['name'],
+                                  style: TextStyle(fontSize: 24),
+                                ),
                               ),
-                              // Padding(
-                              //   padding: const EdgeInsets.only(left: 10),
-                              //   child: Container(
-                              //       decoration: BoxDecoration(
-                              //         border: Border.all(
-                              //           color: Colors.blue,
-                              //           width: 2,
-                              //         ),
-                              //         borderRadius: BorderRadius.circular(20.0),
-                              //       ),
-                              //       child: SizedBox(
-                              //           width: 75,
-                              //           height: 30,
-                              //           child: Padding(
-                              //             padding:
-                              //                 const EdgeInsets.only(left: 8.0),
-                              //             child: Row(
-                              //               mainAxisAlignment:
-                              //                   MainAxisAlignment.spaceBetween,
-                              //               children: [
-                              //                 Text(
-                              //                   "TIME",
-                              //                   style: TextStyle(
-                              //                       fontSize: 18,
-                              //                       fontWeight: FontWeight.bold),
-                              //                 ),
-                              //               ],
-                              //             ),
-                              //           ))),
-                              // ),
-                              // Padding(
-                              //   padding: const EdgeInsets.only(left: 10),
-                              //   child: Container(
-                              //       decoration: BoxDecoration(
-                              //         border: Border.all(
-                              //           color: Colors.blue,
-                              //           width: 2,
-                              //         ),
-                              //         borderRadius: BorderRadius.circular(20.0),
-                              //       ),
-                              //       child: SizedBox(
-                              //           width: 75,
-                              //           height: 30,
-                              //           child: Padding(
-                              //             padding:
-                              //                 const EdgeInsets.only(left: 8.0),
-                              //             child: Row(
-                              //               mainAxisAlignment:
-                              //                   MainAxisAlignment.spaceBetween,
-                              //               children: [
-                              //                 Text(
-                              //                   "TIME",
-                              //                   style: TextStyle(
-                              //                       fontSize: 18,
-                              //                       fontWeight: FontWeight.bold),
-                              //                 ),
-                              //               ],
-                              //             ),
-                              //           ))),
-                              // ),
+                              Text(
+                                map[i]['dosage'].toString(),
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 24,
+                                    color: Color(0xFFC9C9C9),
+                                    fontWeight: FontWeight.bold),
+                              ),
                             ],
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.elliptical(20, 50),
-                        topRight: Radius.elliptical(20, 50),
-                        bottomLeft: Radius.elliptical(20, 50),
-                        bottomRight: Radius.elliptical(20, 50),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          blurRadius: 5,
-                          color: Colors.grey[400],
-                          offset: Offset(0, 3.5),
-                        )
-                      ],
-                      color: Colors.white,
-                    ),
-                    height: 100,
-                    width: double.infinity,
-                    child: Column(
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.all(12.0),
-                              child: Icon(
-                                FontAwesomeIcons.pills,
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: Text(
-                                "Centrum Multivitamins",
-                                style: TextStyle(fontSize: 24),
-                              ),
-                            ),
-                            Text(
-                              "1 pill",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 24,
-                                  color: Color(0xFFC9C9C9),
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                        //FOR ALL reminders ...time.map(e)
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15.0),
-                          child: Row(
+                          Row(
                             children: [
-                              Container(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: Colors.blue,
-                                      width: 2,
-                                    ),
-                                    borderRadius: BorderRadius.circular(20.0),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8.0, vertical: 4),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "8:00 AM",
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ],
-                                    ),
-                                  )),
                               Padding(
                                 padding: const EdgeInsets.only(left: 10),
                                 child: Container(
@@ -435,22 +255,26 @@ class BottomContainer extends StatelessWidget {
                                       ),
                                       borderRadius: BorderRadius.circular(20.0),
                                     ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 8.0, vertical: 4),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            "4:00 PM",
-                                            style: TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold),
+                                    child: SizedBox(
+                                        width: 75,
+                                        height: 30,
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 8.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                "TIME",
+                                                style: TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ],
                                           ),
-                                        ],
-                                      ),
-                                    )),
+                                        ))),
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(left: 10),
@@ -462,90 +286,125 @@ class BottomContainer extends StatelessWidget {
                                       ),
                                       borderRadius: BorderRadius.circular(20.0),
                                     ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 8.0, vertical: 4),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            "12:00 AM",
-                                            style: TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold),
+                                    child: SizedBox(
+                                        width: 75,
+                                        height: 30,
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 8.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                "TIME",
+                                                style: TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ],
                                           ),
-                                        ],
+                                        ))),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: Container(
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: Colors.blue,
+                                        width: 2,
                                       ),
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                    child: SizedBox(
+                                        width: 75,
+                                        height: 30,
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 8.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                "TIME",
+                                                style: TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ],
+                                          ),
+                                        ))),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: Container(
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: Colors.blue,
+                                        width: 2,
+                                      ),
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                    child: SizedBox(
+                                        width: 75,
+                                        height: 30,
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 8.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                "TIME",
+                                                style: TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ],
+                                          ),
+                                        ))),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.all(4.0),
+                                child: InkWell(
+                                    onTap: () => {
+                                          url =
+                                              "http://10.0.2.2/api/med-reminder/delete/" +
+                                                  map[i]['_id'].toString(),
+                                          http.delete(
+                                            url,
+                                            headers: <String, String>{
+                                              'Content-Type':
+                                                  'application/json; charset=UTF-8',
+                                              'Authorization': savedtoken,
+                                            },
+                                          ),
+                                          getreminder(),
+                                          print(url),
+                                          Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  MedicineReminder(),
+                                            ),
+                                          )
+                                        },
+                                    child: Icon(
+                                      CupertinoIcons.delete,
+                                      color: Colors.red,
                                     )),
                               ),
-                              // Padding(
-                              //   padding: const EdgeInsets.only(left: 10),
-                              //   child: Container(
-                              //       decoration: BoxDecoration(
-                              //         border: Border.all(
-                              //           color: Colors.blue,
-                              //           width: 2,
-                              //         ),
-                              //         borderRadius: BorderRadius.circular(20.0),
-                              //       ),
-                              //       child: SizedBox(
-                              //           width: 75,
-                              //           height: 30,
-                              //           child: Padding(
-                              //             padding:
-                              //                 const EdgeInsets.only(left: 8.0),
-                              //             child: Row(
-                              //               mainAxisAlignment:
-                              //                   MainAxisAlignment.spaceBetween,
-                              //               children: [
-                              //                 Text(
-                              //                   "TIME",
-                              //                   style: TextStyle(
-                              //                       fontSize: 18,
-                              //                       fontWeight: FontWeight.bold),
-                              //                 ),
-                              //               ],
-                              //             ),
-                              //           ))),
-                              // ),
-                              // Padding(
-                              //   padding: const EdgeInsets.only(left: 10),
-                              //   child: Container(
-                              //       decoration: BoxDecoration(
-                              //         border: Border.all(
-                              //           color: Colors.blue,
-                              //           width: 2,
-                              //         ),
-                              //         borderRadius: BorderRadius.circular(20.0),
-                              //       ),
-                              //       child: SizedBox(
-                              //           width: 75,
-                              //           height: 30,
-                              //           child: Padding(
-                              //             padding:
-                              //                 const EdgeInsets.only(left: 8.0),
-                              //             child: Row(
-                              //               mainAxisAlignment:
-                              //                   MainAxisAlignment.spaceBetween,
-                              //               children: [
-                              //                 Text(
-                              //                   "TIME",
-                              //                   style: TextStyle(
-                              //                       fontSize: 18,
-                              //                       fontWeight: FontWeight.bold),
-                              //                 ),
-                              //               ],
-                              //             ),
-                              //           ))),
-                              // ),
                             ],
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
               ],
             ),
           ),
@@ -566,4 +425,22 @@ class BottomContainer extends StatelessWidget {
         ),
       );
   }
+}
+
+Future<void> getreminder() async {
+  final storage = FlutterSecureStorage();
+  final token = await storage.read(key: "token");
+  savedtoken = token;
+
+  final response = await http.get(
+    "http://10.0.2.2/api/med-reminder/get",
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': token,
+    },
+  );
+  //Map<List, dynamic> map = json.decode(response.body);
+  map = json.decode(response.body) as List;
+  print("Nameeeeeeeeeeeee  " + map[0]['name'].toString());
+  cardscount = map.length;
 }
