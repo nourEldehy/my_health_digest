@@ -12,7 +12,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:training_and_diet_app/ui/pages/medicine_reminder.dart';
+// import 'package:training_and_diet_app/ui/pages/medicine_reminder.dart';
+import 'package:training_and_diet_app/ui/New folder/medicines.dart';
 
 var englishName = " ";
 
@@ -528,16 +529,16 @@ class _AddMedicineState extends State<AddMedicine> {
                         newMed.freq = freq;
                         newMed.reminders = reminders;
                         print(newMed.mName);
-                        // final storage = FlutterSecureStorage();
-                        // final token = await storage.read(key: "token");
-                        // http.Response received = await remindersaver(
-                        //     newMed.mName,
-                        //     newMed.dosage,
-                        //     newMed.numDays,
-                        //     newMed.dwm,
-                        //     newMed.freq,
-                        //     newMed.reminders,
-                        //     token);
+                        final storage = FlutterSecureStorage();
+                        final token = await storage.read(key: "token");
+                        http.Response received = await remindersaver(
+                            newMed.mName,
+                            newMed.dosage,
+                            newMed.numDays,
+                            newMed.dwm,
+                            newMed.freq,
+                            newMed.reminders,
+                            token);
 
                         await Future.delayed(const Duration(seconds: 0), () {
                           Navigator.pushReplacement(
@@ -721,7 +722,7 @@ class _AddMedicineState extends State<AddMedicine> {
                     ),
                     SizedBox(
                       width: 400,
-                      height: 465,
+                      height: 425,
                       child: ListView(
                         children: [
                           ListTile(
@@ -747,26 +748,26 @@ class _AddMedicineState extends State<AddMedicine> {
                           Divider(),
                           ...checkBoxList
                               .map((item) => ListTile(
-                                    onTap: () {
-                                      setstate(() {
-                                        onItemClicked(item);
-                                      });
-                                    },
-                                    trailing: Checkbox(
-                                      value: item.value,
-                                      onChanged: (value) {
-                                        setstate(() {
-                                          onItemClicked(item);
-                                        });
-                                      },
-                                    ),
-                                    title: Text(
-                                      item.label,
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ))
+                            onTap: () {
+                              setstate(() {
+                                onItemClicked(item);
+                              });
+                            },
+                            trailing: Checkbox(
+                              value: item.value,
+                              onChanged: (value) {
+                                setstate(() {
+                                  onItemClicked(item);
+                                });
+                              },
+                            ),
+                            title: Text(
+                              item.label,
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ))
                               .toList()
                         ],
                       ),

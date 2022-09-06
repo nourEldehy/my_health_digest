@@ -7,7 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:training_and_diet_app/ui/pages/appointment.dart';
 import 'package:training_and_diet_app/ui/pages/contact_us.dart';
-import 'package:training_and_diet_app/ui/pages/medicine_reminder.dart';
+import 'package:training_and_diet_app/ui/New folder/medicines.dart';
 import 'package:training_and_diet_app/ui/pages/new_profile_screen.dart';
 
 class Reminders extends StatefulWidget {
@@ -88,9 +88,9 @@ class _RemindersState extends State<Reminders> {
                     );
                   },
                   child: SizedBox(
-                      height: 200,
-                      width: 200,
-                      child: Image.asset('assets/medicinereminder.png')),
+                      height: 180,
+                      width: 180,
+                      child: Image.asset("assets/medreminder.jpg")),
                 ),
               ),
               Padding(
@@ -105,7 +105,7 @@ class _RemindersState extends State<Reminders> {
                 ),
               ),
               SizedBox(
-                height: 30,
+                height: 20,
               ),
 
               //Enter Manually
@@ -121,9 +121,9 @@ class _RemindersState extends State<Reminders> {
                     );
                   },
                   child: SizedBox(
-                      height: 200,
-                      width: 200,
-                      child: Image.asset('assets/doc2.webp')),
+                      height: 180,
+                      width: 180,
+                      child: Image.asset('assets/Doctors.jpg')),
                 ),
               ),
               Padding(

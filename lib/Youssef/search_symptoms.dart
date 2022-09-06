@@ -1,9 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:async';
-import 'dart:convert';
-
-List title = [];
 
 class SearchSymptoms extends SearchDelegate<String> {
   final List<String> allSym;
@@ -12,7 +7,6 @@ class SearchSymptoms extends SearchDelegate<String> {
   SearchSymptoms({this.allSym, this.allSymSugg});
 
   @override
-  //Clear Icon
   List<Widget> buildActions(BuildContext context) {
     return [
       IconButton(
@@ -41,7 +35,6 @@ class SearchSymptoms extends SearchDelegate<String> {
               ),
         )
         .toList();
-    // Displayed Suggs
     return ListView.builder(
       itemCount: allsymptoms.length,
       itemBuilder: (context, index) => ListTile(
@@ -63,32 +56,15 @@ class SearchSymptoms extends SearchDelegate<String> {
               ),
         )
         .toList();
-      // here the query will be on change
-        print("Input  : " + query);
-        getRequest(query);
-            return ListView.builder(
-              itemCount: allsymptomsSugg.length,
-              itemBuilder: (context, index) => ListTile(
-                title: Text(allsymptomsSugg[index]),
-                onTap: () {
-                  query = allsymptomsSugg[index];
-                  // print(query);
-                  close(context, query);
-                },
-              ),
-            );
+    return ListView.builder(
+      itemCount: allsymptomsSugg.length,
+      itemBuilder: (context, index) => ListTile(
+        title: Text(allsymptomsSugg[index]),
+        onTap: () {
+          query = allsymptomsSugg[index];
+          close(context, query);
+        },
+      ),
+    );
   }
-}
-
-getRequest(String query) async {
-  //replace your restFull API here.
-  title = [];
-  String url = "http://10.0.2.2/api/sym-checker/autocomplete";
-  final response = await http.post(url,
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    },
-    body: jsonEncode(<String, String>{"search": query}),
-  );
-  print(json.decode(response.body));
 }

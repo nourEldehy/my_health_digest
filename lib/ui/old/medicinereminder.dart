@@ -5,6 +5,7 @@ import 'package:flutter_custom_cards/flutter_custom_cards.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:http/http.dart' as http;
+import 'package:training_and_diet_app/ui/pages/add_medicine.dart';
 
 import '../add_medicine.dart';
 import 'medicines.dart';
@@ -129,7 +130,7 @@ class _MedicineState extends State<Medicine> {
 
 Future<http.Response> getmedicinename(String barcode) {
   return http.post(
-    Uri.parse('http://10.0.2.2/api/barcode/check'),
+    Uri.parse('http://192.168.43.113/api/barcode/check'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },

@@ -9,9 +9,13 @@ class MyColors {
 
   //shades of pink
   static const Color lightPink = Color(0xFFF6B0B3);
-  static const Color lighterPink =  Color(0xFFFCBEC1);
+  static const Color lighterPink = Color(0xFFFCBEC1);
   static const Color lightestPink = Color(0xFFFDECED);
 
   static const Color inputFieldPink = Color(0xFFF87277);
   static const Color inputFieldTextPink = Color(0xFFFBB5B8);
+
+  static const TextStyle T1 =
+  TextStyle(fontWeight: FontWeight.bold, fontSize: 20);
+  static const TextStyle T2 = TextStyle(fontSize: 16, color: Color(0xff717778));
 }

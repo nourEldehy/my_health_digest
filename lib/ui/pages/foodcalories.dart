@@ -7,8 +7,9 @@ import 'package:path/path.dart';
 import 'package:async/async.dart';
 import 'dart:convert';
 
-import 'package:training_and_diet_app/ui/pages/New/reminders.dart';
+import 'package:training_and_diet_app/ui/pages/reminders.dart';
 
+Future<String> name;
 
 // Take picture page
 class TakePicturePage extends StatefulWidget {
@@ -54,7 +55,7 @@ class TakePicturePageState extends State<TakePicturePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text("Take a picture demo")
+          title: Text("Food Calories")
       ),
       body: FutureBuilder<void>(
         future: _initializeControllerFuture,
@@ -82,52 +83,50 @@ class TakePicturePageState extends State<TakePicturePage> {
                 try {
                   await _initializeControllerFuture;
                   final image = await _controller.takePicture();
-                  // String name = upload(File(image.path)).toString();
-                  // print("nameeeeeee" + name);
-                  // String name = upload(File(image.path)) as String;
-                  // If the picture was taken
-                  //   Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //       builder: (context) => DisplayPicturePage(
-                  //         imagePath: image?.path,
-                  //       ),
-                  //     ),
-                  //   );
-                    FutureBuilder(future: upload(File(image.path)),
-                        builder: (context, snapshot) {
-                          print(" aho ya 7odaaaaa" + jsonDecode(snapshot.data.body));
-                          if (snapshot.connectionState == ConnectionState.done) {
-                            if (snapshot.hasData){
-                              print(" aho ya 7odaaaaa" + jsonDecode(snapshot.data.body));
-                            }
-                            return Center(
-                                    child: Column(
-                                      children: <Widget>[
-                                        Text("$image?.path"),
-                                        Container(
-                                          width: MediaQuery.of(context).size.width/2,
-                                          height: MediaQuery.of(context).size.height/2,
-                                          child: Image.file(File(image?.path)),
-                                        ),
-                                        SizedBox(height: 30,),
-                                        Text("hello",
-                                          style: TextStyle(
-                                            fontFamily: "Angel",
-                                            fontSize: 40,
-                                            color: Colors.blue,
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                ); // Your UI here
-                          } else if (snapshot.hasError) {
-                            return Text('Error');
-                          } else {
-                            return CircularProgressIndicator();
-                          }
-                        }
+                  name = upload(image.path);
+                  print("nameeeeeee " + await name);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DisplayPicturePage(
+                          imagePath: image?.path,
+                        ),
+                      ),
                     );
+                  //   FutureBuilder(future: upload(image.path),
+                  //       builder: (context, snapshot) {
+                  //         print(" aho ya 7odaaaaa" + jsonDecode(snapshot.data.body));
+                  //         if (snapshot.connectionState == ConnectionState.done) {
+                  //           if (snapshot.hasData){
+                  //             print(" aho ya 7odaaaaa" + jsonDecode(snapshot.data.body));
+                  //           }
+                  //           return Center(
+                  //                   child: Column(
+                  //                     children: <Widget>[
+                  //                       Text("$image?.path"),
+                  //                       Container(
+                  //                         width: MediaQuery.of(context).size.width/2,
+                  //                         height: MediaQuery.of(context).size.height/2,
+                  //                         child: Image.file(File(image?.path)),
+                  //                       ),
+                  //                       SizedBox(height: 30,),
+                  //                       Text("hello",
+                  //                         style: TextStyle(
+                  //                           fontFamily: "Angel",
+                  //                           fontSize: 40,
+                  //                           color: Colors.blue,
+                  //                         ),
+                  //                       ),
+                  //                     ],
+                  //                   )
+                  //               ); // Your UI here
+                  //         } else if (snapshot.hasError) {
+                  //           return Text('Error');
+                  //         } else {
+                  //           return CircularProgressIndicator();
+                  //         }
+                  //       }
+                  //   );
 
 
                 print("My Image Path:");
@@ -168,7 +167,7 @@ class DisplayPicturePage extends StatelessWidget {
                   child: Image.file(File(imagePath)),
                 ),
                 SizedBox(height: 30,),
-                Text("hello",
+                Text("Apple",
                   style: TextStyle(
                     fontFamily: "Angel",
                     fontSize: 40,
@@ -182,37 +181,22 @@ class DisplayPicturePage extends StatelessWidget {
   }
 }
 
-upload(File imageFile) async {
+Future<String> upload(String imageFile) async {
   Map<String, dynamic> map;
-  // open a bytestream
-  var stream = new http.ByteStream(DelegatingStream.typed(imageFile.openRead()));
-  // get file length
-  var length = await imageFile.length();
 
-  // string to uri
-  var uri = Uri.parse("http://10.0.2.2/api/imagerecog/upload");
+  var postUri = Uri.parse("http://192.168.191.236/api/imagerecog/upload");
 
-  // create multipart request
-  var request = new http.MultipartRequest("POST", uri);
+  http.MultipartRequest request = new http.MultipartRequest("POST", postUri);
 
-  // multipart that takes file
-  var multipartFile = new http.MultipartFile('pic', stream, length,
-      filename: basename(imageFile.path));
+  http.MultipartFile multipartFile = await http.MultipartFile.fromPath(
+      'pic', imageFile);
 
-  // add file to multipart
   request.files.add(multipartFile);
 
-  // send
-  var response = await request.send();
+  http.StreamedResponse response = await request.send();
+
+
   print(response.statusCode);
-
-
-  // listen for response
-  response.stream.transform(utf8.decoder).listen((value) {
-    print(jsonDecode(value));
-    map = json.decode(value);
-    print(map['Name']);
-  }
-  );
-  // return map['Name'];
+  map =  jsonDecode(await response.stream.bytesToString());
+  return map['Name'];
 }

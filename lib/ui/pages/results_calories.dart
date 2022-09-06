@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:training_and_diet_app/model/constants.dart';
 import 'package:training_and_diet_app/components/reusable_card.dart';
 import 'package:training_and_diet_app/components/bottom_button.dart';
+import 'package:training_and_diet_app/model/provider_calories.dart';
 
 class ResultsCalories extends StatelessWidget {
   ResultsCalories({@required this.caloriesResult});
@@ -10,6 +12,36 @@ class ResultsCalories extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Future.delayed(const Duration(milliseconds: 3000), () {
+      showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title:
+              const Text('Do you want to change your daily calories needed?'),
+          // content: const Text('AlertDialog description'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text(
+                'No',
+                style: TextStyle(fontSize: 18),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Provider.of<CaloriesProvider>(context, listen: false)
+                    .changeDailyCalories(int.parse(caloriesResult));
+                Navigator.pop(context);
+              },
+              child: const Text(
+                'Yes',
+                style: TextStyle(fontSize: 18),
+              ),
+            ),
+          ],
+        ),
+      );
+    });
     return Scaffold(
       appBar: AppBar(
         title: Text('Daily Calories Needed Calculator'),

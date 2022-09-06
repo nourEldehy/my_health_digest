@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:training_and_diet_app/ui/pages/loginaccesscode.dart';
 import 'package:training_and_diet_app/ui/pages/signup.dart';
 import 'package:training_and_diet_app/ui/pages/login.dart';
 
@@ -15,22 +16,22 @@ class _HomepageState extends State<Homepage> {
       // backgroundColor: Colors.white,
       body: SafeArea(
         child: Container(
-          //color: Color.fromRGBO(53, 157, 232, 1),
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            colors: [
-              // Color.fromRGBO(255, 37, 87, 1),
-              // Color.fromRGBO(255, 37, 87, 1),
-              // Colors.black54,
-              // Color.fromRGBO(255, 37, 87, 1),
-              Colors.blue,
-              //Colors.white70,
-              // Color(0xFF380f90),
-              Color.fromRGBO(255, 255, 255, 1),
-            ],
-          )),
+          color: Color.fromRGBO(255, 255, 255, 1),
+          // decoration: BoxDecoration(
+          //     gradient: LinearGradient(
+          //   begin: Alignment.topRight,
+          //   end: Alignment.bottomLeft,
+          //   colors: [
+          //     // Color.fromRGBO(255, 37, 87, 1),
+          //     // Color.fromRGBO(255, 37, 87, 1),
+          //     // Colors.black54,
+          //     // Color.fromRGBO(255, 37, 87, 1),
+          //     Colors.blue,
+          //     //Colors.white70,
+          //     // Color(0xFF380f90),
+          //     Color.fromRGBO(255, 255, 255, 1),
+          //   ],
+          // )),
           width: double.infinity,
           height: MediaQuery.of(context).size.height,
           padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 50),
@@ -46,7 +47,7 @@ class _HomepageState extends State<Homepage> {
                       fontFamily: "Raleway",
                       fontWeight: FontWeight.bold,
                       fontSize: 30,
-                      color: Colors.white,
+                      color: Color.fromRGBO(255, 10, 55, 1),
                     ),
                   ),
                   const SizedBox(
@@ -59,21 +60,21 @@ class _HomepageState extends State<Homepage> {
                       fontFamily: "Raleway",
                       fontWeight: FontWeight.bold,
                       fontSize: 17,
-                      color: Colors.white,
+                      color: Color.fromRGBO(255, 10, 55, 1),
                     ),
                   )
                 ],
               ),
               Container(
-                height: MediaQuery.of(context).size.height / 3,
+                height: MediaQuery.of(context).size.height / 2.5,
                 decoration: const BoxDecoration(
                     image: DecorationImage(
-                        image: AssetImage("assets/3D-Yellow.png"))),
+                        image: AssetImage("assets/3D-.png"))),
               ),
               Column(
                 children: <Widget>[
                   MaterialButton(
-                    color: Color(0xFFfdca01),
+                    color: Color.fromRGBO(255, 10, 55, 1),
                     minWidth: double.infinity,
                     height: 60,
                     onPressed: () {
@@ -106,7 +107,7 @@ class _HomepageState extends State<Homepage> {
                           shape: RoundedRectangleBorder(
                               side: const BorderSide(
                                 width: 4,
-                                color: Color(0xFFfdca01),
+                                color: Color.fromRGBO(255, 10, 55, 1),
                               ),
                               borderRadius: BorderRadius.circular(50)),
                         ),
@@ -122,7 +123,7 @@ class _HomepageState extends State<Homepage> {
                             fontFamily: "Angel",
                             fontWeight: FontWeight.bold,
                             fontSize: 29,
-                            color: Color(0xFFfdca01),
+                            color: Color.fromRGBO(255, 10, 55, 1),
                           ),
                         )),
                   ),

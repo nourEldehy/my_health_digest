@@ -82,7 +82,7 @@ class _ContactUsState extends State<ContactUs> {
               ),
               Image.asset(
                 "assets/expand.png",
-                scale: 0.1,
+                scale: 0.07,
               ),
               // const SizedBox(
               //   height: 35,
@@ -111,7 +111,7 @@ class _ContactUsState extends State<ContactUs> {
                             '             ->Cairo: 17 Emarat El Madfaeya, City Stars st.infront of masged El kwat ElMosalaha,Nasr City'
                             "         (Gulf Office):",
                             style: TextStyle(
-                                fontSize: 18,
+                                fontSize: 16,
                                 wordSpacing: 5,
                                 fontWeight: FontWeight.bold),
                           ),

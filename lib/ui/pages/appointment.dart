@@ -141,7 +141,7 @@ class TopContainer extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: "Angel",
-                fontSize: 64,
+                fontSize: 50,
                 color: Colors.white,
               ),
             ),
@@ -152,7 +152,7 @@ class TopContainer extends StatelessWidget {
               child: Text(
                 "Number of Appointments",
                 style: TextStyle(
-                  fontSize: 17,
+                  fontSize: 14,
                   color: Colors.white,
                 ),
               ),
@@ -165,7 +165,7 @@ class TopContainer extends StatelessWidget {
                 '1',
                 style: TextStyle(
                   fontFamily: "Neu",
-                  fontSize: 28,
+                  fontSize: 24,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),

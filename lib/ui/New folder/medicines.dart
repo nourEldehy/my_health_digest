@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:training_and_diet_app/model/medicine_details.dart';
-import 'add_medicine.dart';
+import 'package:training_and_diet_app/ui/pages/add_medicine.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
@@ -172,7 +172,7 @@ class TopContainer extends StatelessWidget {
             child: Center(
               child: Text(
                 //NUMBER OF REMINDERS
-                '0',
+                cardscount.toString(),
                 style: TextStyle(
                   fontFamily: "Neu",
                   fontSize: 28,
@@ -245,130 +245,132 @@ class BottomContainer extends StatelessWidget {
                           ),
                           Row(
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.only(left: 10),
-                                child: Container(
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: Colors.blue,
-                                        width: 2,
-                                      ),
-                                      borderRadius: BorderRadius.circular(20.0),
-                                    ),
-                                    child: SizedBox(
-                                        width: 75,
-                                        height: 30,
-                                        child: Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 8.0),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                "TIME",
-                                                style: TextStyle(
-                                                    fontSize: 18,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                            ],
+                              for (var j = 0; j < map[i]['time'].length; j++)
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 10),
+                                    child: Container(
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                            color: Colors.blue,
+                                            width: 2,
                                           ),
-                                        ))),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 10),
-                                child: Container(
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: Colors.blue,
-                                        width: 2,
-                                      ),
-                                      borderRadius: BorderRadius.circular(20.0),
-                                    ),
-                                    child: SizedBox(
-                                        width: 75,
-                                        height: 30,
-                                        child: Padding(
-                                          padding:
+                                          borderRadius: BorderRadius.circular(
+                                              20.0),
+                                        ),
+                                        child: SizedBox(
+                                            width: 72,
+                                            height: 30,
+                                            child: Padding(
+                                              padding:
                                               const EdgeInsets.only(left: 8.0),
-                                          child: Row(
-                                            mainAxisAlignment:
+                                              child: Row(
+                                                mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                "TIME",
-                                                style: TextStyle(
-                                                    fontSize: 18,
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                                children: [
+                                                  Text(
+                                                    map[i]['time'][j],
+                                                    style: TextStyle(
+                                                        fontSize: 14,
+                                                        fontWeight: FontWeight
+                                                            .bold),
+                                                  ),
+                                                ],
                                               ),
-                                            ],
-                                          ),
-                                        ))),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 10),
-                                child: Container(
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: Colors.blue,
-                                        width: 2,
-                                      ),
-                                      borderRadius: BorderRadius.circular(20.0),
-                                    ),
-                                    child: SizedBox(
-                                        width: 75,
-                                        height: 30,
-                                        child: Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 8.0),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                "TIME",
-                                                style: TextStyle(
-                                                    fontSize: 18,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                            ],
-                                          ),
-                                        ))),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 10),
-                                child: Container(
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: Colors.blue,
-                                        width: 2,
-                                      ),
-                                      borderRadius: BorderRadius.circular(20.0),
-                                    ),
-                                    child: SizedBox(
-                                        width: 75,
-                                        height: 30,
-                                        child: Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 8.0),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                "TIME",
-                                                style: TextStyle(
-                                                    fontSize: 18,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                            ],
-                                          ),
-                                        ))),
-                              ),
+                                            ))),
+                                  ),
+                              // Padding(
+                              //   padding: const EdgeInsets.only(left: 10),
+                              //   child: Container(
+                              //       decoration: BoxDecoration(
+                              //         border: Border.all(
+                              //           color: Colors.blue,
+                              //           width: 2,
+                              //         ),
+                              //         borderRadius: BorderRadius.circular(20.0),
+                              //       ),
+                              //       child: SizedBox(
+                              //           width: 75,
+                              //           height: 30,
+                              //           child: Padding(
+                              //             padding:
+                              //                 const EdgeInsets.only(left: 8.0),
+                              //             child: Row(
+                              //               mainAxisAlignment:
+                              //                   MainAxisAlignment.spaceBetween,
+                              //               children: [
+                              //                 Text(
+                              //                   map[i]['time'].toString(),
+                              //                   style: TextStyle(
+                              //                       fontSize: 18,
+                              //                       fontWeight:
+                              //                           FontWeight.bold),
+                              //                 ),
+                              //               ],
+                              //             ),
+                              //           ))),
+                              // ),
+                              // Padding(
+                              //   padding: const EdgeInsets.only(left: 10),
+                              //   child: Container(
+                              //       decoration: BoxDecoration(
+                              //         border: Border.all(
+                              //           color: Colors.blue,
+                              //           width: 2,
+                              //         ),
+                              //         borderRadius: BorderRadius.circular(20.0),
+                              //       ),
+                              //       child: SizedBox(
+                              //           width: 75,
+                              //           height: 30,
+                              //           child: Padding(
+                              //             padding:
+                              //                 const EdgeInsets.only(left: 8.0),
+                              //             child: Row(
+                              //               mainAxisAlignment:
+                              //                   MainAxisAlignment.spaceBetween,
+                              //               children: [
+                              //                 Text(
+                              //                   map[i]['time'].toString(),
+                              //                   style: TextStyle(
+                              //                       fontSize: 18,
+                              //                       fontWeight:
+                              //                           FontWeight.bold),
+                              //                 ),
+                              //               ],
+                              //             ),
+                              //           ))),
+                              // ),
+                              // Padding(
+                              //   padding: const EdgeInsets.only(left: 10),
+                              //   child: Container(
+                              //       decoration: BoxDecoration(
+                              //         border: Border.all(
+                              //           color: Colors.blue,
+                              //           width: 2,
+                              //         ),
+                              //         borderRadius: BorderRadius.circular(20.0),
+                              //       ),
+                              //       child: SizedBox(
+                              //           width: 75,
+                              //           height: 30,
+                              //           child: Padding(
+                              //             padding:
+                              //                 const EdgeInsets.only(left: 8.0),
+                              //             child: Row(
+                              //               mainAxisAlignment:
+                              //                   MainAxisAlignment.spaceBetween,
+                              //               children: [
+                              //                 Text(
+                              //                   map[i]['time'].toString(),
+                              //                   style: TextStyle(
+                              //                       fontSize: 18,
+                              //                       fontWeight:
+                              //                           FontWeight.bold),
+                              //                 ),
+                              //               ],
+                              //             ),
+                              //           ))),
+                              // ),
                               Padding(
                                 padding: EdgeInsets.all(4.0),
                                 child: InkWell(
@@ -442,5 +444,7 @@ Future<void> getreminder() async {
   //Map<List, dynamic> map = json.decode(response.body);
   map = json.decode(response.body) as List;
   print("Nameeeeeeeeeeeee  " + map[0]['name'].toString());
+  // List<String> time = map[1]['time'];
+  // print("timeeee " + map[1]['time'][1].toString());
   cardscount = map.length;
 }

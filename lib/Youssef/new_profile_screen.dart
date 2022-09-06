@@ -35,8 +35,8 @@ class ProfileScreen extends StatefulWidget {
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
-class _ProfileScreenState extends State<ProfileScreen> {
 
+class _ProfileScreenState extends State<ProfileScreen> {
   int _selectedIndex = 0;
   void _onItemTapped(int index) {
     setState(() {
@@ -58,12 +58,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               : OpenContainer;
     });
   }
-  @override
-  void initState() {
-    getcalories();
 
-    super.initState();
-  }
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -659,19 +654,7 @@ class _MealCard extends StatelessWidget {
                                                                   ),
                                                                 );
                                                               }
-                                                            :(meal.name ==
-                  "Weight Monitoring"
-                  "\n")
-                      ? () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder:
-                            (context) =>
-                                WeightMonitoring(),
-                      ),
-                    );
-                  }: openContainer,
+                                                            : openContainer,
                     child: ClipRRect(
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                       child: Image.asset(

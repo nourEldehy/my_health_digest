@@ -9,12 +9,12 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:training_and_diet_app/ui/New%20folder/accesscodes.dart';
 import 'package:training_and_diet_app/ui/pages/new_profile_screen.dart';
 
-class Login extends StatefulWidget {
+class LoginAccessCode extends StatefulWidget {
   @override
-  _LoginState createState() => _LoginState();
+  _LoginAccessCodeState createState() => _LoginAccessCodeState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginAccessCodeState extends State<LoginAccessCode> {
   final _formKey = GlobalKey<FormState>();
   final _storage = FlutterSecureStorage();
 
@@ -58,14 +58,29 @@ class _LoginState extends State<Login> {
                           height: 50,
                         ),
                         Text(
-                          'Hello Again !',
+                          'Please enter your access code',
                           style: TextStyle(
                             fontFamily: "Raleway",
                             fontWeight: FontWeight.bold,
-                            fontSize: 35,
+                            fontSize: 23,
                             color: Color.fromRGBO(255, 10, 55, 1),
                           ),
                         ),
+                        // Padding(
+                        //   padding: const EdgeInsets.only(top: 20.0),
+                        //   child: SizedBox(
+                        //     width: 300,
+                        //     child: Text(
+                        //       'Welcome Back you\'ve been missed',
+                        //       textAlign: TextAlign.center,
+                        //       style: TextStyle(
+                        //         fontFamily: 'Source Sans Pro',
+                        //         fontSize: 30.0,
+                        //         letterSpacing: 2.5,
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
                         Padding(
                           padding: EdgeInsets.fromLTRB(25, 30.0, 25.0, 10),
                           child: TextFormField(
@@ -91,7 +106,7 @@ class _LoginState extends State<Login> {
                             textCapitalization: TextCapitalization.words,
                             decoration: InputDecoration(
                               fillColor: Color.fromRGBO(0, 0, 0, 0.5),
-                              hintText: ("Enter Email"),
+                              hintText: ("Enter Access Code"),
                               hintStyle:
                                   TextStyle(fontSize: 18, color: Colors.grey),
                               enabledBorder: OutlineInputBorder(
@@ -114,90 +129,9 @@ class _LoginState extends State<Login> {
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.fromLTRB(25, 5.0, 25.0, 10),
-                          child: TextFormField(
-                            cursorColor: Color.fromRGBO(255, 10, 55, 1),
-                            obscureText: _isObscure,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter password';
-                              }
-                              return null;
-                            },
-                            onChanged: (String value) {
-                              setState(() {
-                                password = value;
-                              });
-                            },
-                            style: TextStyle(
-                              fontSize: 16,
-                            ),
-                            textCapitalization: TextCapitalization.words,
-                            decoration: InputDecoration(
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  _isObscure
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
-                                  color: Colors.grey,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    _isObscure = !_isObscure;
-                                  });
-                                },
-                              ),
-                              fillColor: Color.fromRGBO(0, 0, 0, 0.5),
-                              hintText: ("Enter Password"),
-                              hintStyle:
-                                  TextStyle(fontSize: 18, color: Colors.grey),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Color.fromRGBO(255, 10, 55, 1), width: 2),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              border: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.white, width: 2),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Color.fromRGBO(255, 10, 55, 1), width: 2),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              filled: true,
-                            ),
-                          ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Padding(
-                                padding: EdgeInsets.fromLTRB(25, 0.0, 25.0, 0),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    print("forgot pass");
-                                  },
-                                  child: SizedBox(
-                                    width: 150,
-                                    height: 40,
-                                    child: Center(
-                                      child: Text(
-                                        "Forget Password?",
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                  ),
-                                )),
-                          ],
-                        ),
-                        Padding(
                           padding: const EdgeInsets.only(top: 48.0),
                           child: SizedBox(
-                            width: 320,
+                            width: 240,
                             height: 60,
                             child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
@@ -252,7 +186,7 @@ class _LoginState extends State<Login> {
                                   }
                                 },
                                 child: Text(
-                                  "Sign in",
+                                  "Submit",
                                   style: TextStyle(
                                     fontFamily: "Angel",
                                     fontWeight: FontWeight.bold,
@@ -271,7 +205,7 @@ class _LoginState extends State<Login> {
                             endIndent: 8,
                           )),
                           Text(
-                            "continue with",
+                            "For Subscription",
                             style: TextStyle(
                               fontFamily: "Raleway",
                               fontWeight: FontWeight.bold,
@@ -282,7 +216,7 @@ class _LoginState extends State<Login> {
                           Expanded(
                               child: Divider(
                             thickness: 4,
-                            height: 100,
+                            height: 130,
                             indent: 8,
                             endIndent: 20,
                           )),
@@ -290,79 +224,62 @@ class _LoginState extends State<Login> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Container(
-                              //color: Colors.red,
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: Colors.transparent, width: 3),
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: SizedBox(
-                                child: Image.asset("assets/gmail.png"),
-                                // Icon(
-                                //     FontAwesomeIcons.google,
-                                //     color: Colors.blue, size: 40.0),
-                                width: 50,
-                                height: 50,
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 25.0),
+                              child: ElevatedButton (
+                                onPressed: (){
+
+                                },
+                                  style: ElevatedButton.styleFrom(
+                                    shadowColor: Colors.transparent,
+                                    primary: Color.fromRGBO(255, 255, 255, 0.2),
+                                    shape: RoundedRectangleBorder(
+                                        side: const BorderSide(
+                                          width: 2,
+                                          color: Color.fromRGBO(255, 10, 55, 1),
+                                        ),
+                                        borderRadius: BorderRadius.circular(50)),
+                                  ),
+                                child: Text("Call  Us",
+                                  style: TextStyle(
+                                    fontFamily: "Angel",
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 32,
+                                    color: Color.fromRGBO(255, 10, 55, 1),
+                                  ),
+                                ),
                               ),
                             ),
                             Padding(
                               padding:
-                                  const EdgeInsets.symmetric(horizontal: 25.0),
-                              child: Container(
-                                //color: Colors.red,
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.transparent, width: 3),
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: SizedBox(
-                                  child: Icon(FontAwesomeIcons.apple,
-                                      color: Colors.blueGrey, size: 40.0),
-                                  width: 50,
-                                  height: 50,
+                              const EdgeInsets.symmetric(horizontal: 25.0),
+                              child: ElevatedButton (
+                                onPressed: (){
+
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  shadowColor: Colors.transparent,
+                                  primary: Color.fromRGBO(255, 255, 255, 0.2),
+                                  shape: RoundedRectangleBorder(
+                                      side: const BorderSide(
+                                        width: 2,
+                                        color: Color.fromRGBO(255, 10, 55, 1),
+                                      ),
+                                      borderRadius: BorderRadius.circular(50)),
                                 ),
-                              ),
-                            ),
-                            Container(
-                              //color: Colors.red,
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: Colors.transparent, width: 3),
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: SizedBox(
-                                child: Icon(FontAwesomeIcons.facebook,
-                                    color: Colors.blue, size: 40.0),
-                                width: 50,
-                                height: 50,
+                                child: Text("Send an email",
+                                  style: TextStyle(
+                                    fontFamily: "Angel",
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 25,
+                                    color: Color.fromRGBO(255, 10, 55, 1),
+                                  ),
+                                ),
                               ),
                             ),
                           ],
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 30),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              // Text(
-                              //   "Not a member?",
-                              //   style: TextStyle(
-                              //       // fontFamily: "Raleway",
-                              //       fontWeight: FontWeight.bold,
-                              //       fontSize: 21),
-                              // ),
-                              // GestureDetector(
-                              //   onTap: () {
-                              //     print("Register");
-                              //   },
-                              //   child: Text(" REGISTER NOW",
-                              //       style: TextStyle(
-                              //           fontFamily: "Anchor",
-                              //           color: Colors.blue,
-                              //           fontSize: 19,
-                              //           fontWeight: FontWeight.bold)),
-                              // )
-                            ],
-                          ),
-                        )
                       ],
                     ),
                   ],

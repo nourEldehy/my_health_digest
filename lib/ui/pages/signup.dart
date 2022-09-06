@@ -26,23 +26,23 @@ class _SignupState extends State<Signup> {
       key: _formKey,
       child: Scaffold(
         body: Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topRight,
-                end: Alignment.bottomLeft,
-                colors: [
-                  // Color.fromRGBO(255, 37, 87, 1),
-                  // Color.fromRGBO(255, 37, 87, 1),
-                  // Colors.black54,
-                  // Color.fromRGBO(255, 37, 87, 1),
-                  Colors.blue,
-                  //Colors.white70,
-                  // Color(0xFF380f90),
-                  Color.fromRGBO(255, 255, 255, 1),
-                ],
-              )
-          ),
-          // color: Color(0xFFf5f0f1),
+          // decoration: BoxDecoration(
+          //     gradient: LinearGradient(
+          //       begin: Alignment.topRight,
+          //       end: Alignment.bottomLeft,
+          //       colors: [
+          //         // Color.fromRGBO(255, 37, 87, 1),
+          //         // Color.fromRGBO(255, 37, 87, 1),
+          //         // Colors.black54,
+          //         // Color.fromRGBO(255, 37, 87, 1),
+          //         Colors.blue,
+          //         //Colors.white70,
+          //         // Color(0xFF380f90),
+          //         Color.fromRGBO(255, 255, 255, 1),
+          //       ],
+          //     )
+          // ),
+          color: Color.fromRGBO(255, 255, 255, 1),
           child: ListView(
             children: [
               Padding(
@@ -60,13 +60,13 @@ class _SignupState extends State<Signup> {
                             fontFamily: "Raleway",
                             fontWeight: FontWeight.bold,
                             fontSize: 30,
-                            color: Colors.white,
+                            color: Color.fromRGBO(255, 10, 55, 1),
                           ),
                         ),
                         Padding(
                           padding: EdgeInsets.fromLTRB(25, 30.0, 25.0, 10),
                           child: TextFormField(
-                            cursorColor: Color(0xFFfdca01),
+                            cursorColor: Color.fromRGBO(255, 10, 55, 1),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please your name';
@@ -81,13 +81,13 @@ class _SignupState extends State<Signup> {
                             ),
                             textCapitalization: TextCapitalization.words,
                             decoration: InputDecoration(
-                              fillColor: Color.fromRGBO(0, 0, 0, 0.1),
+                              fillColor: Color.fromRGBO(0, 0, 0, 0.5),
                               hintText: ("Enter Name"),
                               hintStyle:
                               TextStyle(fontSize: 18, color: Colors.grey),
                               enabledBorder: OutlineInputBorder(
                                 borderSide:
-                                BorderSide(color: Color(0xFFfdca01), width: 2),
+                                BorderSide(color: Color.fromRGBO(255, 10, 55, 1), width: 2),
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               border: OutlineInputBorder(
@@ -97,7 +97,7 @@ class _SignupState extends State<Signup> {
                               ),
                               focusedBorder:OutlineInputBorder(
                                 borderSide:
-                                BorderSide(color: Color(0xFFfdca01), width: 2),
+                                BorderSide(color: Color.fromRGBO(255, 10, 55, 1), width: 2),
                                 borderRadius: BorderRadius.circular(20),),
                               filled: true,
                             ),
@@ -106,6 +106,7 @@ class _SignupState extends State<Signup> {
                         Padding(
                           padding: EdgeInsets.fromLTRB(25, 5.0, 25.0, 10),
                           child: TextFormField(
+                            cursorColor: Color.fromRGBO(255, 10, 55, 1),
                             keyboardType: TextInputType.emailAddress,
                             onChanged: (val) {
                               setState(() {
@@ -126,13 +127,13 @@ class _SignupState extends State<Signup> {
                             ),
                             textCapitalization: TextCapitalization.words,
                             decoration: InputDecoration(
-                              fillColor: Color.fromRGBO(0, 0, 0, 0.1),
+                              fillColor: Color.fromRGBO(0, 0, 0, 0.5),
                               hintText: ("Enter Email"),
                               hintStyle:
                               TextStyle(fontSize: 18, color: Colors.grey),
                               enabledBorder: OutlineInputBorder(
                                 borderSide:
-                                BorderSide(color: Color(0xFFfdca01), width: 2),
+                                BorderSide(color: Color.fromRGBO(255, 10, 55, 1), width: 2),
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               border: OutlineInputBorder(
@@ -142,7 +143,7 @@ class _SignupState extends State<Signup> {
                               ),
                               focusedBorder:OutlineInputBorder(
                                 borderSide:
-                                BorderSide(color: Color(0xFFfdca01), width: 2),
+                                BorderSide(color: Color.fromRGBO(255, 10, 55, 1), width: 2),
                                 borderRadius: BorderRadius.circular(20),),
                               filled: true,
                             ),
@@ -151,6 +152,7 @@ class _SignupState extends State<Signup> {
                         Padding(
                           padding: EdgeInsets.fromLTRB(25, 5.0, 25.0, 10),
                           child: TextFormField(
+                            cursorColor: Color.fromRGBO(255, 10, 55, 1),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter a password';
@@ -183,13 +185,13 @@ class _SignupState extends State<Signup> {
                                   });
                                 },
                               ),
-                              fillColor: Color.fromRGBO(0, 0, 0, 0.1),
+                              fillColor: Color.fromRGBO(0, 0, 0, 0.5),
                               hintText: ("Enter Password"),
                               hintStyle:
                               TextStyle(fontSize: 18, color: Colors.grey),
                               enabledBorder: OutlineInputBorder(
                                 borderSide:
-                                BorderSide(color: Color(0xFFfdca01), width: 2),
+                                BorderSide(color: Color.fromRGBO(255, 10, 55, 1), width: 2),
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               border: OutlineInputBorder(
@@ -199,7 +201,7 @@ class _SignupState extends State<Signup> {
                               ),
                               focusedBorder:OutlineInputBorder(
                                 borderSide:
-                                BorderSide(color: Color(0xFFfdca01), width: 2),
+                                BorderSide(color: Color.fromRGBO(255, 10, 55, 1), width: 2),
                                 borderRadius: BorderRadius.circular(20),),
                               filled: true,
                             ),
@@ -208,6 +210,7 @@ class _SignupState extends State<Signup> {
                         Padding(
                           padding: EdgeInsets.fromLTRB(25, 5.0, 25.0, 10),
                           child: TextFormField(
+                            cursorColor: Color.fromRGBO(255, 10, 55, 1),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter a confirm password';
@@ -240,13 +243,13 @@ class _SignupState extends State<Signup> {
                                   });
                                 },
                               ),
-                              fillColor: Color.fromRGBO(0, 0, 0, 0.1),
+                              fillColor: Color.fromRGBO(0, 0, 0, 0.5),
                               hintText: ("Confirm Password"),
                               hintStyle:
                               TextStyle(fontSize: 18, color: Colors.grey),
                               enabledBorder: OutlineInputBorder(
                                 borderSide:
-                                BorderSide(color: Color(0xFFfdca01), width: 2),
+                                BorderSide(color: Color.fromRGBO(255, 10, 55, 1), width: 2),
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               border: OutlineInputBorder(
@@ -256,7 +259,7 @@ class _SignupState extends State<Signup> {
                               ),
                               focusedBorder:OutlineInputBorder(
                                 borderSide:
-                                BorderSide(color: Color(0xFFfdca01), width: 2),
+                                BorderSide(color: Color.fromRGBO(255, 10, 55, 1), width: 2),
                                 borderRadius: BorderRadius.circular(20),),
                               filled: true,
                             ),
@@ -270,13 +273,13 @@ class _SignupState extends State<Signup> {
                                 width: 160,
                                 child: DropdownButtonFormField(
                                     decoration: InputDecoration(
-                                      fillColor: Color.fromRGBO(0, 0, 0, 0.1),
+                                      fillColor: Color.fromRGBO(0, 0, 0, 0.5),
                                       hintText: ("Enter Gender"),
                                       hintStyle: TextStyle(
                                           fontSize: 18, color: Colors.grey),
                                       enabledBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
-                                            color: Color(0xFFfdca01), width: 2),
+                                            color: Color.fromRGBO(255, 10, 55, 1), width: 2),
                                         borderRadius: BorderRadius.circular(20),
                                       ),
                                       border: OutlineInputBorder(
@@ -286,7 +289,7 @@ class _SignupState extends State<Signup> {
                                       ),
                                       focusedBorder:OutlineInputBorder(
                                         borderSide:
-                                        BorderSide(color: Color(0xFFfdca01), width: 2),
+                                        BorderSide(color: Color.fromRGBO(255, 10, 55, 1), width: 2),
                                         borderRadius: BorderRadius.circular(20),),
                                       filled: true,
                                     ),
@@ -311,6 +314,7 @@ class _SignupState extends State<Signup> {
                                 child: SizedBox(
                                   width: 160,
                                   child: TextFormField(
+                                    cursorColor: Color.fromRGBO(255, 10, 55, 1),
                                     keyboardType: TextInputType.number,
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
@@ -331,13 +335,13 @@ class _SignupState extends State<Signup> {
                                     textCapitalization:
                                         TextCapitalization.words,
                                     decoration: InputDecoration(
-                                      fillColor: Color.fromRGBO(0, 0, 0, 0.1),
+                                      fillColor: Color.fromRGBO(0, 0, 0, 0.5),
                                       hintText: ("Enter Age"),
                                       hintStyle: TextStyle(
                                           fontSize: 18, color: Colors.grey),
                                       enabledBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
-                                            color: Color(0xFFfdca01), width: 2),
+                                            color: Color.fromRGBO(255, 10, 55, 1), width: 2),
                                         borderRadius: BorderRadius.circular(20),
                                       ),
                                       border: OutlineInputBorder(
@@ -347,7 +351,7 @@ class _SignupState extends State<Signup> {
                                       ),
                                       focusedBorder:OutlineInputBorder(
                                         borderSide:
-                                        BorderSide(color: Color(0xFFfdca01), width: 2),
+                                        BorderSide(color: Color.fromRGBO(255, 10, 55, 1), width: 2),
                                         borderRadius: BorderRadius.circular(20),),
                                       filled: true,
                                     ),
@@ -370,7 +374,7 @@ class _SignupState extends State<Signup> {
                                   shape: RoundedRectangleBorder(
                                       side: const BorderSide(
                                         width: 4,
-                                        color: Color(0xFFfdca01),
+                                        color: Color.fromRGBO(255, 10, 55, 1),
                                       ),
                                       borderRadius: BorderRadius.circular(50)),
                                 ),
@@ -384,7 +388,7 @@ class _SignupState extends State<Signup> {
                                     fontFamily: "Angel",
                                     fontWeight: FontWeight.bold,
                                     fontSize: 29,
-                                    color: Color(0xFFfdca01),
+                                    color: Color.fromRGBO(255, 10, 55, 1),
                                   ),
                                 )),
                           ),
