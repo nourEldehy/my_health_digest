@@ -62,7 +62,7 @@ class _CaloriesPainterState extends State<CaloriesPainter>
       painter: RadialPainter(
           Provider.of<CaloriesProvider>(context).calculateRemaining() *
               360 /
-              Provider.of<CaloriesProvider>(context).daliyCalories),
+              Provider.of<CaloriesProvider>(context).dailyCalories),
     );
   }
 }

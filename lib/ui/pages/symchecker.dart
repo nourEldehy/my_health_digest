@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:training_and_diet_app/ui/pages/search_symptoms.dart';
+import 'package:training_and_diet_app/model/search_symptoms.dart';
 
 class Symchecker extends StatefulWidget {
   @override
@@ -8,6 +8,13 @@ class Symchecker extends StatefulWidget {
 
 class _SymcheckerState extends State<Symchecker> {
   List<String> selectedSymptoms = [];
+  TextEditingController controller;
+
+  @override
+  void initState() {
+    controller = TextEditingController();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,28 +33,63 @@ class _SymcheckerState extends State<Symchecker> {
         padding: const EdgeInsets.all(18.0),
         child: Column(
           children: [
-            OutlinedButton.icon(
-                label: Text(
-                  "Search for symptoms",
+            Autocomplete<String>(
+              fieldViewBuilder:
+                  (context, controller, focusNode, onEditingComplete) {
+                this.controller = controller;
+
+                return TextField(
+                  controller: controller,
                   style: TextStyle(fontSize: 20),
-                ),
-                icon: Icon(Icons.search),
-                style: OutlinedButton.styleFrom(
-                    primary: Colors.blue, side: BorderSide(color: Colors.blue)),
-                onPressed: () async {
-                  final finalResult = await showSearch(
-                      context: context,
-                      delegate: SearchSymptoms(
-                          allSym: allSym,
-                          allSymSugg:
-                              allSymSugg)); //OPTIONAL show suggestions that arent already chosen
-                  setState(() {
-                    if (finalResult != "" &&
-                        !selectedSymptoms.contains(finalResult)) {
-                      selectedSymptoms.add(finalResult);
-                    }
-                  });
-                }),
+                  focusNode: focusNode,
+                  onEditingComplete: onEditingComplete,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(color: Colors.grey[300]),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(color: Colors.grey[300]),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(color: Colors.grey[300]),
+                    ),
+                    hintText: "What do you feel?",
+                    hintStyle: TextStyle(
+                        color: Colors.blue.withOpacity(0.5),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20),
+                    prefixIcon: Icon(
+                      Icons.search,
+                      color: Colors.blue,
+                    ),
+                  ),
+                );
+              },
+              optionsBuilder: (TextEditingValue textEditingValue) {
+                if (textEditingValue.text == '') {
+                  return const Iterable<String>.empty();
+                }
+                return allSym.where((String option) {
+                  return option.contains(textEditingValue.text.toLowerCase());
+                });
+              },
+              onSelected: (String selection) {
+                setState(() {
+                  if (!selectedSymptoms.contains(selection))
+                    selectedSymptoms.add(selection);
+                  //TODO: Eb3t li 7oda el list el esmha selectedSymptoms
+                  //TODO: Hat receive pdf files 7otha fi el list el esmha allPDFs
+                  //TODO: Make sure en enta t3ml keda gowa el setState deh
+                  controller.clear();
+                });
+                print('Selected Symptoms $selectedSymptoms');
+                FocusManager.instance.primaryFocus?.unfocus();
+              },
+            ),
+
             (selectedSymptoms.isEmpty)
                 ? Container()
                 : Container(
@@ -91,9 +133,8 @@ class _SymcheckerState extends State<Symchecker> {
                                             GestureDetector(
                                               onTap: () {
                                                 setState(() {
-                                                  //print(reminders);
                                                   selectedSymptoms.remove(e);
-                                                  //print(reminders);
+                                                  //TODO: SEND SelectedSymptoms li 7oda and receive the pdfs
                                                 });
                                               },
                                               //color: Colors.green,
@@ -120,35 +161,91 @@ class _SymcheckerState extends State<Symchecker> {
                         ],
                       ),
                     ),
-                  ), //Result here
-            Expanded(
-              child: (selectedSymptoms.contains("Cough") &&
-                      selectedSymptoms.contains("fever"))
-                  ? ListView.builder(
-                      itemCount: 1,
-                      itemBuilder: (context, index) {
-                        return Column(
-                          children: [
-                            ListTile(
-                              title: Text(allPDFs[2]),
-                            ),
-                            Divider(),
-                          ],
-                        );
-                      })
-                  : ListView.builder(
-                      itemCount: allPDFs.length,
-                      itemBuilder: (context, index) {
-                        return Column(
-                          children: [
-                            ListTile(
-                              title: Text(allPDFs[index]),
-                            ),
-                            Divider(),
-                          ],
-                        );
-                      }),
-            ),
+                  ),
+            //TODO: Shof hatshow el pdfs ezy, enta 2olt zay myhealth
+            //Result here
+            // Expanded(
+            //   child: ((selectedSymptoms.contains("Cough") &&
+            //           selectedSymptoms.contains("Fever") &&
+            //           selectedSymptoms.contains("Loss of taste or smell")))
+            //       ? ListView.builder(
+            //           itemCount: 1,
+            //           itemBuilder: (context, index) {
+            //             return Column(
+            //               children: [
+            //                 ListTile(
+            //                   title: Text(allPDFs[2]),
+            //                 ),
+            //               ],
+            //             );
+            //           })
+            //       : (selectedSymptoms.contains("Cough") &&
+            //               selectedSymptoms.contains("Fever"))
+            //           ? ListView.builder(
+            //               itemCount: 1,
+            //               itemBuilder: (context, index) {
+            //                 return Column(
+            //                   children: [
+            //                     ListTile(
+            //                       title: Text(allPDFs[2]),
+            //                     ),
+            //                     Divider(),
+            //                     ListTile(
+            //                       title: Text(allPDFs[4]),
+            //                     ),
+            //                     Divider(),
+            //                     ListTile(
+            //                       title: Text(allPDFs[7]),
+            //                     ),
+            //                   ],
+            //                 );
+            //               })
+            //           : (selectedSymptoms.contains("Cough"))
+            //               ? ListView.builder(
+            //                   itemCount: 1,
+            //                   itemBuilder: (context, index) {
+            //                     return Column(
+            //                       children: [
+            //                         ListTile(
+            //                           title: Text(allPDFs[2]),
+            //                         ),
+            //                         Divider(),
+            //                         ListTile(
+            //                           title: Text(allPDFs[4]),
+            //                         ),
+            //                         Divider(),
+            //                         ListTile(
+            //                           title: Text(allPDFs[7]),
+            //                         ),
+            //                         Divider(),
+            //                         ListTile(
+            //                           title: Text(allPDFs[13]),
+            //                         ),
+            //                         Divider(),
+            //                         ListTile(
+            //                           title: Text(allPDFs[15]),
+            //                         ),
+            //                         Divider(),
+            //                         ListTile(
+            //                           title: Text(allPDFs[16]),
+            //                         ),
+            //                         Divider(),
+            //                       ],
+            //                     );
+            //                   })
+            //               : ListView.builder(
+            //                   itemCount: allPDFs.length,
+            //                   itemBuilder: (context, index) {
+            //                     return Column(
+            //                       children: [
+            //                         ListTile(
+            //                           title: Text(allPDFs[index]),
+            //                         ),
+            //                         Divider(),
+            //                       ],
+            //                     );
+            //                   }),
+            // ),
           ],
         ),
       ),
@@ -157,46 +254,42 @@ class _SymcheckerState extends State<Symchecker> {
 }
 
 final List<String> allPDFs = [
-  //load el pdfs here from db
-  'Bipolar Disorder',
-  'Cavities',
-  'Covid 19',
-  'Coronary Heart disease',
-  'Influenza',
-  'Dislocation',
-  'Gum Infection',
-  'Cold flu',
-  'Genetic Disorder',
-  'Food Poisoning',
-  'Esophageal Cancer',
-  'Ear Infection',
-  'Cystic Fibrosis',
-  'Heart Attack',
-  'Hypertension',
-  'Mouth Cancer',
-  'Liver Cancer',
+  //TODO: load el pdfs here from db
+  // 'Bipolar Disorder',
+  // 'Cavities',
+  // 'Covid 19',
+  // 'Coronary Heart disease',
+  // 'Influenza',
+  // 'Dislocation',
+  // 'Gum Infection',
+  // 'Cold flu',
+  // 'Genetic Disorder',
+  // 'Food Poisoning',
+  // 'Esophageal Cancer',
+  // 'Ear Infection',
+  // 'Cystic Fibrosis',
+  // 'Heart Attack',
+  // 'Hypertension',
+  // 'Mouth Cancer',
+  // 'Liver Cancer',
 ];
 
 final List<String> allSym = [
-  //load el syms here from db
-  'Suggested Symptom 1',
-  'Suggested Symptom 2',
-  'Suggested Symptom 3',
-  'Suggested Symptom 4',
-  'loss of taste or smell',
-  'fever',
+  //TODO: load el syms here from db
   'Cough',
+  'Congested or runny nose',
+  'Ear or hearing problems',
+  'Eye or vision problems',
+  'Upset stomach or indigestion',
+  'Numbness or tingling sensations',
+  'Drowsiness',
+  'Memory problems',
+  'Difficulty concentrating',
+  'Muscle weakness',
+  'Loss of taste or smell',
+  'Fever',
   'Chest pain',
   'Asthma',
   'Allergies',
   'Common cold',
-];
-
-final List<String> allSymSugg = [
-  //optional we can add another list of most common symptoms
-  //load el syms here from db
-  'Suggested Symptom 1',
-  'Suggested Symptom 2',
-  'Suggested Symptom 3',
-  'Suggested Symptom 4',
 ];

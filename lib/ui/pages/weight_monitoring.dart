@@ -402,25 +402,25 @@ class _WeightMonitoringState extends State<WeightMonitoring> {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: Text("Add exercise"),
+              title: Text("Add weight"),
               actions: [
                 TextButton(
                     onPressed: () {
-                      exerciseCalories.text = '';
                       Navigator.of(context).pop();
                     },
                     child: Text("Cancel")),
                 TextButton(
                     onPressed: () {
+                      senddata("weight",w,'http://10.0.2.2/api/weight-mon/weight/push');
                       Navigator.of(context).pop();
                     },
                     child: Text("Add"))
               ],
               content: SizedBox(
-                height: 70,
+                height: 150,
                 child: Center(
                   child: Container(
-                    height: 100,
+                    height: 150,
                     width: 200,
                     child: WeightSlider(
                       weight: w,
