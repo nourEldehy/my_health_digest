@@ -17,7 +17,8 @@ int cardscount;
 var url;
 var savedtoken;
 Color CardColor = Colors.white;
-List <int> selected=List.empty(growable: true);
+List <String> selected=List.empty(growable: true);
+const List<String> list = <String>['days', 'months', 'years'];
 
 class AccessCodes extends StatefulWidget {
   @override
@@ -26,7 +27,7 @@ class AccessCodes extends StatefulWidget {
 
 class _AccessCodesState extends State<AccessCodes> {
   final List<MedDetails> allMedicines = [];
-
+  String dropdownValue = list.first;
   TextEditingController number;
   TextEditingController duration;
   TextEditingController company;
@@ -61,7 +62,7 @@ class _AccessCodesState extends State<AccessCodes> {
                     onPressed: () async{
                       final storage = FlutterSecureStorage();
                       final token = await storage.read(key: "token");
-                      http.Response received = await accesscode(number.text,duration.text,company.text,token);
+                      http.Response received = await accesscode(number.text,duration.text,company.text, dropdownValue,token);
                       Navigator.pop(
                         context,
                         MaterialPageRoute(
@@ -81,7 +82,7 @@ class _AccessCodesState extends State<AccessCodes> {
                         )))
               ],
               content: Container(
-                height: 155,
+                height: 175,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -109,23 +110,91 @@ class _AccessCodesState extends State<AccessCodes> {
                       height: 5,
                     ),
                     Center(
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.5,
-                        child: TextField(
-                          controller: duration,
-                          autofocus: false,
-                          cursorColor: Color.fromRGBO(255, 10, 55, 1),
-                          textAlign: TextAlign.center,
-                          keyboardType: TextInputType.text,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.singleLineFormatter
-                          ],
-                          decoration:
-                          InputDecoration(hintText: 'Duration',
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Color.fromRGBO(255, 10, 55, 1),),
-                            ),),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.25,
+                            child: TextField(
+                              controller: duration,
+                              autofocus: false,
+                              cursorColor: Color.fromRGBO(255, 10, 55, 1),
+                              textAlign: TextAlign.center,
+                              keyboardType: TextInputType.number,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly
+                              ],
+                              decoration:
+                              InputDecoration(hintText: 'Duration',
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Color.fromRGBO(255, 10, 55, 1),),
+                                ),),
+                            ),
+                          ),
+                          // SizedBox(
+                          //   width: MediaQuery.of(context).size.width * 0.2,
+                          //   height: 45,
+                          //   child: DropdownButtonFormField(
+                          //     decoration: InputDecoration(
+                          //       enabledBorder: OutlineInputBorder(
+                          //         borderSide: BorderSide(
+                          //             color: Colors.blue, width: 2),
+                          //         borderRadius:
+                          //         BorderRadius.circular(20),
+                          //       ),
+                          //       border: OutlineInputBorder(
+                          //         borderSide: BorderSide(
+                          //             color: Colors.blue, width: 2),
+                          //         borderRadius:
+                          //         BorderRadius.circular(20),
+                          //       ),
+                          //       filled: true,
+                          //     ),
+                          //     validator: (value) {
+                          //       if (value == null || value.isEmpty) {
+                          //         return '';
+                          //       }
+                          //       return null;
+                          //     },
+                          //   ),
+                          // ),
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border(bottom: BorderSide(width: 1.0,color: Colors.grey))
                         ),
+                        width: MediaQuery.of(context).size.width * 0.25,
+                        height: 50,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left:22.0),
+                          child: DropdownButton<String>(
+                            underline: Container(
+                              width:0,
+                            ),
+                            // isExpanded: true,
+                            iconSize: 18,
+                            value: dropdownValue,
+                            icon: const Icon(Icons.arrow_drop_down_circle_outlined),
+                            elevation: 16,
+                            style: const TextStyle(
+                              fontSize: 16, color: Colors.grey),
+                            onChanged: (String value) {
+                            // This is called when the user selects an item.
+                            setState(() {
+                            dropdownValue = value;
+                            dropdownValue = value;
+                            });
+                            },
+                            items: list.map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                            );
+                            }).toList(),
+                            ),
+                        ),
+                      ),
+                        ],
                       ),
                     ),
                     SizedBox(
@@ -273,7 +342,8 @@ class _AccessCodesState extends State<AccessCodes> {
               children: <Widget>[
                 IconButton(
                   icon: Icon(
-                    Icons.filter_alt_outlined,
+                    Icons.copy,
+                    color: Colors.black,
                   ),
                   onPressed: () {
                     // setState(() {
@@ -387,11 +457,11 @@ class _BottomContainerState extends State<BottomContainer> {
                 onLongPress: (){
                   select=!select;
                   setState(() {
-                    if(select==true && !selected.contains(i)){
-                      selected.add(i);
+                    if(select==true && !selected.contains(map[i]["_id"])){
+                      selected.add(map[i]["_id"].toString());
                       print(selected);}
                     else {
-                      selected.remove(i);
+                      selected.remove(map[i]["_id"]);
                       print(selected);}
                   });
                 },
@@ -410,7 +480,7 @@ class _BottomContainerState extends State<BottomContainer> {
                         offset: Offset(0, 3.5),
                       )
                     ],
-                    color: (selected.contains(i))?Color.fromRGBO(188, 217, 255, 0.8):Colors.white,
+                    color: (selected.contains(map[i]["_id"]))?Color.fromRGBO(188, 217, 255, 0.8):Colors.white,
                   ),
                   height: 100,
                   width: double.infinity,
@@ -525,16 +595,15 @@ class _BottomContainerState extends State<BottomContainer> {
                               padding: const EdgeInsets.only(right: 15.0),
                               child: InkWell(
                                   onTap: () => {
-                                    url =
-                                        "http://10.0.2.2/api/users/codes/" +
-                                            map[i]['_id'].toString(),
-                                    http.delete(
-                                      url,
-                                      headers: <String, String>{
-                                        'Content-Type': 'application/json; charset=UTF-8',
-                                        'Authorization': savedtoken,
-                                      },
-                                    ),
+                                  url = "http://10.0.2.2/api/users/codes/delete",
+                                http.post(
+                                url,
+                                headers: <String, String>{
+                                  'Content-Type': 'application/json; charset=UTF-8',
+                                  'Authorization': savedtoken,
+                                },
+                                body: jsonEncode({"id": [map[i]["_id"]]}),
+                              ),
                                     getreminder(),
                                     print(url),
                                     Navigator.pushReplacement(
@@ -597,10 +666,10 @@ Future<void> getreminder() async {
   cardscount = map.length;
 }
 
-Future<http.Response> accesscode(String codes, String duration, String company, String token) {
+Future<http.Response> accesscode(String codes, String duration, String company, String dropdownValue, String token) {
   Map<String, dynamic> data = {
     "codes": codes,
-    "duration": duration,
+    "duration": '$duration $dropdownValue',
     "company": company,
   };
   return http.post(
@@ -614,16 +683,14 @@ Future<http.Response> accesscode(String codes, String duration, String company, 
 }
 
 Future<http.Response> deleteaccesscode(String token) {
-  selected.forEach((i) {
-    url = "http://10.0.2.2/api/users/codes/" + map[i]['_id'].toString();
-    http.delete(
-      url,
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': token,
-      },
-    );
-  }
+  url = "http://10.0.2.2/api/users/codes/delete";
+  http.post(
+    url,
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': token,
+    },
+    body: jsonEncode({"id": selected}),
   );
   return null;
 }

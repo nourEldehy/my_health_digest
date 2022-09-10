@@ -28,8 +28,8 @@ class _WeightMonitoringState extends State<WeightMonitoring> {
   List<String> sfood = ['chicken', 'kofta'];
   TextEditingController servingSize;
   TextEditingController exerciseCalories;
-  TextEditingController water;
   TextEditingController foodName;
+  int waterCounter = 0;
 
   var renderOverlay = true;
   var visible = true;
@@ -62,7 +62,6 @@ class _WeightMonitoringState extends State<WeightMonitoring> {
     servingSize = TextEditingController();
     foodName = TextEditingController();
     exerciseCalories = TextEditingController();
-    water = TextEditingController();
 
     super.initState();
   }
@@ -78,7 +77,7 @@ class _WeightMonitoringState extends State<WeightMonitoring> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.lightBlue,
           title: Center(
               child: Text(
             "Weight Monitoring",
@@ -357,7 +356,7 @@ class _WeightMonitoringState extends State<WeightMonitoring> {
               actions: [
                 TextButton(
                     onPressed: () {
-                      water.text = '';
+                      setState(() => waterCounter = 0);
                       Navigator.of(context).pop();
                     },
                     child: Text("Cancel")),
@@ -368,26 +367,78 @@ class _WeightMonitoringState extends State<WeightMonitoring> {
                                       context,
                                       listen: false)
                                   .consumedWater +
-                              (double.parse(water.text) * 0.2));
+                              (waterCounter * 0.2));
+                      setState(() => waterCounter = 0);
 
                       Navigator.of(context).pop();
                     },
                     child: Text("Add"))
               ],
               content: SizedBox(
-                height: 70,
+                height: 90,
                 child: Center(
                   child: Container(
                     height: 100,
                     width: 200,
-                    child: TextField(
-                      controller: water,
-                      autofocus: false,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      decoration: InputDecoration(
-                          hintText: 'How many glasses did you drink?'),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            GestureDetector(
+                              child: Container(
+                                  color: Colors.white38,
+                                  height: 50,
+                                  width: 50,
+                                  child: Center(
+                                      child: FaIcon(
+                                    FontAwesomeIcons.minus,
+                                    color: Colors.blue,
+                                  ))),
+                              onTap: () {
+                                if (waterCounter > 0) {
+                                  setState(() => waterCounter--);
+                                }
+                              },
+                            ),
+                            Text(
+                              "$waterCounter",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20),
+                            ),
+                            GestureDetector(
+                              child: Container(
+                                  color: Colors.white38,
+                                  height: 50,
+                                  width: 50,
+                                  child: Center(
+                                      child: FaIcon(
+                                    FontAwesomeIcons.add,
+                                    color: Colors.blue,
+                                  ))),
+                              onTap: () {
+                                setState(() => waterCounter++);
+                                print(waterCounter);
+                              },
+                            )
+                          ],
+                        ),
+                        Text(
+                          "Hint: A glass of water is 200ml.",
+                          style: MyColors.T2,
+                        )
+                      ],
                     ),
+                    // child: TextField(
+                    //   controller: water,
+                    //   autofocus: false,
+                    //   keyboardType: TextInputType.number,
+                    //   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    //   decoration: InputDecoration(
+                    //       hintText: 'How many glasses did you drink?'),
+                    // ),
                   ),
                 ),
               ),
@@ -411,7 +462,8 @@ class _WeightMonitoringState extends State<WeightMonitoring> {
                     child: Text("Cancel")),
                 TextButton(
                     onPressed: () {
-                      senddata("weight",w,'http://10.0.2.2/api/weight-mon/weight/push');
+                      senddata("weight", w,
+                          'http://10.0.2.2/api/weight-mon/weight/push');
                       Navigator.of(context).pop();
                     },
                     child: Text("Add"))

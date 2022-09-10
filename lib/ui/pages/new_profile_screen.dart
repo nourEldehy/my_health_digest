@@ -633,35 +633,9 @@ class _MealCard extends StatelessWidget {
                                                           ),
                                                         );
                                                       }
-                                                    : (meal.name ==
-                                                            "Medicine\nReminder"
-                                                                "\n")
-                                                        ? () {
-                                                            Navigator.push(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                builder:
-                                                                    (context) =>
-                                                                        AddMedicine(),
-                                                              ),
-                                                            );
-                                                          }
-                                                        : (meal.name ==
-                                                                "Doctor's \nAppointment \nReminder"
-                                                                    "\n")
-                                                            ? () {
-                                                                Navigator.push(
-                                                                  context,
-                                                                  MaterialPageRoute(
-                                                                    builder:
-                                                                        (context) =>
-                                                                            AddAppointment(),
-                                                                  ),
-                                                                );
-                                                              }
-                                                            :(meal.name ==
-                  "Weight Monitoring"
-                  "\n")
+                  :(meal.name ==
+                      "Weight Monitoring"
+                      "\n")
                       ? () {
                     Navigator.push(
                       context,

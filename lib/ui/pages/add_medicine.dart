@@ -281,10 +281,6 @@ class _AddMedicineState extends State<AddMedicine> {
                               title: "Frequency",
                               isRequired: true,
                             ),
-                            // PanelTitle(
-                            //   title: "Dosage",
-                            //   isRequired: true,
-                            // ),
                           ],
                         ),
                       ),

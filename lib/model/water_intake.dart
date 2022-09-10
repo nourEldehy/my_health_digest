@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:training_and_diet_app/global/myColors.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:training_and_diet_app/model/provider_calories.dart';
 import 'package:training_and_diet_app/model/water_progress.dart';
 
 class WaterIntake extends StatelessWidget {
@@ -44,8 +46,8 @@ class WaterIntake extends StatelessWidget {
           ),
           WaterProgress(),
           Center(
-            child: Text(
-              "You are doing great",
+            child: Text((Provider.of<CaloriesProvider>(context).consumedWater<1 && Provider.of<CaloriesProvider>(context).consumedWater>=0)?
+              "Drink some water":(Provider.of<CaloriesProvider>(context).consumedWater<2&&Provider.of<CaloriesProvider>(context).consumedWater>=1)?'You are doing great':(Provider.of<CaloriesProvider>(context).consumedWater<3&&Provider.of<CaloriesProvider>(context).consumedWater>=2) ? 'Almost there' : "✓ You did it ",
               style: MyColors.T2,
             ),
           ),

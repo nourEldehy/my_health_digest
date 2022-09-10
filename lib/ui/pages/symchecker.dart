@@ -1,5 +1,11 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:training_and_diet_app/model/search_symptoms.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+//import 'package:training_and_diet_app/model/search_symptoms.dart';
+
+var map;
+var savedtoken;
 
 class Symchecker extends StatefulWidget {
   @override
@@ -12,6 +18,7 @@ class _SymcheckerState extends State<Symchecker> {
 
   @override
   void initState() {
+    getallsymptoms();
     controller = TextEditingController();
   }
 
@@ -80,9 +87,7 @@ class _SymcheckerState extends State<Symchecker> {
                 setState(() {
                   if (!selectedSymptoms.contains(selection))
                     selectedSymptoms.add(selection);
-                  //TODO: Eb3t li 7oda el list el esmha selectedSymptoms
-                  //TODO: Hat receive pdf files 7otha fi el list el esmha allPDFs
-                  //TODO: Make sure en enta t3ml keda gowa el setState deh
+                  getdiseases(selectedSymptoms);
                   controller.clear();
                 });
                 print('Selected Symptoms $selectedSymptoms');
@@ -134,7 +139,8 @@ class _SymcheckerState extends State<Symchecker> {
                                               onTap: () {
                                                 setState(() {
                                                   selectedSymptoms.remove(e);
-                                                  //TODO: SEND SelectedSymptoms li 7oda and receive the pdfs
+                                                  getdiseases(selectedSymptoms);
+                                                  print(allPDFs);
                                                 });
                                               },
                                               //color: Colors.green,
@@ -162,6 +168,28 @@ class _SymcheckerState extends State<Symchecker> {
                       ),
                     ),
                   ),
+         Expanded(
+           child: ListView.builder(
+    itemCount: allPDFs.length,
+        itemBuilder: (context, index) => Card(
+          shadowColor: Colors.grey ,
+          color: Colors.blue[100 * (index % 9)],
+          elevation: 4,
+          margin: EdgeInsets.fromLTRB(60.0, 20.0, 60.0, 20.0),
+          child: new Column(
+            children: <Widget>[
+              new Padding(
+                  padding: new EdgeInsets.all(10.0),
+                  child: new Padding(
+                    padding: new EdgeInsets.all(7.0),
+                    child: new Text(allPDFs[index],style: new TextStyle(fontSize: 18.0)),
+                  )
+              )
+            ],
+          ),
+        ),
+    ),
+         ),
             //TODO: Shof hatshow el pdfs ezy, enta 2olt zay myhealth
             //Result here
             // Expanded(
@@ -251,45 +279,52 @@ class _SymcheckerState extends State<Symchecker> {
       ),
     );
   }
+
+  List<String> allPDFs = [
+    //TODO: load el pdfs here from db
+  ];
+  List<String> allSym = [
+    //TODO: load el syms here from db
+  ];
+
+  Future<void> getallsymptoms() async {
+    allSym = [];
+
+    final response = await http.get(
+      "http://10.0.2.2/api/sym-checker/symptoms",
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+    map = json.decode(response.body) as List;
+    for(int i = 0; i < map.length; i++)
+    {
+      allSym.add(json.decode(response.body)[i]);
+    }
+    print(allSym);
+  }
+
+  Future<void> getdiseases(x) async {
+    allPDFs = [];
+    Map<String, dynamic> data = {
+      "symptoms": x,
+    };
+
+    final response = await http.post(
+      "http://10.0.2.2/api/sym-checker/find-disease",
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(data),
+    );
+    map = json.decode(response.body) as List;
+    for(int i = 0; i < map.length; i++)
+    {
+      allPDFs.add(json.decode(response.body)[i]);
+    }
+    print(allPDFs);
+    setState(() {
+      allPDFs;
+    });
+  }
 }
-
-final List<String> allPDFs = [
-  //TODO: load el pdfs here from db
-  // 'Bipolar Disorder',
-  // 'Cavities',
-  // 'Covid 19',
-  // 'Coronary Heart disease',
-  // 'Influenza',
-  // 'Dislocation',
-  // 'Gum Infection',
-  // 'Cold flu',
-  // 'Genetic Disorder',
-  // 'Food Poisoning',
-  // 'Esophageal Cancer',
-  // 'Ear Infection',
-  // 'Cystic Fibrosis',
-  // 'Heart Attack',
-  // 'Hypertension',
-  // 'Mouth Cancer',
-  // 'Liver Cancer',
-];
-
-final List<String> allSym = [
-  //TODO: load el syms here from db
-  'Cough',
-  'Congested or runny nose',
-  'Ear or hearing problems',
-  'Eye or vision problems',
-  'Upset stomach or indigestion',
-  'Numbness or tingling sensations',
-  'Drowsiness',
-  'Memory problems',
-  'Difficulty concentrating',
-  'Muscle weakness',
-  'Loss of taste or smell',
-  'Fever',
-  'Chest pain',
-  'Asthma',
-  'Allergies',
-  'Common cold',
-];
