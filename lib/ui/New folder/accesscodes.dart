@@ -13,11 +13,12 @@ import 'medicines.dart';
 
 
 var map;
+List <String> Copied = List.empty(growable: true);
 int cardscount;
 var url;
 var savedtoken;
 Color CardColor = Colors.white;
-List <String> selected=List.empty(growable: true);
+List <String> selected = List.empty(growable: true);
 const List<String> list = <String>['days', 'months', 'years'];
 
 class AccessCodes extends StatefulWidget {
@@ -63,6 +64,9 @@ class _AccessCodesState extends State<AccessCodes> {
                       final storage = FlutterSecureStorage();
                       final token = await storage.read(key: "token");
                       http.Response received = await accesscode(number.text,duration.text,company.text, dropdownValue,token);
+                      // map = json.decode(received.body) as List;
+                      // print("From add : " + map.toString());
+                      await Future.delayed(Duration(seconds: 1));
                       Navigator.pop(
                         context,
                         MaterialPageRoute(
@@ -253,20 +257,35 @@ class _AccessCodesState extends State<AccessCodes> {
                     onPressed: () async{
                       final storage = FlutterSecureStorage();
                       final token = await storage.read(key: "token");
-                      await deleteaccesscode(token);
-                      selected=[];
-                      Navigator.pop(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => AccessCodes(),
-                        ),
-                      );
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => AccessCodes(),
-                        ),
-                      );
+                      // FutureBuilder(
+                      //     future: deleteaccesscode(token),
+                      //     builder: (context, snapshot) {
+                      //       if (snapshot.connectionState == ConnectionState.done) {
+                      //         selected=[];
+                      //         return AccessCodes();
+                      //       } else if (snapshot.hasError) {
+                      //         return Text('Error');
+                      //       } else {
+                      //         return CircularProgressIndicator();
+                      //       }
+                      //     });
+                      http.Response received = await deleteaccesscode(token);
+                        // var message = json.decode(received.body);
+                        // print("From delete : " + message['message'].toString());
+                            selected=[];
+                            await Future.delayed(Duration(seconds: 1));
+                            Navigator.pop(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AccessCodes(),
+                              ),
+                            );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AccessCodes(),
+                              ),
+                            );
                     },
                     child: Text("Yes",
                         style: TextStyle(
@@ -340,16 +359,30 @@ class _AccessCodesState extends State<AccessCodes> {
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                IconButton(
-                  icon: Icon(
-                    Icons.copy,
-                    color: Colors.black,
-                  ),
-                  onPressed: () {
-                    // setState(() {
-                    //   pageIndex = 0;
-                    // });
-                  },
+                Builder(
+                  builder: (context) {
+                    return IconButton(
+                      icon: Icon(
+                        Icons.copy,
+                        color: Colors.black,
+                      ),
+                      onPressed: () {
+                        Copied = [];
+                        setState(() {
+                          for (int i = 0; i < map.length; i++) {
+                            for (int j = 0; j < selected.length; j++) {
+                              if (map[i]["_id"] == selected[j]) {
+                                Copied.add(map[i]["code"].toString());
+                              }
+                            }
+                          };
+                        });
+                        Clipboard.setData(ClipboardData(text: Copied.toString()));
+                        Scaffold.of(context).showSnackBar(SnackBar(content: Text('✓  Copied to Clipboard')));
+                        print(Copied.toString());
+                      },
+                    );
+                  }
                 ),
                 IconButton(
                   icon: Icon(
@@ -430,7 +463,7 @@ class TopContainer extends StatelessWidget {
                 ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );
@@ -505,7 +538,7 @@ class _BottomContainerState extends State<BottomContainer> {
                             InkWell(
                                 onTap: () => {
                                   Clipboard.setData(ClipboardData(text: map[i]['code'])),
-                                  Scaffold.of(context).showSnackBar(SnackBar(content: Text('✓   Copied to Clipboard')),)
+                                  Scaffold.of(context).showSnackBar(SnackBar(content: Text('✓  Copied to Clipboard')),)
                                 },
                                 child: Icon(
                                   Icons.copy,
@@ -604,8 +637,8 @@ class _BottomContainerState extends State<BottomContainer> {
                                 },
                                 body: jsonEncode({"id": [map[i]["_id"]]}),
                               ),
-                                    getreminder(),
-                                    print(url),
+                                    // getreminder(),
+                                    // print(url),
                                     Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
@@ -683,14 +716,16 @@ Future<http.Response> accesscode(String codes, String duration, String company, 
 }
 
 Future<http.Response> deleteaccesscode(String token) {
+  Map<String, dynamic> data = {
+    "id": selected
+  };
   url = "http://10.0.2.2/api/users/codes/delete";
-  http.post(
+  return http.post(
     url,
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': token,
     },
-    body: jsonEncode({"id": selected}),
+    body: jsonEncode(data),
   );
-  return null;
 }

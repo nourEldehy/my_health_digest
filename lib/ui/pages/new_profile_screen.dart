@@ -1,18 +1,23 @@
+import 'dart:convert';
+
 import 'package:animations/animations.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:training_and_diet_app/model/calories_painter.dart';
 import 'package:training_and_diet_app/model/meal.dart';
 import 'package:training_and_diet_app/model/provider_calories.dart';
+import 'package:training_and_diet_app/model/water_progress.dart';
 import 'package:training_and_diet_app/ui/pages/add_appointment.dart';
 import 'package:training_and_diet_app/ui/pages/reminders.dart';
 import 'package:training_and_diet_app/ui/pages/appointment.dart';
 import 'package:training_and_diet_app/ui/pages/contact_us.dart';
 import 'package:training_and_diet_app/ui/pages/symchecker.dart';
-import 'package:training_and_diet_app/ui/pages/meal_detail_screen.dart';
+import 'package:training_and_diet_app/ui/pages/news.dart';
 import 'package:training_and_diet_app/ui/pages/weight_monitoring.dart';
 import 'package:training_and_diet_app/ui/pages/workout_screen.dart';
 import 'package:training_and_diet_app/ui/pages/bmi.dart';
@@ -22,12 +27,9 @@ import 'package:vector_math/vector_math_64.dart' as math;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:training_and_diet_app/ui/pages/women.dart';
 import 'package:training_and_diet_app/ui/pages/availablespec.dart';
-import 'package:skeleton_text/skeleton_text.dart';
-import 'package:floating_ribbon/floating_ribbon.dart';
 import 'package:training_and_diet_app/ui/pages/myhealth.dart';
-import 'package:training_and_diet_app/ui/pages/foodcalories.dart';
 
-import 'add_medicine.dart';
+var receive;
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({key}) : super(key: key);
@@ -36,7 +38,6 @@ class ProfileScreen extends StatefulWidget {
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 class _ProfileScreenState extends State<ProfileScreen> {
-
   int _selectedIndex = 0;
   void _onItemTapped(int index) {
     setState(() {
@@ -60,8 +61,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
   @override
   void initState() {
-    getcalories();
-
+    getcalories(context);
+    getRequest();
     super.initState();
   }
   @override
@@ -71,6 +72,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final today = DateTime.now();
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Color.fromRGBO(255,37,87,1),
         currentIndex: 0,
         onTap: _onItemTapped,
         items: [
@@ -83,17 +85,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
             label: "Reminders",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
+            icon: Icon(Icons.person,),
             label: "Profile",
+
           ),
         ],
       ),
       body: ListView(
         children: <Widget>[
-          // ClipRRect(
-          //   borderRadius: const BorderRadius.vertical(
-          //     bottom: const Radius.circular(50),
-          //   ),
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
@@ -110,7 +109,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               color: Colors.white,
             ),
             width: double.infinity,
-            // color: Colors.white,
             padding:
                 const EdgeInsets.only(top: 8, left: 32, right: 16, bottom: 20),
             child: Column(
@@ -125,7 +123,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                   subtitle: Text(
-                    "Hello, Noureldin",
+                    (receive ==null)?"Hello, ":
+                    "Hello, "+receive,
                     style: TextStyle(
                       fontWeight: FontWeight.w800,
                       fontSize: 20,
@@ -142,52 +141,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Padding(
                       padding: const EdgeInsets.only(right: 8.0),
                       child: CaloriesPainter(),
-                      // child: _RadialProgress(
-                      //   width: width * 0.35,
-                      //   height: width * 0.35,
-                      //   progress: 0.2,
-                      // ),
                     ),
                     SizedBox(
                       width: 10,
                     ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        _IngredientProgress(
-                          ingredient: "Protein",
-                          progress: 0.3,
-                          progressColor: Colors.green,
-                          leftAmount: 42,
-                          width: width * 0.28,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        _IngredientProgress(
-                          ingredient: "Carbs",
-                          progress: 0.6,
-                          progressColor: Colors.red,
-                          leftAmount: 150,
-                          width: width * 0.28,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        _IngredientProgress(
-                          ingredient: "Fat",
-                          progress: 0.4,
-                          progressColor: Colors.yellow,
-                          leftAmount: 34,
-                          width: width * 0.28,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                      ],
-                    )
+                    WaterProgress(),
                   ],
                 ),
               ],
@@ -213,160 +171,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               _MealCard(meal: meals[i + 1])
                           ],
                         )
-
-                        // Container(
-                        //     decoration: BoxDecoration(
-                        //       color: Colors.redAccent,
-                        //       border: Border.all(
-                        //         color: Colors.blue,
-                        //         width: 2,
-                        //       ),
-                        //       borderRadius: BorderRadius.circular(20.0),
-                        //     ),
-                        //     child: SizedBox(
-                        //         width: 150,
-                        //         height: 30,
-                        //         child: Padding(
-                        //           padding: const EdgeInsets.only(left: 8.0),
-                        //           child: Row(
-                        //             mainAxisAlignment:
-                        //                 MainAxisAlignment.spaceBetween,
-                        //             children: [
-                        //               Text(
-                        //                 e.name,
-                        //                 style: TextStyle(fontSize: 20),
-                        //               ),
-                        //             ],
-                        //           ),
-                        //         ))),
                       ],
                     ),
                   ),
               ],
             ),
           )
-
-          // Positioned(
-          //   top: height * 0.38,
-          //   left: 0,
-          //   right: 0,
-          //   child: Container(
-          //     height: height * 0.55,
-          //     child: Column(
-          //       crossAxisAlignment: CrossAxisAlignment.start,
-          //       children: <Widget>[
-          //         Padding(
-          //           padding: const EdgeInsets.only(
-          //             bottom: 8,
-          //             left: 32,
-          //             right: 16,
-          //           ),
-          //           child: Text(
-          //             " ",
-          //             style: const TextStyle(
-          //                 color: Colors.blueGrey,
-          //                 fontSize: 16,
-          //                 fontWeight: FontWeight.w700),
-          //           ),
-          //         ),
-          //         Expanded(
-          //           child: Column(
-          //             children: <Widget>[
-          //               SizedBox(
-          //                 width: 32,
-          //               ),
-          //               for (int i = 0; i < 1; i++)
-          //                 _MealCard(
-          //                   meal: meals[i],
-          //                 ),
-          //             ],
-          //           ),
-          //         ),
-          //         // SizedBox(
-          //         //   height: 20,
-          //         // ),
-          //         // Expanded(
-          //         //   child: OpenContainer(
-          //         //     closedElevation: 0,
-          //         //     transitionType: ContainerTransitionType.fade,
-          //         //     transitionDuration: const Duration(milliseconds: 1000),
-          //         //     // closedColor: const Color(0xFFE9E9E9),
-          //         //     openBuilder: (context, _) {
-          //         //       // return WorkoutScreen();
-          //         //     },
-          //         //     closedBuilder: (context, VoidCallback openContainer) {
-          //         //       return GestureDetector(
-          //         //         onTap: () {
-          //         //           // Navigator.push(
-          //         //           //   context,
-          //         //           //   MaterialPageRoute(
-          //         //           //     builder: (context) => Symptoms(),
-          //         //           //   ),
-          //         //           // );
-          //         //         },
-          //         //         child: Center(
-          //         //           child: FloatingRibbon(
-          //         //             ribbonSwatch: Colors.black,
-          //         //             ribbonShadowSwatch: Colors.black45,
-          //         //             height: 100,
-          //         //             width: 350,
-          //         //             childHeight: 90,
-          //         //             childWidth: 320,
-          //         //             child: Container(
-          //         //               child: Padding(
-          //         //                 padding:
-          //         //                     const EdgeInsets.only(top: 5.0, left: 7),
-          //         //                 child: Center(
-          //         //                   child: Text(
-          //         //                     "Motion Capture",
-          //         //                     style: TextStyle(
-          //         //                       color: Colors.white,
-          //         //                       fontSize: 40,
-          //         //                       fontWeight: FontWeight.w800,
-          //         //                     ),
-          //         //                   ),
-          //         //                 ),
-          //         //               ),
-          //         //             ),
-          //         //             childDecoration: BoxDecoration(
-          //         //               borderRadius:
-          //         //                   BorderRadius.all(Radius.circular(30)),
-          //         //               gradient: LinearGradient(
-          //         //                 begin: Alignment.topCenter,
-          //         //                 end: Alignment.bottomCenter,
-          //         //                 colors: [
-          //         //                   Color.fromRGBO(255, 37, 87, 1),
-          //         //                   Color.fromRGBO(25, 37, 87, 1),
-          //         //                 ],
-          //         //               ),
-          //         //             ),
-          //         //             ribbon: SkeletonAnimation(
-          //         //               child: Center(
-          //         //                 child: Text(
-          //         //                   'SOON',
-          //         //                   style: TextStyle(
-          //         //                     fontSize: 18,
-          //         //                     color: Colors.white60,
-          //         //                     fontWeight: FontWeight.bold,
-          //         //                   ),
-          //         //                   textAlign: TextAlign.center,
-          //         //                 ),
-          //         //               ),
-          //         //             ),
-          //         //             shadowHeight: 5,
-          //         //           ),
-          //         //         ),
-          //         //       );
-          //         //     },
-          //         //   ),
-          //         // ),
-          //       ],
-          //     ),
-          //   ),
-          // ),
         ],
       ),
     );
+  }
+  getRequest() async {
+    final storage = FlutterSecureStorage();
+    final token = await storage.read(key: "token");
+    //replace your restFull API here.
+    String url = "http://${Provider.of<CaloriesProvider>(context).url}/api/users/currentuser";
+    final response = await http.get(url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': token,
+      },
+    );
+    var responseData = json.decode(response.body);
+    setState(() {
+      Provider.of<CaloriesProvider>(context,listen: false)
+          .calculateRemaining();
+      receive = responseData['name'];
+    });
   }
 }
 
@@ -536,9 +367,7 @@ class _MealCard extends StatelessWidget {
                     borderRadius: BorderRadius.all(Radius.circular(20))),
                 transitionDuration: const Duration(milliseconds: 1000),
                 openBuilder: (context, _) {
-                  return MealDetailScreen(
-                    meal: meal,
-                  );
+                  // return News();
                 },
                 closedBuilder: (context, openContainer) {
                   return GestureDetector(
@@ -566,6 +395,15 @@ class _MealCard extends StatelessWidget {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => CaloriesNeeded(),
+                                      ),
+                                    );
+                                  }
+                            : (meal.name == "News" "\n")
+                                ? () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => News(),
                                       ),
                                     );
                                   }
@@ -608,31 +446,6 @@ class _MealCard extends StatelessWidget {
                                                       ),
                                                     );
                                                   }
-                                                : (meal.name ==
-                                                        "Food Calories\nDetection"
-                                                            "\n")
-                                                    ? () async {
-                                                        WidgetsFlutterBinding
-                                                            .ensureInitialized();
-
-                                                        // Obtain a list of available cameras
-                                                        final cameras =
-                                                            await availableCameras();
-
-                                                        // Get a specific camera (first one)
-                                                        final firstCamera =
-                                                            cameras.first;
-                                                        Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                TakePicturePage(
-                                                              camera:
-                                                                  firstCamera,
-                                                            ),
-                                                          ),
-                                                        );
-                                                      }
                   :(meal.name ==
                       "Weight Monitoring"
                       "\n")

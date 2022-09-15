@@ -24,7 +24,7 @@ class ResultsCalories extends StatelessWidget {
               onPressed: () => Navigator.pop(context),
               child: const Text(
                 'No',
-                style: TextStyle(fontSize: 18),
+                style: TextStyle(fontSize: 18,color: Color.fromRGBO(255, 10, 55, 0.5)),
               ),
             ),
             TextButton(
@@ -35,7 +35,7 @@ class ResultsCalories extends StatelessWidget {
               },
               child: const Text(
                 'Yes',
-                style: TextStyle(fontSize: 18),
+                style: TextStyle(fontSize: 18, color: Color.fromRGBO(255, 10, 55, 0.5)),
               ),
             ),
           ],
@@ -45,6 +45,7 @@ class ResultsCalories extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Daily Calories Needed Calculator'),
+        backgroundColor: Color.fromRGBO(255, 10, 55, 1),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -85,12 +86,18 @@ class ResultsCalories extends StatelessWidget {
               ),
             ),
           ),
-          BottomButton(
-            buttonTitle: 'RE-CALCULATE',
-            onTap: () {
+          ElevatedButton(
+            child: const Text('RE-CALCULATE'),
+            onPressed: () {
               Navigator.pop(context);
             },
-          )
+            style: ElevatedButton.styleFrom(
+              // set the background color
+              primary: Color.fromRGBO(255, 10, 55, 1),
+              elevation: 4,
+              shadowColor: Colors.grey,
+            ),
+          ),
         ],
       ),
     );

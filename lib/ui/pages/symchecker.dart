@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:provider/provider.dart';
+import 'package:training_and_diet_app/model/provider_calories.dart';
 //import 'package:training_and_diet_app/model/search_symptoms.dart';
 
 var map;
@@ -27,7 +29,8 @@ class _SymcheckerState extends State<Symchecker> {
     return Scaffold(
       backgroundColor: Color(0xFFf5f0f1),
       appBar: AppBar(
-        title: const Text("Symptoms Checker"),
+        title: const Text("Symptoms Checker",),
+        backgroundColor: Color.fromRGBO(255,37,87,1),
         // actions: [
         //   IconButton(
         //     icon: Icon(Icons.search),
@@ -46,6 +49,7 @@ class _SymcheckerState extends State<Symchecker> {
                 this.controller = controller;
 
                 return TextField(
+                  cursorColor: Color.fromRGBO(255,37,87,0.8),
                   controller: controller,
                   style: TextStyle(fontSize: 20),
                   focusNode: focusNode,
@@ -65,12 +69,12 @@ class _SymcheckerState extends State<Symchecker> {
                     ),
                     hintText: "What do you feel?",
                     hintStyle: TextStyle(
-                        color: Colors.blue.withOpacity(0.5),
+                        color: Color.fromRGBO(255,37,87,0.5),
                         fontWeight: FontWeight.bold,
                         fontSize: 20),
                     prefixIcon: Icon(
                       Icons.search,
-                      color: Colors.blue,
+                      color: Color.fromRGBO(255,37,87,0.75),
                     ),
                   ),
                 );
@@ -291,7 +295,7 @@ class _SymcheckerState extends State<Symchecker> {
     allSym = [];
 
     final response = await http.get(
-      "http://10.0.2.2/api/sym-checker/symptoms",
+      "http://${Provider.of<CaloriesProvider>(context).url}/api/sym-checker/symptoms",
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

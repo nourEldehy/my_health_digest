@@ -33,35 +33,21 @@ class _LoginState extends State<Login> {
       key: _formKey,
       child: Scaffold(
         body: Container(
-          // decoration: BoxDecoration(
-          //     gradient: LinearGradient(
-          //   begin: Alignment.topRight,
-          //   end: Alignment.bottomLeft,
-          //   colors: [
-          //     // Color.fromRGBO(255, 37, 87, 1),
-          //     // Color.fromRGBO(255, 37, 87, 1),
-          //     // Colors.black54,
-          //     // Color.fromRGBO(255, 37, 87, 1),
-          //     Colors.blue,
-          //     //Colors.white70,
-          //     // Color(0xFF380f90),
-          //     Color.fromRGBO(255, 255, 255, 1),
-          //   ],
-          // )),
           color: Color.fromRGBO(255, 255, 255, 1),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: ListView(
             children: <Widget>[
               SizedBox(
                 height: 50,
               ),
-              Text(
-                'Hello Again !',
-                style: TextStyle(
-                  fontFamily: "Raleway",
-                  fontWeight: FontWeight.bold,
-                  fontSize: 35,
-                  color: Color.fromRGBO(255, 10, 55, 1),
+              Center(
+                child: Text(
+                  'Hello Again !',
+                  style: TextStyle(
+                    fontFamily: "Raleway",
+                    fontWeight: FontWeight.bold,
+                    fontSize: 35,
+                    color: Color.fromRGBO(255, 10, 55, 1),
+                  ),
                 ),
               ),
               Padding(
@@ -91,7 +77,7 @@ class _LoginState extends State<Login> {
                     fillColor: Color.fromRGBO(0, 0, 0, 0.5),
                     hintText: ("Enter Email"),
                     hintStyle:
-                        TextStyle(fontSize: 18, color: Colors.grey),
+                    TextStyle(fontSize: 18, color: Colors.grey),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(
                           color: Color.fromRGBO(255, 10, 55, 1), width: 2),
@@ -148,7 +134,7 @@ class _LoginState extends State<Login> {
                     fillColor: Color.fromRGBO(0, 0, 0, 0.5),
                     hintText: ("Enter Password"),
                     hintStyle:
-                        TextStyle(fontSize: 18, color: Colors.grey),
+                    TextStyle(fontSize: 18, color: Colors.grey),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(
                           color: Color.fromRGBO(255, 10, 55, 1), width: 2),
@@ -156,7 +142,7 @@ class _LoginState extends State<Login> {
                     ),
                     border: OutlineInputBorder(
                       borderSide:
-                          BorderSide(color: Colors.white, width: 2),
+                      BorderSide(color: Colors.white, width: 2),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     focusedBorder: OutlineInputBorder(
@@ -202,7 +188,7 @@ class _LoginState extends State<Login> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 28.0),
+                padding: EdgeInsets.fromLTRB(25, 30.0, 25.0, 10),
                 child: SizedBox(
                   width: 320,
                   height: 60,

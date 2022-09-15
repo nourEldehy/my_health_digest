@@ -9,6 +9,8 @@ class WaterProgress extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+
+
       margin: EdgeInsets.all(20),
       width: 150,
       height: 175,
@@ -21,7 +23,7 @@ class WaterProgress extends StatelessWidget {
             "/"
                 "${Provider.of<CaloriesProvider>(context).dailyWater}"),
         valueColor: AlwaysStoppedAnimation(Colors.blue),
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.grey[100],
         direction: Axis.vertical,
         shapePath: _buildCup(),
       ),

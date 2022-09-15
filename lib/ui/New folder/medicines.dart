@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 var map;
 int cardscount;
@@ -25,7 +26,7 @@ class _MedicineReminderState extends State<MedicineReminder> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.lightBlue,
+        backgroundColor: Color.fromRGBO(255,37,87,1),
         elevation: 0.0,
       ),
       body: Container(
@@ -67,7 +68,7 @@ class _MedicineReminderState extends State<MedicineReminder> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         elevation: 7,
-        backgroundColor: Colors.lightBlue,
+        backgroundColor: Color.fromRGBO(255,37,87,1),
         child: Icon(
           Icons.add,
         ),
@@ -83,38 +84,7 @@ class _MedicineReminderState extends State<MedicineReminder> {
       bottomNavigationBar: BottomAppBar(
         clipBehavior: Clip.antiAliasWithSaveLayer,
         shape: CircularNotchedRectangle(),
-        child: Container(
-          height: 60,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 60),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                IconButton(
-                  icon: Icon(
-                    Icons.calendar_view_week,
-                  ),
-                  onPressed: () {
-                    // setState(() {
-                    //   pageIndex = 0;
-                    // });
-                  },
-                ),
-                IconButton(
-                  icon: Icon(
-                    Icons.folder_open,
-                  ),
-                  onPressed: () {
-                    // setState(() {
-                    //   pageIndex = 1;
-                  },
-                ),
-              ],
-            ),
-          ),
-          //color: MyColors.primaryColor,
-        ),
+        child: Container(height: 40),
       ),
     );
   }
@@ -136,7 +106,7 @@ class TopContainer extends StatelessWidget {
             offset: Offset(0, 3.5),
           )
         ],
-        color: Colors.lightBlue,
+        color: Color.fromRGBO(255,37,87,1),
       ),
       width: double.infinity,
       child: Column(
@@ -189,6 +159,7 @@ class TopContainer extends StatelessWidget {
 }
 
 class BottomContainer extends StatelessWidget {
+
   @override
   int x = 0;
   Widget build(BuildContext context) {
@@ -251,11 +222,10 @@ class BottomContainer extends StatelessWidget {
                                     child: Container(
                                         decoration: BoxDecoration(
                                           border: Border.all(
-                                            color: Colors.blue,
+                                            color: Color.fromRGBO(255,37,87,0.5),
                                             width: 2,
                                           ),
-                                          borderRadius: BorderRadius.circular(
-                                              20.0),
+                                          borderRadius: BorderRadius.circular(20.0),
                                         ),
                                         child: SizedBox(
                                             width: 72,
@@ -350,8 +320,6 @@ Future<void> getreminder() async {
   );
   //Map<List, dynamic> map = json.decode(response.body);
   map = json.decode(response.body) as List;
-  print("Nameeeeeeeeeeeee  " + map[0]['name'].toString());
-  // List<String> time = map[1]['time'];
-  // print("timeeee " + map[1]['time'][1].toString());
+  // print("Nameeeeeeeeeeeee  " + map[0]['name'].toString());
   cardscount = map.length;
 }

@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:http/http.dart' as http;
+
+import 'login.dart';
 
 class Signup extends StatefulWidget {
   @override
@@ -26,22 +31,6 @@ class _SignupState extends State<Signup> {
       key: _formKey,
       child: Scaffold(
         body: Container(
-          // decoration: BoxDecoration(
-          //     gradient: LinearGradient(
-          //       begin: Alignment.topRight,
-          //       end: Alignment.bottomLeft,
-          //       colors: [
-          //         // Color.fromRGBO(255, 37, 87, 1),
-          //         // Color.fromRGBO(255, 37, 87, 1),
-          //         // Colors.black54,
-          //         // Color.fromRGBO(255, 37, 87, 1),
-          //         Colors.blue,
-          //         //Colors.white70,
-          //         // Color(0xFF380f90),
-          //         Color.fromRGBO(255, 255, 255, 1),
-          //       ],
-          //     )
-          // ),
           color: Color.fromRGBO(255, 255, 255, 1),
           child: ListView(
             children: [
@@ -361,7 +350,46 @@ class _SignupState extends State<Signup> {
                             ],
                           ),
                         ),
-
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(25, 5.0, 25.0, 10),
+                          child: TextFormField(
+                            cursorColor: Color.fromRGBO(255, 10, 55, 1),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please your company name';
+                              }
+                              return null;
+                            },
+                            onChanged: (String value) {
+                              u.company = value;
+                            },
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
+                            textCapitalization: TextCapitalization.words,
+                            decoration: InputDecoration(
+                              fillColor: Color.fromRGBO(0, 0, 0, 0.5),
+                              hintText: ("Enter Company Name"),
+                              hintStyle:
+                              TextStyle(fontSize: 18, color: Colors.grey),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                BorderSide(color: Color.fromRGBO(255, 10, 55, 1), width: 2),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              border: OutlineInputBorder(
+                                borderSide:
+                                const BorderSide(color: Colors.white, width: 2),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              focusedBorder:OutlineInputBorder(
+                                borderSide:
+                                BorderSide(color: Color.fromRGBO(255, 10, 55, 1), width: 2),
+                                borderRadius: BorderRadius.circular(20),),
+                              filled: true,
+                            ),
+                          ),
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(top: 8.0),
                           child: SizedBox(
@@ -378,9 +406,13 @@ class _SignupState extends State<Signup> {
                                       ),
                                       borderRadius: BorderRadius.circular(50)),
                                 ),
-                                onPressed: () {
+                                onPressed: () async {
+
+                                  http.Response received = await newuser(u.name, u.email, u.password, u.gender, u.age, u.company);
+                                  var map = json.decode(received.body);
+                                  print("From sign up : " + map.toString());
                                   Navigator.push(context,
-                                      MaterialPageRoute(builder: (context) => Signup()));
+                                      MaterialPageRoute(builder: (context) => Login()));
                                 },
                                 child: Text(
                                   "Sign Up",
@@ -392,79 +424,6 @@ class _SignupState extends State<Signup> {
                                   ),
                                 )),
                           ),
-                        ),
-                        Row(children: <Widget>[
-                          Expanded(
-                              child: Divider(
-                            thickness: 4,
-                            height: 100,
-                                indent: 20,
-                                endIndent: 8,
-                          )),
-                          Text("continue with",
-                            style: TextStyle(
-                              fontFamily: "Raleway",
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                              color: Colors.black,
-                            ),),
-                          Expanded(
-                              child: Divider(
-                            thickness: 4,
-                            height: 100,
-                                indent: 8,
-                                endIndent: 20,
-                          )),
-                        ]),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              //color: Colors.red,
-                              decoration: BoxDecoration(
-                                  border:
-                                      Border.all(color: Colors.transparent, width: 3),
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: SizedBox(
-                                child: Image.asset("assets/gmail.png"),
-                                // Icon(
-                                //     FontAwesomeIcons.google,
-                                //     color: Colors.blue, size: 40.0),
-                                width: 50,
-                                height: 50,
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 15.0),
-                              child: Container(
-                                //color: Colors.red,
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.transparent, width: 3),
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: SizedBox(
-                                  child: Icon(FontAwesomeIcons.apple,
-                                      color: Colors.blueGrey, size: 40.0),
-                                  width: 50,
-                                  height: 50,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              //color: Colors.red,
-                              decoration: BoxDecoration(
-                                  border:
-                                      Border.all(color: Colors.transparent, width: 3),
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: SizedBox(
-                                child: Icon(FontAwesomeIcons.facebook,
-                                    color: Colors.blue, size: 40.0),
-                                width: 50,
-                                height: 50,
-                              ),
-                            ),
-                          ],
                         ),
                       ],
                     ),
@@ -485,13 +444,17 @@ class User {
   String password;
   String gender;
   int age;
+  String company;
 
   User(
-      {@required this.name,
-      @required this.email,
-      @required this.password,
-      @required this.gender,
-      @required this.age});
+      {
+        @required this.name,
+        @required this.email,
+        @required this.password,
+        @required this.gender,
+        @required this.age,
+        @required this.company
+      });
 }
 
 List<DropdownMenuItem<String>> get dropdownItems {
@@ -500,4 +463,24 @@ List<DropdownMenuItem<String>> get dropdownItems {
     DropdownMenuItem(child: Text("Female"), value: "Female"),
   ];
   return menuItems;
+}
+
+Future<http.Response> newuser(String name, String email, String password, String gender, int age, String company)
+{
+  Map<String, dynamic> data =
+  {
+    "name": name,
+    "email": email,
+    "password": password,
+    "gender": gender,
+    "age": age,
+    "Company": company,
+  };
+  return http.post(
+    Uri.parse('http://10.0.2.2/api/users/signup'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(data),
+  );
 }

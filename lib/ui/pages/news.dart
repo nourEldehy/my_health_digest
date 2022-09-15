@@ -4,26 +4,27 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
-import 'dart:io';
+import 'package:flutter/services.dart' show rootBundle;
 
-List title = [];
-List images = [];
-List link = [];
+List title;
+List images;
+List link;
+var map;
 //Creating a class user to store the data;
 
-class Women extends StatefulWidget {
+class News extends StatefulWidget {
   @override
-  _WomenState createState() => _WomenState();
+  _NewsState createState() => _NewsState();
 }
 
-class _WomenState extends State<Women> {
+class _NewsState extends State<News> {
 //Applying get request.
   @override
-  Widget build(BuildContext context) {
+  Widget  build(BuildContext context) {
     return Scaffold(
         body: Center(
           child: FutureBuilder(
-              future: getRequest(),
+              future:  getRequest(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   return CustomScrollView(
@@ -38,14 +39,14 @@ class _WomenState extends State<Women> {
                             borderRadius: BorderRadius.all(Radius.circular(40))),
                         flexibleSpace: FlexibleSpaceBar(
                           background: Image.asset(
-                            "assets/women.png",
+                            "assets/abc.png",
                             fit: BoxFit.cover,
                           ),
                         ),
                       ),
                       SliverList(
                         delegate: SliverChildBuilderDelegate(
-                          (BuildContext context, int index) {
+                              (BuildContext context, int index) {
                             return CustomCard(
                                 title: title[index],
                                 link: link[index],
@@ -62,10 +63,8 @@ class _WomenState extends State<Women> {
                 } else {
                   return CircularProgressIndicator();
                 }
-              }
-            ),
-        )
-    );
+              }),
+        ));
   }
 }
 
@@ -91,8 +90,8 @@ class CustomCard extends StatelessWidget {
       ),
       child: Card(
         shadowColor: Colors.grey,
-        color: Colors.teal[100 * (index % 9)],
-        elevation: 4,
+        color: Colors.blueAccent[100 * (index % 9)],
+        elevation: 8,
         margin: EdgeInsets.fromLTRB(60.0, 20.0, 60.0, 20.0),
         child: new Column(
           children: <Widget>[
@@ -100,7 +99,7 @@ class CustomCard extends StatelessWidget {
             new Padding(
                 padding: new EdgeInsets.all(10.0),
                 child: new Padding(
-                  padding: new EdgeInsets.all(2.0),
+                  padding: new EdgeInsets.all(7.0),
                   child: new Text(title, style: new TextStyle(fontSize: 18.0)),
                 ))
           ],
@@ -121,7 +120,7 @@ class PDFViewerFromUrl extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(name),
-        backgroundColor: Color.fromRGBO(33, 208, 195, 1),
+        backgroundColor: Color.fromRGBO(125, 129, 134, 1),
       ),
       body: const PDF().fromUrl(
         url,
@@ -137,7 +136,7 @@ getRequest() async {
   title = [];
   link = [];
   images = [];
-  String url = "http://10.0.2.2/api/pdfs/get-pdfs/en/women";
+  String url = "http://10.0.2.2/api/pdfs/get-pdfs/en/news";
   final response = await http.get(url);
   // final loadedData = await rootBundle.loadString('assets/Women/women.txt');
   var responseData = json.decode(response.body);

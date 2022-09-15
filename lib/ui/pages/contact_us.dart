@@ -38,6 +38,7 @@ class _ContactUsState extends State<ContactUs> {
   @override
   Widget build(BuildContext context) => Scaffold(
         bottomNavigationBar: BottomNavigationBar(
+          selectedItemColor: Color.fromRGBO(255,37,87,1),
           // type: fi,
           onTap: _onItemTapped,
           // iconSize: 40,
@@ -70,7 +71,7 @@ class _ContactUsState extends State<ContactUs> {
         appBar: AppBar(
           title: Text('Contact Us'),
           automaticallyImplyLeading: false,
-          backgroundColor: Colors.blue,
+          backgroundColor: Color.fromRGBO(255,37,87,1),
           centerTitle: true,
         ),
         body: Padding(
@@ -97,7 +98,7 @@ class _ContactUsState extends State<ContactUs> {
                           leading: Icon(
                             Icons.location_on_outlined,
                             size: 30,
-                            color: Colors.blue,
+                            color: Color.fromRGBO(255,37,87,1),
                           ),
                           title: Text(
                             "North Africa Offices",
@@ -126,7 +127,7 @@ class _ContactUsState extends State<ContactUs> {
                           leading: Icon(
                             Icons.location_on_outlined,
                             size: 30,
-                            color: Colors.blue,
+                            color: Color.fromRGBO(255,37,87,1),
                           ),
                           title: Text(
                             'Gulf Office',
@@ -156,7 +157,7 @@ class _ContactUsState extends State<ContactUs> {
                   leading: Icon(
                     Icons.phone,
                     size: 30,
-                    color: Colors.blue,
+                    color: Color.fromRGBO(255,37,87,1),
                   ),
                   title: Text(
                     '+201221111422',
@@ -171,7 +172,7 @@ class _ContactUsState extends State<ContactUs> {
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: Colors.blue,
+                    color: Color.fromRGBO(255,37,87,0.8),
                   )),
             ],
           ),

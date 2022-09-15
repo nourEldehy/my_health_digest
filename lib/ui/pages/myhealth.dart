@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:provider/provider.dart';
+import 'package:training_and_diet_app/model/provider_calories.dart';
 
 List title = [];
 List images = [];
@@ -65,6 +67,23 @@ class _MyhealthState extends State<Myhealth> {
           }),
     ));
   }
+  getRequest() async {
+    //replace your restFull API here.
+    title = [];
+    link = [];
+    images = [];
+    String url = "http://${Provider.of<CaloriesProvider>(context).url}/api/pdfs/get-pdfs/en/my-health";
+    final response = await http.get(url);
+    var responseData = json.decode(response.body);
+    var response2 = responseData.toString().split(",");
+    for (var i = 0; i < response2.length; i++) {
+      var temp = response2[i].split(": ");
+      title.add(temp[0].replaceAll("{", ""));
+      link.add(temp[1].replaceAll("}", ""));
+      images.add(temp[1].replaceAll("}", ""));
+    }
+  }
+
 }
 
 class CustomCard extends StatelessWidget {
@@ -138,21 +157,6 @@ class PDFViewerFromUrl extends StatelessWidget {
       ),
     );
   }
+
 }
 
-getRequest() async {
-  //replace your restFull API here.
-  title = [];
-  link = [];
-  images = [];
-  String url = "http://10.0.2.2/api/pdfs/get-pdfs/en/my-health";
-  final response = await http.get(url);
-  var responseData = json.decode(response.body);
-  var response2 = responseData.toString().split(",");
-  for (var i = 0; i < response2.length - 1; i++) {
-    var temp = response2[i].split(": ");
-    title.add(temp[0].replaceAll("{", ""));
-    link.add(temp[1].replaceAll("}", ""));
-    images.add(temp[1].replaceAll("}", ""));
-  }
-}

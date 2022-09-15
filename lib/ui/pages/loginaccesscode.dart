@@ -6,6 +6,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:provider/provider.dart';
+import 'package:training_and_diet_app/model/provider_calories.dart';
 import 'package:training_and_diet_app/ui/New%20folder/accesscodes.dart';
 import 'package:training_and_diet_app/ui/pages/new_profile_screen.dart';
 
@@ -291,14 +293,13 @@ class _LoginAccessCodeState extends State<LoginAccessCode> {
       ),
     );
   }
-}
-
-Future<http.Response> authentication(String email, String password) {
-  return http.post(
-    Uri.parse('http://10.0.2.2/api/users/signin'),
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    },
-    body: jsonEncode(<String, String>{"email": email, "password": password}),
-  );
+  Future<http.Response> authentication(String email, String password) {
+    return http.post(
+      Uri.parse('http://${Provider.of<CaloriesProvider>(context).url}/api/users/signin'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{"email": email, "password": password}),
+    );
+  }
 }

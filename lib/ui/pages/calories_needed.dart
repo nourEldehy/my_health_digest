@@ -56,7 +56,7 @@ class _CaloriesNeededState extends State<CaloriesNeeded> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Daily Calories Needed Calculator'),
-        backgroundColor: Colors.blue,
+        backgroundColor: Color.fromRGBO(255, 10, 55, 1),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -135,9 +135,9 @@ class _CaloriesNeededState extends State<CaloriesNeeded> {
                   SliderTheme(
                     data: SliderTheme.of(context).copyWith(
                       inactiveTrackColor: Color(0xFF8D8E98),
-                      activeTrackColor: Colors.blue,
-                      thumbColor: Colors.blue,
-                      overlayColor: Colors.lightBlueAccent,
+                      activeTrackColor: Color.fromRGBO(255, 10, 55, 1),
+                      thumbColor: Color.fromRGBO(255, 10, 55, 1),
+                      overlayColor: Color.fromRGBO(255, 10, 55, 0.3),
                       thumbShape:
                           RoundSliderThumbShape(enabledThumbRadius: 15.0),
                       overlayShape:
@@ -275,9 +275,9 @@ class _CaloriesNeededState extends State<CaloriesNeeded> {
                   SliderTheme(
                     data: SliderTheme.of(context).copyWith(
                       inactiveTrackColor: Color(0xFF8D8E98),
-                      activeTrackColor: Colors.blue,
-                      thumbColor: Colors.blue,
-                      overlayColor: Colors.lightBlueAccent,
+                      activeTrackColor: Color.fromRGBO(255, 10, 55, 1),
+                      thumbColor: Color.fromRGBO(255, 10, 55, 1),
+                      overlayColor: Color.fromRGBO(255, 10, 55, 0.3),
                       thumbShape:
                           RoundSliderThumbShape(enabledThumbRadius: 15.0),
                       overlayShape:
@@ -348,7 +348,7 @@ class _CaloriesNeededState extends State<CaloriesNeeded> {
             },
             style: ElevatedButton.styleFrom(
               // set the background color
-              primary: Colors.blue,
+              primary: Color.fromRGBO(255, 10, 55, 1),
               elevation: 4,
               shadowColor: Colors.grey,
             ),

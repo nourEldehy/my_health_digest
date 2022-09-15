@@ -51,6 +51,7 @@ class _RemindersState extends State<Reminders> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         bottomNavigationBar: BottomNavigationBar(
+          selectedItemColor: Color.fromRGBO(255,37,87,1),
           currentIndex: _selectedIndex,
           onTap: _onItemTapped,
           items: [
@@ -70,7 +71,8 @@ class _RemindersState extends State<Reminders> {
                 backgroundColor: Colors.blue),
           ],
         ),
-        appBar: AppBar(title: const Text('Reminders')),
+        appBar: AppBar(title: const Text('Reminders'),
+        backgroundColor: Color.fromRGBO(255,37,87,1),),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

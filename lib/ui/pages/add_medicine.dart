@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:training_and_diet_app/model/PanelTitle.dart';
@@ -17,6 +18,9 @@ import 'package:training_and_diet_app/ui/New folder/medicines.dart';
 
 var englishName = " ";
 
+int hours;
+int minutes;
+
 class AddMedicine extends StatefulWidget {
   TextEditingController b;
 
@@ -27,6 +31,8 @@ class AddMedicine extends StatefulWidget {
 @override
 class _AddMedicineState extends State<AddMedicine> {
   final _formKey = GlobalKey<FormState>();
+
+  FlutterLocalNotificationsPlugin flutterNotificationPlugin = FlutterLocalNotificationsPlugin();
 
   var b = TextEditingController();
   final newMed = new MedDetails();
@@ -51,7 +57,25 @@ class _AddMedicineState extends State<AddMedicine> {
 
   @override
   void initState() {
+    var initializationSettingsAndroid =
+    new AndroidInitializationSettings('app_icon');
+
+    var initializationSettingsIOS = new IOSInitializationSettings();
+    var initializationSettings = new InitializationSettings(
+        android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
+    flutterNotificationPlugin = FlutterLocalNotificationsPlugin();
+    flutterNotificationPlugin.initialize(initializationSettings,
+        onSelectNotification: onSelectNotification);
     super.initState();
+  }
+
+  Future onSelectNotification(String payload) async {
+    showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: Text("Hello Everyone"),
+          content: Text("$payload"),
+        ));
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
@@ -545,6 +569,35 @@ class _AddMedicineState extends State<AddMedicine> {
                           );
                         });
                       }
+                      var Splited = reminders.toString().split(', ');
+
+                      for(int i=0 ; i<Splited.length ; i++)
+                        {
+                          var rem1 = Splited[i].toString().split(':');
+                          var rem2 = rem1[1].toString().split(' ');
+                          var temp = rem1[0].replaceAll(RegExp('[^0-9]'), '');
+                          if(rem2[1][0].toString() == "P")
+                            {
+                              hours = int.parse(temp);
+                              print(int.parse(temp));
+                              if(hours == 12)
+                                {
+                                  hours = 0;
+                                  print("Final Hours " + hours.toString());
+                                }
+                              else
+                                {
+                                  hours += 12;
+                                  print("Final Hours " + hours.toString());
+                                }
+                            }
+                          else
+                            {
+                              hours = int.parse(temp);
+                            }
+                          minutes = int.parse(rem2[0]);
+                          notificationScheduled(hours, minutes);
+                        }
                     },
                     child: const Text(
                       'Confirm',
@@ -777,6 +830,39 @@ class _AddMedicineState extends State<AddMedicine> {
       },
     );
   }
+
+  Future<void> notificationScheduled(int hour, int minute) async {
+    var time = Time(hour, minute, 10);
+
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      'repeatDailyAtTime channel id',
+      'repeatDailyAtTime channel name',
+      'repeatDailyAtTime description',
+      importance: Importance.max,
+      // sound: 'slow_spring_board',
+      ledColor: Color(0xFF3EB16F),
+      ledOffMs: 1000,
+      ledOnMs: 1000,
+      enableLights: true,
+    );
+    var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+    var platformChannelSpecifics = NotificationDetails(
+        android: androidPlatformChannelSpecifics,
+        iOS: iOSPlatformChannelSpecifics);
+
+    await flutterNotificationPlugin.showDailyAtTime(
+      9,
+      'show daily title',
+      'Daily notification shown',
+      time,
+      platformChannelSpecifics,
+      payload: "Hello Scheduled aho",
+    );
+
+    print("Hours " + hour.toString());
+    print("Minutes " + minute.toString());
+    print('Set at ' + time.minute.toString() + " +" + time.hour.toString());
+  }
 }
 
 Future<http.Response> getmedicinename(String barcode, String token) {
@@ -790,8 +876,7 @@ Future<http.Response> getmedicinename(String barcode, String token) {
   );
 }
 
-Future<http.Response> remindersaver(String enName, int dosage, int duration,
-    String durationunit, List frequency, List time, String token) {
+Future<http.Response> remindersaver(String enName, int dosage, int duration, String durationunit, List frequency, List time, String token) {
   Map<String, dynamic> data = {
     "name": enName,
     "dosage": dosage,

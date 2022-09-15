@@ -32,9 +32,9 @@ class _CaloriesPainterState extends State<CaloriesPainter>
           });
     _progressAnimationController.forward();
   }
-
   @override
   Widget build(BuildContext context) {
+
     return CustomPaint(
       child: Container(
         height: 150,
@@ -44,6 +44,8 @@ class _CaloriesPainterState extends State<CaloriesPainter>
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
+            // (Provider.of<CaloriesProvider>(context)
+            // .calculateRemaining() == null)?"":
               Provider.of<CaloriesProvider>(context)
                   .calculateRemaining()
                   .toString(),
@@ -59,17 +61,20 @@ class _CaloriesPainterState extends State<CaloriesPainter>
           ],
         ),
       ),
-      painter: RadialPainter(
+      painter: RadialPainter(((
+          Provider.of<CaloriesProvider>(context).calculateRemaining() *
+              360 /
+              Provider.of<CaloriesProvider>(context).dailyCalories).isNaN)?0:
           Provider.of<CaloriesProvider>(context).calculateRemaining() *
               360 /
               Provider.of<CaloriesProvider>(context).dailyCalories),
     );
   }
 }
-
 class RadialPainter extends CustomPainter {
   double progressDegrees;
   RadialPainter(this.progressDegrees);
+
 
   @override
   void paint(Canvas canvas, Size size) {

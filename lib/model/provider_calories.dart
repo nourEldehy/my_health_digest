@@ -3,15 +3,24 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 var map;
 
 class CaloriesProvider extends ChangeNotifier {
-  int dailyCalories = 2000;
+  bool english=true;
+  String url="10.0.2.2";
+  int dailyCalories = 0;
   int consumedCalories = 0; //read from db
   int burntCalories = 0;
   double dailyWater = 3.0;//la
   double consumedWater = 0.0;
+
+  void changeLanguage() {
+    english = !english;
+    notifyListeners();
+  }
+
 
   void changeDailyCalories(int newValue) {
     // Done
@@ -42,10 +51,11 @@ class CaloriesProvider extends ChangeNotifier {
   int calculateRemaining() {
     return dailyCalories - consumedCalories + burntCalories;
   }
+
 }
 
-
-Future<void> getcalories() async {
+Future<void> getcalories(context) async {
+  print("HWLLOAAF");
   final storage = FlutterSecureStorage();
   final token = await storage.read(key: "token");
 
@@ -59,13 +69,16 @@ Future<void> getcalories() async {
   //Map<List, dynamic> map = json.decode(response.body);
   // map = json.decode(response.body) as List;
   map = json.decode(response.body);
+  print(map);
   print("WWWWWWWWWWWW  " + map['cal_goal'].toString());
+  Provider.of<CaloriesProvider>(context,listen: false).changeDailyCalories(map['cal_goal']);
   //print("Weighttttt  " + response.body.toString());
   // List<String> time = map[1]['time'];
   // print("timeeee " + map[1]['time'][1].toString());
   // var cardscount = map.length;
   // print("Counttt : "+ cardscount);
 }
+
 
 Future<http.Response> senddata(String Parameter,int Calories, String URL) async{
   final storage = FlutterSecureStorage();

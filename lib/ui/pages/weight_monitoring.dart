@@ -461,19 +461,28 @@ class _WeightMonitoringState extends State<WeightMonitoring> {
                     },
                     child: Text("Cancel")),
                 TextButton(
-                    onPressed: () {
+                    onPressed: () async{
+                      print(w);
                       senddata("weight", w,
                           'http://10.0.2.2/api/weight-mon/weight/push');
+                      await Future.delayed(Duration(seconds: 1));
                       Navigator.of(context).pop();
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              WeightMonitoring(),
+                        ),
+                      );
                     },
                     child: Text("Add"))
               ],
-              content: SizedBox(
-                height: 150,
+              content: Container(
+                height: 175,
                 child: Center(
                   child: Container(
-                    height: 150,
-                    width: 200,
+                    height: 600,
+                    width: 500,
                     child: WeightSlider(
                       weight: w,
                       minWeight: 40,
