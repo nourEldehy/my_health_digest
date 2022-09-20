@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:training_and_diet_app/ui/pages/loginaccesscode.dart';
 import 'package:training_and_diet_app/ui/pages/signup.dart';
 import 'package:training_and_diet_app/ui/pages/login.dart';
@@ -17,21 +16,6 @@ class _HomepageState extends State<Homepage> {
       body: SafeArea(
         child: Container(
           color: Color.fromRGBO(255, 255, 255, 1),
-          // decoration: BoxDecoration(
-          //     gradient: LinearGradient(
-          //   begin: Alignment.topRight,
-          //   end: Alignment.bottomLeft,
-          //   colors: [
-          //     // Color.fromRGBO(255, 37, 87, 1),
-          //     // Color.fromRGBO(255, 37, 87, 1),
-          //     // Colors.black54,
-          //     // Color.fromRGBO(255, 37, 87, 1),
-          //     Colors.blue,
-          //     //Colors.white70,
-          //     // Color(0xFF380f90),
-          //     Color.fromRGBO(255, 255, 255, 1),
-          //   ],
-          // )),
           width: double.infinity,
           height: MediaQuery.of(context).size.height,
           padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 50),
@@ -78,7 +62,7 @@ class _HomepageState extends State<Homepage> {
                     minWidth: double.infinity,
                     height: 60,
                     onPressed: () {
-                      Navigator.push(context,
+                      Navigator.pushReplacement(context,
                           MaterialPageRoute(builder: (context) => Login()));
                     },
                     shape: RoundedRectangleBorder(

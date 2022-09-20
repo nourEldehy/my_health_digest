@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:training_and_diet_app/global/myColors.dart';
@@ -26,7 +28,7 @@ class _WeightMonitoringState extends State<WeightMonitoring> {
   int w = 50;
   List<String> food = ['chicken', 'meat'];
   List<String> sfood = ['chicken', 'kofta'];
-  TextEditingController servingSize;
+  TextEditingController foodCalories;
   TextEditingController exerciseCalories;
   TextEditingController foodName;
   int waterCounter = 0;
@@ -59,7 +61,7 @@ class _WeightMonitoringState extends State<WeightMonitoring> {
 
   @override
   void initState() {
-    servingSize = TextEditingController();
+    foodCalories = TextEditingController();
     foodName = TextEditingController();
     exerciseCalories = TextEditingController();
 
@@ -77,15 +79,15 @@ class _WeightMonitoringState extends State<WeightMonitoring> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          backgroundColor: Colors.lightBlue,
-          title: Center(
-              child: Text(
+          backgroundColor: Color.fromRGBO(255, 10, 55, 1),
+          title: Text(
             "Weight Monitoring",
-            style: TextStyle(color: Colors.black),
-          )),
+            style: TextStyle(color: Colors.white),
+          ),
         ),
         floatingActionButton: SpeedDial(
           icon: Icons.add,
+          backgroundColor: Color.fromRGBO(255, 10, 55, 1),
           activeIcon: Icons.close,
           spacing: 3,
           openCloseDial: isDialOpen,
@@ -190,25 +192,19 @@ class _WeightMonitoringState extends State<WeightMonitoring> {
               actions: [
                 TextButton(
                     onPressed: () {
-                      servingSize.text = '';
+                      foodCalories.text = '';
                       Navigator.of(context).pop();
                     },
                     child: Text("Cancel")),
                 TextButton(
                     onPressed: () {
-                      if (servingSize.text.isNotEmpty &&
-                          int.parse(servingSize.text) > 0) {
-                        Provider.of<CaloriesProvider>(context, listen: false)
-                            .changeConsumedCalories(
-                                Provider.of<CaloriesProvider>(context,
-                                            listen: false)
-                                        .consumedCalories +
-                                    (int.parse(servingSize.text) * 200));
-                        setState(() => foodFlag = false);
-                        setState(() => servingSize.text = '');
-
-                        Navigator.of(context).pop();
-                      }
+                      Provider.of<CaloriesProvider>(context, listen: false)
+                          .changeConsumedCalories(Provider.of<CaloriesProvider>(
+                          context,
+                          listen: false)
+                          .consumedCalories +
+                          int.parse(foodCalories.text));
+                      Navigator.of(context).pop();
                     },
                     child: Text("Add"))
               ],
@@ -217,79 +213,43 @@ class _WeightMonitoringState extends State<WeightMonitoring> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Autocomplete<String>(
-                      fieldViewBuilder:
-                          (context, controller, focusNode, onEditingComplete) {
-                        // this.controller = controller;
-
-                        return TextField(
-                          controller: controller,
-                          focusNode: focusNode,
-                          onEditingComplete: onEditingComplete,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide(color: Colors.grey[300]),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide(color: Colors.grey[300]),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide(color: Colors.grey[300]),
-                            ),
-                            hintText: "What have you eaten?",
-                            prefixIcon: Icon(Icons.search),
-                          ),
-                        );
-                      },
-                      optionsBuilder: (TextEditingValue textEditingValue) {
-                        if (textEditingValue.text == '') {
-                          setState(() => foodFlag = false);
-                          return const Iterable<String>.empty();
-                        }
-                        return food.where((String option) {
-                          return option
-                              .contains(textEditingValue.text.toLowerCase());
-                        });
-                      },
-                      onSelected: (String selection) {
-                        setState(() => foodFlag = true);
-                        FocusManager.instance.primaryFocus?.unfocus();
-                        debugPrint('You just selected $selection');
-                      },
+                    TextField(
+                      autofocus: false,
+                      decoration: InputDecoration(
+                        hintText: "What have you eaten?",
+                      ),
                     ),
-                    (foodFlag)
-                        ? Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.symmetric(vertical: 10),
-                                child: Text("Serving size: 1 ounce"),
-                              ),
-                              TextField(
-                                controller: servingSize,
-                                onChanged: (servingSize) {
-                                  setState(() => servingSize);
-                                },
-                                autofocus: false,
-                                keyboardType: TextInputType.number,
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.digitsOnly
-                                ],
-                                decoration: InputDecoration(
-                                    hintText: 'How many servings?'),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(vertical: 10),
-                                child: Text((servingSize.text.isNotEmpty)
-                                    ? "Calories: ${(int.parse(servingSize.text) * 200).toString()}"
-                                    : ""),
-                              ),
-                            ],
-                          )
-                        : Container(),
+                    TextField(
+                      controller: foodCalories,
+                      autofocus: false,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      decoration: InputDecoration(hintText: 'Calories intake'),
+                    ),
+                    InkWell(
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute<dynamic>(
+                          builder: (_) => PDFViewerFromAsset(pdfAssetPath: "assets/calories - My Health Digest.pdf", name: "Calories Reference"),
+                        ),
+                      ),
+                      child: Card(
+                        shadowColor: Colors.grey,
+                        color: Color.fromRGBO(255,37,87,1),
+                        elevation: 8,
+                        margin: EdgeInsets.fromLTRB(60.0, 10.0, 60.0, 10.0),
+                        child: new Column(
+                          children: <Widget>[
+                            new Padding(
+                                padding: new EdgeInsets.all(10.0),
+                                child: new Padding(
+                                  padding: new EdgeInsets.all(7.0),
+                                  child: new Text("Calories Reference", style: new TextStyle(fontSize: 14.0,fontWeight: FontWeight.bold)),
+                                ))
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -297,6 +257,152 @@ class _WeightMonitoringState extends State<WeightMonitoring> {
           },
         );
       });
+
+  // addFoodDialog() => showDialog(
+  //     context: context,
+  //     builder: (context) {
+  //       return StatefulBuilder(
+  //         builder: (context, setState) {
+  //           return AlertDialog(
+  //             title: Text("Add food"),
+  //             actions: [
+  //               TextButton(
+  //                   onPressed: () {
+  //                     servingSize.text = '';
+  //                     Navigator.of(context).pop();
+  //                   },
+  //                   child: Text("Cancel")),
+  //               TextButton(
+  //                   onPressed: () {
+  //                     if (servingSize.text.isNotEmpty &&
+  //                         int.parse(servingSize.text) > 0) {
+  //                       Provider.of<CaloriesProvider>(context, listen: false)
+  //                           .changeConsumedCalories(
+  //                               Provider.of<CaloriesProvider>(context,
+  //                                           listen: false)
+  //                                       .consumedCalories +
+  //                                   (int.parse(servingSize.text) * 200));
+  //                       setState(() => foodFlag = false);
+  //                       setState(() => servingSize.text = '');
+  //
+  //                       Navigator.of(context).pop();
+  //                     }
+  //                   },
+  //                   child: Text("Add"))
+  //             ],
+  //             content: Container(
+  //               height: 180,
+  //               child: Column(
+  //                 crossAxisAlignment: CrossAxisAlignment.start,
+  //                 children: [
+  //                   Autocomplete<String>(
+  //                     fieldViewBuilder:
+  //                         (context, controller, focusNode, onEditingComplete) {
+  //                       // this.controller = controller;
+  //
+  //                       return Column(
+  //                         children: [
+  //                           TextField(
+  //                             controller: controller,
+  //                             focusNode: focusNode,
+  //                             onEditingComplete: onEditingComplete,
+  //                             decoration: InputDecoration(
+  //                               border: OutlineInputBorder(
+  //                                 borderRadius: BorderRadius.circular(8),
+  //                                 borderSide: BorderSide(color: Colors.grey[300]),
+  //                               ),
+  //                               focusedBorder: OutlineInputBorder(
+  //                                 borderRadius: BorderRadius.circular(8),
+  //                                 borderSide: BorderSide(color: Colors.grey[300]),
+  //                               ),
+  //                               enabledBorder: OutlineInputBorder(
+  //                                 borderRadius: BorderRadius.circular(8),
+  //                                 borderSide: BorderSide(color: Colors.grey[300]),
+  //                               ),
+  //                               hintText: "What have you eaten?",
+  //                               prefixIcon: Icon(Icons.search),
+  //                             ),
+  //                           ),
+  //                           InkWell(
+  //                           onTap: () => Navigator.push(
+  //                           context,
+  //                           MaterialPageRoute<dynamic>(
+  //                           builder: (_) => PDFViewerFromAsset(pdfAssetPath: "assets/calories - My Health Digest.pdf", name: "Calories Reference"),
+  //                             ),
+  //                           ),
+  //                           child: Card(
+  //                           shadowColor: Colors.grey,
+  //                           color: Color.fromRGBO(255,37,87,1),
+  //                           elevation: 8,
+  //                           margin: EdgeInsets.fromLTRB(60.0, 20.0, 60.0, 20.0),
+  //                           child: new Column(
+  //                           children: <Widget>[
+  //                           new Padding(
+  //                           padding: new EdgeInsets.all(10.0),
+  //                           child: new Padding(
+  //                           padding: new EdgeInsets.all(7.0),
+  //                           child: new Text("Calories Reference", style: new TextStyle(fontSize: 14.0,fontWeight: FontWeight.bold)),
+  //                           ))
+  //                           ],
+  //                           ),
+  //                           ),
+  //                           ),
+  //                         ],
+  //                       );
+  //                     },
+  //                     optionsBuilder: (TextEditingValue textEditingValue) {
+  //                       if (textEditingValue.text == '') {
+  //                         setState(() => foodFlag = false);
+  //                         return const Iterable<String>.empty();
+  //                       }
+  //                       return food.where((String option) {
+  //                         return option
+  //                             .contains(textEditingValue.text.toLowerCase());
+  //                       });
+  //                     },
+  //                     onSelected: (String selection) {
+  //                       setState(() => foodFlag = true);
+  //                       FocusManager.instance.primaryFocus?.unfocus();
+  //                       debugPrint('You just selected $selection');
+  //                     },
+  //                   ),
+  //                   (foodFlag)
+  //                       ? Column(
+  //                           crossAxisAlignment: CrossAxisAlignment.start,
+  //                           children: [
+  //                             Padding(
+  //                               padding: EdgeInsets.symmetric(vertical: 10),
+  //                               child: Text("Serving size: 1 ounce"),
+  //                             ),
+  //                             TextField(
+  //                               controller: servingSize,
+  //                               onChanged: (servingSize) {
+  //                                 setState(() => servingSize);
+  //                               },
+  //                               autofocus: false,
+  //                               keyboardType: TextInputType.number,
+  //                               inputFormatters: [
+  //                                 FilteringTextInputFormatter.digitsOnly
+  //                               ],
+  //                               decoration: InputDecoration(
+  //                                   hintText: 'How many servings?'),
+  //                             ),
+  //                             Padding(
+  //                               padding: EdgeInsets.symmetric(vertical: 10),
+  //                               child: Text((servingSize.text.isNotEmpty)
+  //                                   ? "Calories: ${(int.parse(servingSize.text) * 200).toString()}"
+  //                                   : ""),
+  //                             ),
+  //                           ],
+  //                         )
+  //                       : Container(),
+  //                 ],
+  //               ),
+  //             ),
+  //           );
+  //         },
+  //       );
+  //     });
 
   addExerciseDialog() => showDialog(
       context: context,
@@ -420,7 +526,6 @@ class _WeightMonitoringState extends State<WeightMonitoring> {
                                   ))),
                               onTap: () {
                                 setState(() => waterCounter++);
-                                print(waterCounter);
                               },
                             )
                           ],
@@ -462,7 +567,6 @@ class _WeightMonitoringState extends State<WeightMonitoring> {
                     child: Text("Cancel")),
                 TextButton(
                     onPressed: () async{
-                      print(w);
                       senddata("weight", w,
                           'http://10.0.2.2/api/weight-mon/weight/push');
                       await Future.delayed(Duration(seconds: 1));
@@ -497,4 +601,101 @@ class _WeightMonitoringState extends State<WeightMonitoring> {
           },
         );
       });
+}
+
+class PDFViewerFromAsset extends StatelessWidget {
+  PDFViewerFromAsset({Key key, this.pdfAssetPath, this.name}) : super(key: key);
+  final String pdfAssetPath;
+  final String name;
+  final Completer<PDFViewController> _pdfViewController =
+  Completer<PDFViewController>();
+  final StreamController<String> _pageCountController =
+  StreamController<String>();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color.fromRGBO(255,37,87,1),
+        title: Text(name),
+        actions: <Widget>[
+          StreamBuilder<String>(
+              stream: _pageCountController.stream,
+              builder: (_, AsyncSnapshot<String> snapshot) {
+                if (snapshot.hasData) {
+                  return Center(
+                    child: Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Color.fromRGBO(255,37,87,1),
+                      ),
+                      child: Text(snapshot.data),
+                    ),
+                  );
+                }
+                return const SizedBox();
+              }),
+        ],
+      ),
+      body: PDF(
+        enableSwipe: true,
+        swipeHorizontal: true,
+        autoSpacing: false,
+        pageFling: false,
+        onPageChanged: (int current, int total) =>
+            _pageCountController.add('${current + 1} - $total'),
+        onViewCreated: (PDFViewController pdfViewController) async {
+          _pdfViewController.complete(pdfViewController);
+          final int currentPage = await pdfViewController.getCurrentPage() ?? 0;
+          final int pageCount = await pdfViewController.getPageCount();
+          _pageCountController.add('${currentPage + 1} - $pageCount');
+        },
+      ).fromAsset(
+        pdfAssetPath,
+        errorWidget: (dynamic error) => Center(child: Text(error.toString())),
+      ),
+      floatingActionButton: FutureBuilder<PDFViewController>(
+        future: _pdfViewController.future,
+        builder: (_, AsyncSnapshot<PDFViewController> snapshot) {
+          if (snapshot.hasData && snapshot.data != null) {
+            return Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                FloatingActionButton(
+                  heroTag: '-',
+                  backgroundColor: Color.fromRGBO(255,37,87,1),
+                  child: const Text('-'),
+                  onPressed: () async {
+                    final PDFViewController pdfController = snapshot.data;
+                    final int currentPage =
+                        (await pdfController.getCurrentPage()) - 1;
+                    if (currentPage >= 0) {
+                      await pdfController.setPage(currentPage);
+                    }
+                  },
+                ),
+                FloatingActionButton(
+                  heroTag: '+',
+                  backgroundColor: Color.fromRGBO(255,37,87,1),
+                  child: const Text('+'),
+                  onPressed: () async {
+                    final PDFViewController pdfController = snapshot.data;
+                    final int currentPage =
+                        (await pdfController.getCurrentPage()) + 1;
+                    final int numberOfPages = await pdfController.getPageCount() ?? 0;
+                    if (numberOfPages > currentPage) {
+                      await pdfController.setPage(currentPage);
+                    }
+                  },
+                ),
+              ],
+            );
+          }
+          return const SizedBox();
+        },
+      ),
+    );
+  }
 }

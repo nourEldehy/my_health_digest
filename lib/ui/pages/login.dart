@@ -1,13 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:provider/provider.dart';
+import 'package:training_and_diet_app/model/provider_calories.dart';
 import 'package:training_and_diet_app/ui/New%20folder/accesscodes.dart';
+import 'package:training_and_diet_app/ui/pages/loginaccesscode.dart';
 import 'package:training_and_diet_app/ui/pages/new_profile_screen.dart';
 
 class Login extends StatefulWidget {
@@ -17,7 +19,7 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   String text = "";
-
+  bool receive;
   final _formKey = GlobalKey<FormState>();
   final _storage = FlutterSecureStorage();
 
@@ -76,16 +78,15 @@ class _LoginState extends State<Login> {
                   decoration: InputDecoration(
                     fillColor: Color.fromRGBO(0, 0, 0, 0.5),
                     hintText: ("Enter Email"),
-                    hintStyle:
-                    TextStyle(fontSize: 18, color: Colors.grey),
+                    hintStyle: TextStyle(fontSize: 18, color: Colors.grey),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(
                           color: Color.fromRGBO(255, 10, 55, 1), width: 2),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     border: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                          color: Colors.white, width: 2),
+                      borderSide:
+                          const BorderSide(color: Colors.white, width: 2),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     focusedBorder: OutlineInputBorder(
@@ -120,9 +121,7 @@ class _LoginState extends State<Login> {
                   decoration: InputDecoration(
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _isObscure
-                            ? Icons.visibility
-                            : Icons.visibility_off,
+                        _isObscure ? Icons.visibility : Icons.visibility_off,
                         color: Colors.grey,
                       ),
                       onPressed: () {
@@ -133,16 +132,14 @@ class _LoginState extends State<Login> {
                     ),
                     fillColor: Color.fromRGBO(0, 0, 0, 0.5),
                     hintText: ("Enter Password"),
-                    hintStyle:
-                    TextStyle(fontSize: 18, color: Colors.grey),
+                    hintStyle: TextStyle(fontSize: 18, color: Colors.grey),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(
                           color: Color.fromRGBO(255, 10, 55, 1), width: 2),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     border: OutlineInputBorder(
-                      borderSide:
-                      BorderSide(color: Colors.white, width: 2),
+                      borderSide: BorderSide(color: Colors.white, width: 2),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     focusedBorder: OutlineInputBorder(
@@ -161,7 +158,6 @@ class _LoginState extends State<Login> {
                       padding: EdgeInsets.fromLTRB(25, 0.0, 25.0, 0),
                       child: GestureDetector(
                         onTap: () {
-                          print("forgot pass");
                         },
                         child: SizedBox(
                           width: 150,
@@ -170,8 +166,7 @@ class _LoginState extends State<Login> {
                             child: Text(
                               "Forget Password?",
                               style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold),
+                                  fontSize: 18, fontWeight: FontWeight.bold),
                             ),
                           ),
                         ),
@@ -184,7 +179,8 @@ class _LoginState extends State<Login> {
                   text,
                   style: TextStyle(
                     color: Colors.red,
-                    fontSize: 14,),
+                    fontSize: 14,
+                  ),
                 ),
               ),
               Padding(
@@ -204,52 +200,56 @@ class _LoginState extends State<Login> {
                       onPressed: () async {
                         if (_formKey.currentState.validate()) {
                           http.Response response = await authentication(email, password);
-                          print("Status Code  " + response.statusCode.toString());
                           if (response.statusCode == 200 && email != admin) {
-                            Map<String, dynamic> map = json.decode(response.body);
+                            Map<String, dynamic> map =
+                                json.decode(response.body);
                             var token = map['token'];
                             await _storage.write(key: "token", value: token);
-                            print("Recieved token  " + token);
-                            print(json.decode(response.body));
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ProfileScreen(),
-                              ),
-                            );
+                            getRequest();
+                            await Future.delayed(Duration(seconds: 2));
+                            if (receive) {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ProfileScreen(),
+                                ),
+                              );
+                            }
+                            else
+                              {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => LoginAccessCode(),
+                                  ),
+                                );
+                              }
                           }
-                          else if (response.statusCode == 200 && email == admin) {
+                          else if (response.statusCode == 200 &&
+                              email == admin) {
                             Map<String, dynamic> map =
-                            json.decode(response.body);
+                                json.decode(response.body);
                             var token = map['token'];
-                            await _storage.write(
-                                key: "token", value: token);
-                            print("Recieved token  " + token);
-                            print(json.decode(response.body));
+                            await _storage.write(key: "token", value: token);
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => AccessCodes(),
                               ),
                             );
-                          }
-                          else if (response.statusCode == 400) {
-                            print("Invalid Credentials");
+                          } else if (response.statusCode == 400) {
                             setState(() {
                               text = "Wrong Email or Password";
                             });
                           } else if (response.statusCode == 408) {
-                            print("Request Timeout");
                             setState(() {
                               text = "Request Timeout";
                             });
                           } else if (response.statusCode == 500) {
-                            print("Internal Server Error");
                             setState(() {
                               text = "Internal Server Error";
                             });
                           } else {
-                            print("Generic Error");
                             setState(() {
                               text = "Generic Error";
                             });
@@ -272,6 +272,21 @@ class _LoginState extends State<Login> {
         ),
       ),
     );
+  }
+  getRequest() async {
+    final storage = FlutterSecureStorage();
+    final token = await storage.read(key: "token");
+
+    String url = "http://10.0.2.2/api/users/currentuser";
+    final response = await http.get(url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': token,
+      },
+    );
+    var responseData = json.decode(response.body);
+      receive = responseData['activated'];
+    print(receive);
   }
 }
 

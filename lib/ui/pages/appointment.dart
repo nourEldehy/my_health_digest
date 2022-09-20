@@ -1,9 +1,18 @@
+import 'dart:convert';
+import 'package:flutter/cupertino.dart';
+import 'package:http/http.dart' as http;
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:training_and_diet_app/ui/pages/contact_us.dart';
 import 'package:training_and_diet_app/ui/pages/new_profile_screen.dart';
 import 'add_appointment.dart';
+
+var map;
+int cardscount;
+var url;
+var savedtoken;
 
 class AppointmentReminder extends StatefulWidget {
   //static String id = "homePatient";
@@ -32,8 +41,6 @@ class _AppointmentReminderState extends State<AppointmentReminder> {
                   ),
                 )
               : OpenContainer;
-
-      //print(index);
     });
   }
 
@@ -41,31 +48,48 @@ class _AppointmentReminderState extends State<AppointmentReminder> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: Color.fromRGBO(255,37,87,1),
         elevation: 0.0,
       ),
       body: Container(
         color: Color(0xFFF6F8FC),
-        child: Column(
-          children: <Widget>[
-            Flexible(
-              flex: 3,
-              child: TopContainer(),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Flexible(
-              flex: 5,
-              child: BottomContainer(),
-            ),
-          ],
-        ),
+        child: Center(
+      child: FutureBuilder(
+      future: getreminder(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasData) {
+            }
+            return Container(
+              color: Color(0xFFF6F8FC),
+              child: Column(
+                children: <Widget>[
+                  Flexible(
+                    flex: 3,
+                    child: TopContainer(),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Flexible(
+                    flex: 5,
+                    child: BottomContainer(),
+                  ),
+                ],
+              ),
+            ); // Your UI here
+          } else if (snapshot.hasError) {
+            return Text('Error');
+          } else {
+            return CircularProgressIndicator();
+          }
+        }),
+    ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
         elevation: 4,
-        backgroundColor: Colors.lightBlue,
+        backgroundColor: Color.fromRGBO(255,37,87,1),
         child: Icon(
           Icons.add,
         ),
@@ -79,32 +103,24 @@ class _AppointmentReminderState extends State<AppointmentReminder> {
         },
       ),
       bottomNavigationBar: BottomNavigationBar(
-        // type: fi,
-        // onTap: (index) => setState(() => _selectedIndex = index),
-        // iconSize: 40,
-        // selectedIconTheme: IconThemeData(
-        //   color: Color.fromRGBO(255, 10, 56, 1.0),
-        // ),
-        // unselectedIconTheme: IconThemeData(
-        //   color: Colors.black12,
-        // ),
+        selectedItemColor: Color.fromRGBO(255,37,87,1),
         onTap: _onItemTapped,
         currentIndex: 1,
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: "Home",
-            backgroundColor: Colors.blue,
+            backgroundColor: Color.fromRGBO(255,37,87,1),
           ),
           BottomNavigationBarItem(
             icon: Icon(FontAwesomeIcons.bell),
             label: "Reminders",
-            backgroundColor: Colors.blue,
+            backgroundColor: Color.fromRGBO(255,37,87,1),
           ),
           BottomNavigationBarItem(
               icon: Icon(Icons.person),
-              label: "Profile",
-              backgroundColor: Colors.blue),
+              label: "Contact Us",
+              backgroundColor: Color.fromRGBO(255,37,87,1)),
         ],
       ),
     );
@@ -127,7 +143,7 @@ class TopContainer extends StatelessWidget {
             offset: Offset(0, 3.5),
           )
         ],
-        color: Colors.lightBlue,
+        color: Color.fromRGBO(255,37,87,1),
       ),
       width: double.infinity,
       child: Column(
@@ -162,10 +178,11 @@ class TopContainer extends StatelessWidget {
             padding: EdgeInsets.only(top: 16.0, bottom: 5),
             child: Center(
               child: Text(
-                '1',
+                //NUMBER OF REMINDERS
+                cardscount.toString(),
                 style: TextStyle(
                   fontFamily: "Neu",
-                  fontSize: 24,
+                  fontSize: 28,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
@@ -179,9 +196,9 @@ class TopContainer extends StatelessWidget {
 }
 
 class BottomContainer extends StatelessWidget {
-  int x = 0;
 
   @override
+  int x = 0;
   Widget build(BuildContext context) {
     if (x == 0)
       return ListView(
@@ -190,151 +207,87 @@ class BottomContainer extends StatelessWidget {
             color: Color(0xFFF6F8FC),
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.elliptical(20, 50),
-                        topRight: Radius.elliptical(20, 50),
-                        bottomLeft: Radius.elliptical(20, 50),
-                        bottomRight: Radius.elliptical(20, 50),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          blurRadius: 5,
-                          color: Colors.grey[400],
-                          offset: Offset(0, 3.5),
-                        )
-                      ],
-                      color: Colors.white,
-                    ),
-                    height: 100,
-                    width: double.infinity,
-                    child: Column(
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.all(12.0),
-                              child: Icon(
-                                FontAwesomeIcons.calendarCheck,
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: Text(
-                                "Dr. Mostafa Bakry",
-                                style: TextStyle(fontSize: 24),
-                              ),
-                            ),
-                            Text(
-                              "Dermatologist",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  color: Color(0xFFC9C9C9),
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ],
+                for (var i = 0; i < cardscount; i++)
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.elliptical(20, 50),
+                          topRight: Radius.elliptical(20, 50),
+                          bottomLeft: Radius.elliptical(20, 50),
+                          bottomRight: Radius.elliptical(20, 50),
                         ),
-                        //FOR ALL reminders ...time.map(e)
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15.0),
-                          child: Row(
+                        boxShadow: [
+                          BoxShadow(
+                            blurRadius: 5,
+                            color: Colors.grey[400],
+                            offset: Offset(0, 3.5),
+                          )
+                        ],
+                        color: Colors.white,
+                      ),
+                      height: 100,
+                      width: double.infinity,
+                      child: Column(
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Container(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: Colors.blue,
-                                      width: 2,
-                                    ),
-                                    borderRadius: BorderRadius.circular(20.0),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8.0, vertical: 4),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "6/7/2022 at 7:00 PM",
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ],
-                                    ),
-                                  )),
-                              // Padding(
-                              //   padding: const EdgeInsets.only(left: 10),
-                              //   child: Container(
-                              //       decoration: BoxDecoration(
-                              //         border: Border.all(
-                              //           color: Colors.blue,
-                              //           width: 2,
-                              //         ),
-                              //         borderRadius: BorderRadius.circular(20.0),
-                              //       ),
-                              //       child: SizedBox(
-                              //           width: 75,
-                              //           height: 30,
-                              //           child: Padding(
-                              //             padding:
-                              //                 const EdgeInsets.only(left: 8.0),
-                              //             child: Row(
-                              //               mainAxisAlignment:
-                              //                   MainAxisAlignment.spaceBetween,
-                              //               children: [
-                              //                 Text(
-                              //                   "TIME",
-                              //                   style: TextStyle(
-                              //                       fontSize: 18,
-                              //                       fontWeight: FontWeight.bold),
-                              //                 ),
-                              //               ],
-                              //             ),
-                              //           ))),
-                              // ),
-                              // Padding(
-                              //   padding: const EdgeInsets.only(left: 10),
-                              //   child: Container(
-                              //       decoration: BoxDecoration(
-                              //         border: Border.all(
-                              //           color: Colors.blue,
-                              //           width: 2,
-                              //         ),
-                              //         borderRadius: BorderRadius.circular(20.0),
-                              //       ),
-                              //       child: SizedBox(
-                              //           width: 75,
-                              //           height: 30,
-                              //           child: Padding(
-                              //             padding:
-                              //                 const EdgeInsets.only(left: 8.0),
-                              //             child: Row(
-                              //               mainAxisAlignment:
-                              //                   MainAxisAlignment.spaceBetween,
-                              //               children: [
-                              //                 Text(
-                              //                   "TIME",
-                              //                   style: TextStyle(
-                              //                       fontSize: 18,
-                              //                       fontWeight: FontWeight.bold),
-                              //                 ),
-                              //               ],
-                              //             ),
-                              //           ))),
-                              // ),
+                              Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: Text(
+                                  map[i]['name'],
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                              ),
                             ],
                           ),
-                        ),
-                      ],
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: Text(
+                                  map[i]['date'],
+                                  style: TextStyle(fontSize: 20),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.all(4.0),
+                                child: InkWell(
+                                    onTap: () => {
+                                      print(map[i]['_id'].toString()),
+                                      url =
+                                          "http://10.0.2.2/api/doc-app/delete",
+                                      http.post(
+                                        url,
+                                        headers: <String, String>{
+                                          'Content-Type':
+                                          'application/json; charset=UTF-8',
+                                          'Authorization': savedtoken,
+                                        },
+                                        body: jsonEncode(<String, String>{"id": map[i]['_id'].toString()}),
+                                      ),
+                                      getreminder(),
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              AppointmentReminder(),
+                                        ),
+                                      )
+                                    },
+                                    child: Icon(
+                                      CupertinoIcons.delete,
+                                      color: Colors.red,
+                                    )),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
               ],
             ),
           ),
@@ -355,4 +308,20 @@ class BottomContainer extends StatelessWidget {
         ),
       );
   }
+}
+
+Future<void> getreminder() async {
+  final storage = FlutterSecureStorage();
+  final token = await storage.read(key: "token");
+  savedtoken = token;
+
+  final response = await http.get(
+    "http://10.0.2.2/api/doc-app/get",
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': token,
+    },
+  );
+  map = json.decode(response.body) as List;
+  cardscount = map.length;
 }

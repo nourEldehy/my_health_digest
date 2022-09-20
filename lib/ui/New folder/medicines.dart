@@ -6,8 +6,6 @@ import 'package:training_and_diet_app/ui/pages/add_medicine.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
-import 'package:flutter/services.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 var map;
 int cardscount;
@@ -37,7 +35,6 @@ class _MedicineReminderState extends State<MedicineReminder> {
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   if (snapshot.hasData) {
-                    print(jsonDecode(snapshot.data.body));
                   }
                   return Container(
                     color: Color(0xFFF6F8FC),
@@ -264,7 +261,6 @@ class BottomContainer extends StatelessWidget {
                                             },
                                           ),
                                           getreminder(),
-                                          print(url),
                                           Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
@@ -318,8 +314,6 @@ Future<void> getreminder() async {
       'Authorization': token,
     },
   );
-  //Map<List, dynamic> map = json.decode(response.body);
   map = json.decode(response.body) as List;
-  // print("Nameeeeeeeeeeeee  " + map[0]['name'].toString());
   cardscount = map.length;
 }

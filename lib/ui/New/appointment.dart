@@ -52,31 +52,22 @@ class _AppointmentReminderState extends State<AppointmentReminder> {
         },
       ),
       bottomNavigationBar: BottomNavigationBar(
-        // type: fi,
-        // onTap: (index) => setState(() => _selectedIndex = index),
-        // iconSize: 40,
-        // selectedIconTheme: IconThemeData(
-        //   color: Color.fromRGBO(255, 10, 56, 1.0),
-        // ),
-        // unselectedIconTheme: IconThemeData(
-        //   color: Colors.black12,
-        // ),
         currentIndex: 1,
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: "Home",
-            backgroundColor: Colors.blue,
+            backgroundColor: Color.fromRGBO(255,37,87,1),
           ),
           BottomNavigationBarItem(
             icon: Icon(FontAwesomeIcons.bell),
             label: "Reminders",
-            backgroundColor: Colors.blue,
+            backgroundColor: Color.fromRGBO(255,37,87,1),
           ),
           BottomNavigationBarItem(
               icon: Icon(Icons.person),
-              label: "Profile",
-              backgroundColor: Colors.blue),
+              label: "Contact Us",
+              backgroundColor: Color.fromRGBO(255,37,87,1)),
         ],
       ),
     );

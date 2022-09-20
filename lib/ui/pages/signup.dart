@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:http/http.dart' as http;
 
@@ -73,21 +72,24 @@ class _SignupState extends State<Signup> {
                               fillColor: Color.fromRGBO(0, 0, 0, 0.5),
                               hintText: ("Enter Name"),
                               hintStyle:
-                              TextStyle(fontSize: 18, color: Colors.grey),
+                                  TextStyle(fontSize: 18, color: Colors.grey),
                               enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                BorderSide(color: Color.fromRGBO(255, 10, 55, 1), width: 2),
+                                borderSide: BorderSide(
+                                    color: Color.fromRGBO(255, 10, 55, 1),
+                                    width: 2),
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               border: OutlineInputBorder(
-                                borderSide:
-                                const BorderSide(color: Colors.white, width: 2),
+                                borderSide: const BorderSide(
+                                    color: Colors.white, width: 2),
                                 borderRadius: BorderRadius.circular(20),
                               ),
-                              focusedBorder:OutlineInputBorder(
-                                borderSide:
-                                BorderSide(color: Color.fromRGBO(255, 10, 55, 1), width: 2),
-                                borderRadius: BorderRadius.circular(20),),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color.fromRGBO(255, 10, 55, 1),
+                                    width: 2),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
                               filled: true,
                             ),
                           ),
@@ -119,21 +121,24 @@ class _SignupState extends State<Signup> {
                               fillColor: Color.fromRGBO(0, 0, 0, 0.5),
                               hintText: ("Enter Email"),
                               hintStyle:
-                              TextStyle(fontSize: 18, color: Colors.grey),
+                                  TextStyle(fontSize: 18, color: Colors.grey),
                               enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                BorderSide(color: Color.fromRGBO(255, 10, 55, 1), width: 2),
+                                borderSide: BorderSide(
+                                    color: Color.fromRGBO(255, 10, 55, 1),
+                                    width: 2),
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               border: OutlineInputBorder(
-                                borderSide:
-                                const BorderSide(color: Colors.white, width: 2),
+                                borderSide: const BorderSide(
+                                    color: Colors.white, width: 2),
                                 borderRadius: BorderRadius.circular(20),
                               ),
-                              focusedBorder:OutlineInputBorder(
-                                borderSide:
-                                BorderSide(color: Color.fromRGBO(255, 10, 55, 1), width: 2),
-                                borderRadius: BorderRadius.circular(20),),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color.fromRGBO(255, 10, 55, 1),
+                                    width: 2),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
                               filled: true,
                             ),
                           ),
@@ -177,21 +182,24 @@ class _SignupState extends State<Signup> {
                               fillColor: Color.fromRGBO(0, 0, 0, 0.5),
                               hintText: ("Enter Password"),
                               hintStyle:
-                              TextStyle(fontSize: 18, color: Colors.grey),
+                                  TextStyle(fontSize: 18, color: Colors.grey),
                               enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                BorderSide(color: Color.fromRGBO(255, 10, 55, 1), width: 2),
+                                borderSide: BorderSide(
+                                    color: Color.fromRGBO(255, 10, 55, 1),
+                                    width: 2),
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               border: OutlineInputBorder(
                                 borderSide:
-                                BorderSide(color: Colors.white, width: 2),
+                                    BorderSide(color: Colors.white, width: 2),
                                 borderRadius: BorderRadius.circular(20),
                               ),
-                              focusedBorder:OutlineInputBorder(
-                                borderSide:
-                                BorderSide(color: Color.fromRGBO(255, 10, 55, 1), width: 2),
-                                borderRadius: BorderRadius.circular(20),),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color.fromRGBO(255, 10, 55, 1),
+                                    width: 2),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
                               filled: true,
                             ),
                           ),
@@ -235,21 +243,24 @@ class _SignupState extends State<Signup> {
                               fillColor: Color.fromRGBO(0, 0, 0, 0.5),
                               hintText: ("Confirm Password"),
                               hintStyle:
-                              TextStyle(fontSize: 18, color: Colors.grey),
+                                  TextStyle(fontSize: 18, color: Colors.grey),
                               enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                BorderSide(color: Color.fromRGBO(255, 10, 55, 1), width: 2),
+                                borderSide: BorderSide(
+                                    color: Color.fromRGBO(255, 10, 55, 1),
+                                    width: 2),
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               border: OutlineInputBorder(
                                 borderSide:
-                                BorderSide(color: Colors.white, width: 2),
+                                    BorderSide(color: Colors.white, width: 2),
                                 borderRadius: BorderRadius.circular(20),
                               ),
-                              focusedBorder:OutlineInputBorder(
-                                borderSide:
-                                BorderSide(color: Color.fromRGBO(255, 10, 55, 1), width: 2),
-                                borderRadius: BorderRadius.circular(20),),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color.fromRGBO(255, 10, 55, 1),
+                                    width: 2),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
                               filled: true,
                             ),
                           ),
@@ -268,7 +279,9 @@ class _SignupState extends State<Signup> {
                                           fontSize: 18, color: Colors.grey),
                                       enabledBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
-                                            color: Color.fromRGBO(255, 10, 55, 1), width: 2),
+                                            color:
+                                                Color.fromRGBO(255, 10, 55, 1),
+                                            width: 2),
                                         borderRadius: BorderRadius.circular(20),
                                       ),
                                       border: OutlineInputBorder(
@@ -276,10 +289,13 @@ class _SignupState extends State<Signup> {
                                             color: Colors.white, width: 2),
                                         borderRadius: BorderRadius.circular(20),
                                       ),
-                                      focusedBorder:OutlineInputBorder(
-                                        borderSide:
-                                        BorderSide(color: Color.fromRGBO(255, 10, 55, 1), width: 2),
-                                        borderRadius: BorderRadius.circular(20),),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color:
+                                                Color.fromRGBO(255, 10, 55, 1),
+                                            width: 2),
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
                                       filled: true,
                                     ),
                                     //dropdownColor: Colors.blueAccent,
@@ -330,7 +346,9 @@ class _SignupState extends State<Signup> {
                                           fontSize: 18, color: Colors.grey),
                                       enabledBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
-                                            color: Color.fromRGBO(255, 10, 55, 1), width: 2),
+                                            color:
+                                                Color.fromRGBO(255, 10, 55, 1),
+                                            width: 2),
                                         borderRadius: BorderRadius.circular(20),
                                       ),
                                       border: OutlineInputBorder(
@@ -338,10 +356,13 @@ class _SignupState extends State<Signup> {
                                             color: Colors.white, width: 2),
                                         borderRadius: BorderRadius.circular(20),
                                       ),
-                                      focusedBorder:OutlineInputBorder(
-                                        borderSide:
-                                        BorderSide(color: Color.fromRGBO(255, 10, 55, 1), width: 2),
-                                        borderRadius: BorderRadius.circular(20),),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color:
+                                                Color.fromRGBO(255, 10, 55, 1),
+                                            width: 2),
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
                                       filled: true,
                                     ),
                                   ),
@@ -371,21 +392,24 @@ class _SignupState extends State<Signup> {
                               fillColor: Color.fromRGBO(0, 0, 0, 0.5),
                               hintText: ("Enter Company Name"),
                               hintStyle:
-                              TextStyle(fontSize: 18, color: Colors.grey),
+                                  TextStyle(fontSize: 18, color: Colors.grey),
                               enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                BorderSide(color: Color.fromRGBO(255, 10, 55, 1), width: 2),
+                                borderSide: BorderSide(
+                                    color: Color.fromRGBO(255, 10, 55, 1),
+                                    width: 2),
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               border: OutlineInputBorder(
-                                borderSide:
-                                const BorderSide(color: Colors.white, width: 2),
+                                borderSide: const BorderSide(
+                                    color: Colors.white, width: 2),
                                 borderRadius: BorderRadius.circular(20),
                               ),
-                              focusedBorder:OutlineInputBorder(
-                                borderSide:
-                                BorderSide(color: Color.fromRGBO(255, 10, 55, 1), width: 2),
-                                borderRadius: BorderRadius.circular(20),),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color.fromRGBO(255, 10, 55, 1),
+                                    width: 2),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
                               filled: true,
                             ),
                           ),
@@ -407,12 +431,19 @@ class _SignupState extends State<Signup> {
                                       borderRadius: BorderRadius.circular(50)),
                                 ),
                                 onPressed: () async {
-
-                                  http.Response received = await newuser(u.name, u.email, u.password, u.gender, u.age, u.company);
+                                  http.Response received = await newuser(
+                                      u.name,
+                                      u.email,
+                                      u.password,
+                                      u.gender,
+                                      u.age,
+                                      u.company);
                                   var map = json.decode(received.body);
                                   print("From sign up : " + map.toString());
-                                  Navigator.push(context,
-                                      MaterialPageRoute(builder: (context) => Login()));
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Login()));
                                 },
                                 child: Text(
                                   "Sign Up",
@@ -447,14 +478,12 @@ class User {
   String company;
 
   User(
-      {
-        @required this.name,
-        @required this.email,
-        @required this.password,
-        @required this.gender,
-        @required this.age,
-        @required this.company
-      });
+      {@required this.name,
+      @required this.email,
+      @required this.password,
+      @required this.gender,
+      @required this.age,
+      @required this.company});
 }
 
 List<DropdownMenuItem<String>> get dropdownItems {
@@ -465,16 +494,15 @@ List<DropdownMenuItem<String>> get dropdownItems {
   return menuItems;
 }
 
-Future<http.Response> newuser(String name, String email, String password, String gender, int age, String company)
-{
-  Map<String, dynamic> data =
-  {
+Future<http.Response> newuser(String name, String email, String password,
+    String gender, int age, String company) {
+  Map<String, dynamic> data = {
     "name": name,
     "email": email,
     "password": password,
     "gender": gender,
     "age": age,
-    "Company": company,
+    "company": company,
   };
   return http.post(
     Uri.parse('http://10.0.2.2/api/users/signup'),

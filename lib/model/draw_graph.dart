@@ -63,9 +63,7 @@ class _DrawGraphState extends State<DrawGraph> {
       }
 
 
-      // print(xaxis);
       sortedxaxis = xaxis;
-      // sortedxaxis.sort();
 
       List<Feature> features = [
         Feature(
@@ -94,7 +92,6 @@ class _DrawGraphState extends State<DrawGraph> {
     }
   }
   Future<void> getweight() async {
-    print("Hello");
     weights = [];
     dates=[];
     sortedweights=[];
@@ -112,10 +109,7 @@ class _DrawGraphState extends State<DrawGraph> {
         'Authorization': token,
       },
     );
-    //Map<List, dynamic> map = json.decode(response.body);
-    // map = json.decode(response.body) as List;
     map = json.decode(response.body);
-    print(map.toString());
     if(map['weight']!=[]) {
       for (var i = 0; i < map['weight'].length; i++) {
         weights.add(map['weight'][i]['value']);
@@ -124,8 +118,6 @@ class _DrawGraphState extends State<DrawGraph> {
       }
       sortedweights.sort();
       //xaxis nested loop
-      print('unsorted : $weights');
-      print('sorted: $sortedweights');
       for (var i = 0; i < weights.length; i++) {
         for (var j = 0; j < sortedweights.length; j++) {
           if (weights[i] == sortedweights[j]) {
@@ -134,12 +126,10 @@ class _DrawGraphState extends State<DrawGraph> {
           }
         }
       }
-      print("Finallllll: " + finalxaxis.toString());
       for (int i = 0; i < weights.length; i++) {
         xaxis.add(mapping(weights[i].toDouble(), weights.reduce(min).toDouble(),
             weights.reduce(max).toDouble(), 0.2, 1.0));
       }
-      // print("Weightsssssss Before Sort : " + weights.toString());
       weights.sort();
 
       //weights nested loops
@@ -149,20 +139,12 @@ class _DrawGraphState extends State<DrawGraph> {
             Sorteddates.add(map['weight'][j]['date']);
         }
       }
-      // print("Weightsssssss after sort : " + weights.toString());
-      // print("Datesss before sort : " + dates.toString());
-      // print("Datesss after sort : " + Sorteddates.toString());
       setState(() {
         weights;
         finalxaxis;
         dates;
       });
     }
-    //print("Weighttttt  " + response.body.toString());
-    // List<String> time = map[1]['time'];
-    // print("timeeee " + map[1]['time'][1].toString());
-    // var cardscount = map.length;
-    // print("Counttt : "+ cardscount);
   }
 }
 

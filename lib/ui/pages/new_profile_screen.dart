@@ -86,7 +86,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person,),
-            label: "Profile",
+            label: "Contact Us",
 
           ),
         ],
@@ -131,7 +131,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       color: Colors.black,
                     ),
                   ),
-                  // trailing: ClipOval(child: Image.asset("assets/User.jpg")),
                 ),
                 SizedBox(
                   height: 2,
@@ -184,8 +183,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   getRequest() async {
     final storage = FlutterSecureStorage();
     final token = await storage.read(key: "token");
-    //replace your restFull API here.
-    String url = "http://${Provider.of<CaloriesProvider>(context).url}/api/users/currentuser";
+
+    String url = "http://10.0.2.2/api/users/currentuser";
     final response = await http.get(url,
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
@@ -485,7 +484,6 @@ class _MealCard extends StatelessWidget {
                       style: const TextStyle(
                         fontWeight: FontWeight.w900,
                         fontSize: 14,
-                        // color: Colors.black12,
                       ),
                     ),
                     SizedBox(height: 10),

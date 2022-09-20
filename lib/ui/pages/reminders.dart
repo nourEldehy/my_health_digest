@@ -58,17 +58,17 @@ class _RemindersState extends State<Reminders> {
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
               label: "Home",
-              backgroundColor: Colors.blue,
+              backgroundColor: Color.fromRGBO(255,37,87,1),
             ),
             BottomNavigationBarItem(
               icon: Icon(FontAwesomeIcons.bell),
               label: "Reminders",
-              backgroundColor: Colors.blue,
+              backgroundColor: Color.fromRGBO(255,37,87,1),
             ),
             BottomNavigationBarItem(
                 icon: Icon(Icons.person),
-                label: "Profile",
-                backgroundColor: Colors.blue),
+                label: "Contact Us",
+                backgroundColor: Color.fromRGBO(255,37,87,1)),
           ],
         ),
         appBar: AppBar(title: const Text('Reminders'),

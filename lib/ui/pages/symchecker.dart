@@ -94,7 +94,6 @@ class _SymcheckerState extends State<Symchecker> {
                   getdiseases(selectedSymptoms);
                   controller.clear();
                 });
-                print('Selected Symptoms $selectedSymptoms');
                 FocusManager.instance.primaryFocus?.unfocus();
               },
             ),
@@ -144,7 +143,6 @@ class _SymcheckerState extends State<Symchecker> {
                                                 setState(() {
                                                   selectedSymptoms.remove(e);
                                                   getdiseases(selectedSymptoms);
-                                                  print(allPDFs);
                                                 });
                                               },
                                               //color: Colors.green,
@@ -194,108 +192,20 @@ class _SymcheckerState extends State<Symchecker> {
         ),
     ),
          ),
-            //TODO: Shof hatshow el pdfs ezy, enta 2olt zay myhealth
-            //Result here
-            // Expanded(
-            //   child: ((selectedSymptoms.contains("Cough") &&
-            //           selectedSymptoms.contains("Fever") &&
-            //           selectedSymptoms.contains("Loss of taste or smell")))
-            //       ? ListView.builder(
-            //           itemCount: 1,
-            //           itemBuilder: (context, index) {
-            //             return Column(
-            //               children: [
-            //                 ListTile(
-            //                   title: Text(allPDFs[2]),
-            //                 ),
-            //               ],
-            //             );
-            //           })
-            //       : (selectedSymptoms.contains("Cough") &&
-            //               selectedSymptoms.contains("Fever"))
-            //           ? ListView.builder(
-            //               itemCount: 1,
-            //               itemBuilder: (context, index) {
-            //                 return Column(
-            //                   children: [
-            //                     ListTile(
-            //                       title: Text(allPDFs[2]),
-            //                     ),
-            //                     Divider(),
-            //                     ListTile(
-            //                       title: Text(allPDFs[4]),
-            //                     ),
-            //                     Divider(),
-            //                     ListTile(
-            //                       title: Text(allPDFs[7]),
-            //                     ),
-            //                   ],
-            //                 );
-            //               })
-            //           : (selectedSymptoms.contains("Cough"))
-            //               ? ListView.builder(
-            //                   itemCount: 1,
-            //                   itemBuilder: (context, index) {
-            //                     return Column(
-            //                       children: [
-            //                         ListTile(
-            //                           title: Text(allPDFs[2]),
-            //                         ),
-            //                         Divider(),
-            //                         ListTile(
-            //                           title: Text(allPDFs[4]),
-            //                         ),
-            //                         Divider(),
-            //                         ListTile(
-            //                           title: Text(allPDFs[7]),
-            //                         ),
-            //                         Divider(),
-            //                         ListTile(
-            //                           title: Text(allPDFs[13]),
-            //                         ),
-            //                         Divider(),
-            //                         ListTile(
-            //                           title: Text(allPDFs[15]),
-            //                         ),
-            //                         Divider(),
-            //                         ListTile(
-            //                           title: Text(allPDFs[16]),
-            //                         ),
-            //                         Divider(),
-            //                       ],
-            //                     );
-            //                   })
-            //               : ListView.builder(
-            //                   itemCount: allPDFs.length,
-            //                   itemBuilder: (context, index) {
-            //                     return Column(
-            //                       children: [
-            //                         ListTile(
-            //                           title: Text(allPDFs[index]),
-            //                         ),
-            //                         Divider(),
-            //                       ],
-            //                     );
-            //                   }),
-            // ),
           ],
         ),
       ),
     );
   }
 
-  List<String> allPDFs = [
-    //TODO: load el pdfs here from db
-  ];
-  List<String> allSym = [
-    //TODO: load el syms here from db
-  ];
+  List<String> allPDFs = [];
+  List<String> allSym = [];
 
   Future<void> getallsymptoms() async {
     allSym = [];
 
     final response = await http.get(
-      "http://${Provider.of<CaloriesProvider>(context).url}/api/sym-checker/symptoms",
+      "http://10.0.2.2/api/sym-checker/symptoms",
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -305,7 +215,6 @@ class _SymcheckerState extends State<Symchecker> {
     {
       allSym.add(json.decode(response.body)[i]);
     }
-    print(allSym);
   }
 
   Future<void> getdiseases(x) async {
@@ -326,7 +235,6 @@ class _SymcheckerState extends State<Symchecker> {
     {
       allPDFs.add(json.decode(response.body)[i]);
     }
-    print(allPDFs);
     setState(() {
       allPDFs;
     });

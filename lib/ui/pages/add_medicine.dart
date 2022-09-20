@@ -94,16 +94,12 @@ class _AddMedicineState extends State<AddMedicine> {
         b.text = englishName;
         newMed.mName = englishName;
       });
-      print("Scanned Barcode: ");
-      print(barcodeScanRes);
-      print("Received Medicine Name: " + map['enName']);
     } on PlatformException {
       barcodeScanRes = 'Failed to get platform version.';
     } on RangeError {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Unsuccessful')),
       );
-      print("Unsuccessful");
     }
     if (!mounted) return;
 
@@ -338,7 +334,6 @@ class _AddMedicineState extends State<AddMedicine> {
                                       return null;
                                     },
                                     onChanged: (String value) {
-                                      //print(value);
                                       newMed.numDays = int.parse(value);
                                     },
                                     style: TextStyle(
@@ -477,12 +472,9 @@ class _AddMedicineState extends State<AddMedicine> {
                                           GestureDetector(
                                             onTap: () {
                                               setState(() {
-                                                //print(reminders);
                                                 reminders.remove(e);
-                                                //print(reminders);
                                               });
                                             },
-                                            //color: Colors.green,
                                             child: SizedBox(
                                               width: 50,
                                               height: 30,
@@ -548,7 +540,6 @@ class _AddMedicineState extends State<AddMedicine> {
                         newMed.dosage = dosage;
                         newMed.freq = freq;
                         newMed.reminders = reminders;
-                        print(newMed.mName);
                         final storage = FlutterSecureStorage();
                         final token = await storage.read(key: "token");
                         http.Response received = await remindersaver(
@@ -579,16 +570,13 @@ class _AddMedicineState extends State<AddMedicine> {
                           if(rem2[1][0].toString() == "P")
                             {
                               hours = int.parse(temp);
-                              print(int.parse(temp));
                               if(hours == 12)
                                 {
                                   hours = 0;
-                                  print("Final Hours " + hours.toString());
                                 }
                               else
                                 {
                                   hours += 12;
-                                  print("Final Hours " + hours.toString());
                                 }
                             }
                           else
@@ -624,8 +612,6 @@ class _AddMedicineState extends State<AddMedicine> {
             !reminders.contains(formatTimeOfDay(newReminder))) {
           reminders.add(formatTimeOfDay(newReminder));
         }
-        // print(reminders);
-        //print("HI" + formatTimeOfDay(newReminder));
       });
     }
   }
@@ -666,7 +652,6 @@ class _AddMedicineState extends State<AddMedicine> {
     freq = [];
     checkBoxList.forEach((element) {
       if (allChecked.value == true) {
-        //print(allChecked.label);
         setState(() {
           Frequency = allChecked.label;
           freq.add(element.label);
@@ -675,7 +660,6 @@ class _AddMedicineState extends State<AddMedicine> {
         setState(() {
           freq.add(element.abv);
           Frequency = freq.join(", ");
-          // print(freq);
         });
       } else if (element.value == false) {
         i++;
@@ -684,10 +668,8 @@ class _AddMedicineState extends State<AddMedicine> {
     if (i > 6) {
       setState(() {
         Frequency = "";
-        //print(Frequency);
       });
     }
-    // print(i);
   }
 
   void _dropdown(context) {
@@ -858,10 +840,6 @@ class _AddMedicineState extends State<AddMedicine> {
       platformChannelSpecifics,
       payload: "Hello Scheduled aho",
     );
-
-    print("Hours " + hour.toString());
-    print("Minutes " + minute.toString());
-    print('Set at ' + time.minute.toString() + " +" + time.hour.toString());
   }
 }
 

@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
@@ -208,6 +211,15 @@ class _AddAppointmentState extends State<AddAppointment> {
                       }
 
                       if (_formKey.currentState.validate() && x == 1) {
+                        String Finaldate = "${dt.day}-${dt.month}-${dt.year} ${T.replaceAll(" AM", "").replaceAll(" PM", "")}";
+                        print(Finaldate);
+                        final storage = FlutterSecureStorage();
+                        final token = await storage.read(key: "token");
+                        http.Response received = await remindersaver(
+                            newApp.dName,
+                            Finaldate,
+                            token);
+
                         // If the form is valid, display a snackbar. In the real world,
                         // you'd often call a server or save the information in a database.
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -235,8 +247,14 @@ class _AddAppointmentState extends State<AddAppointment> {
                       //SEND TO DB
 
                       if (x == 1)
-                        await Future.delayed(const Duration(seconds: 6), () {
+                        await Future.delayed(const Duration(seconds: 2), () {
                           Navigator.pop(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AppointmentReminder(),
+                            ),
+                          );
+                          Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                               builder: (context) => AppointmentReminder(),
@@ -275,4 +293,19 @@ class _AddAppointmentState extends State<AddAppointment> {
     final format = DateFormat.jm(); //"6:00 AM"
     return format.format(dt);
   }
+}
+
+Future<http.Response> remindersaver(String Name, String date, String token) {
+  Map<String, dynamic> data = {
+    "name": Name,
+    "date": date,
+  };
+  return http.post(
+    Uri.parse('http://10.0.2.2/api/doc-app/add'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': token,
+    },
+    body: jsonEncode(data),
+  );
 }

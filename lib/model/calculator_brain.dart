@@ -32,13 +32,11 @@ class CalculatorBrain {
 
     cal_needed *= multiplier;
     c.val = cal_needed.toInt();
-    print(c.val);
     return cal_needed.toStringAsFixed(0);
   }
 
   String calculateBMI() {
     bmi = w / (pow(h / 100, 2));
-    print(bmi);
     return bmi.toStringAsFixed(1);
   }
 }

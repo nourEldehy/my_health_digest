@@ -24,7 +24,6 @@ class _LoginAccessCodeState extends State<LoginAccessCode> {
   bool isloading = false;
   String email = "";
   String password = "";
-  String admin = "myhealthdigest@myhealthdigest.com";
 
   @override
   Widget build(BuildContext context) {
@@ -32,21 +31,6 @@ class _LoginAccessCodeState extends State<LoginAccessCode> {
       key: _formKey,
       child: Scaffold(
         body: Container(
-          // decoration: BoxDecoration(
-          //     gradient: LinearGradient(
-          //   begin: Alignment.topRight,
-          //   end: Alignment.bottomLeft,
-          //   colors: [
-          //     // Color.fromRGBO(255, 37, 87, 1),
-          //     // Color.fromRGBO(255, 37, 87, 1),
-          //     // Colors.black54,
-          //     // Color.fromRGBO(255, 37, 87, 1),
-          //     Colors.blue,
-          //     //Colors.white70,
-          //     // Color(0xFF380f90),
-          //     Color.fromRGBO(255, 255, 255, 1),
-          //   ],
-          // )),
           color: Color.fromRGBO(255, 255, 255, 1),
           child: ListView(
             children: [
@@ -68,21 +52,6 @@ class _LoginAccessCodeState extends State<LoginAccessCode> {
                             color: Color.fromRGBO(255, 10, 55, 1),
                           ),
                         ),
-                        // Padding(
-                        //   padding: const EdgeInsets.only(top: 20.0),
-                        //   child: SizedBox(
-                        //     width: 300,
-                        //     child: Text(
-                        //       'Welcome Back you\'ve been missed',
-                        //       textAlign: TextAlign.center,
-                        //       style: TextStyle(
-                        //         fontFamily: 'Source Sans Pro',
-                        //         fontSize: 30.0,
-                        //         letterSpacing: 2.5,
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
                         Padding(
                           padding: EdgeInsets.fromLTRB(25, 30.0, 25.0, 10),
                           child: TextFormField(
@@ -96,9 +65,7 @@ class _LoginAccessCodeState extends State<LoginAccessCode> {
                             validator: (value) {
                               bool x = EmailValidator.validate(value, true);
                               if (value == null || value.isEmpty) {
-                                return 'Email can not be empty';
-                              } else if (x == false) {
-                                return "Invalid Email address";
+                                return 'Access Code can not be empty';
                               }
                               return null;
                             },
@@ -145,34 +112,17 @@ class _LoginAccessCodeState extends State<LoginAccessCode> {
                                       borderRadius: BorderRadius.circular(50)),
                                 ),
                                 onPressed: () async {
+                                  print(email);
                                   if (_formKey.currentState.validate()) {
-                                    http.Response response = await authentication(email, password);
-                                    print("Status Code  " + response.statusCode.toString());
-                                    if (response.statusCode == 200 && email != admin) {
+                                    http.Response response = await authentication(email);
+                                    if (response.statusCode == 200) {
                                       Map<String, dynamic> map = json.decode(response.body);
                                       var token = map['token'];
                                       await _storage.write(key: "token", value: token);
-                                      print("Recieved token  " + token);
-                                      print(json.decode(response.body));
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) => ProfileScreen(),
-                                        ),
-                                      );
-                                    }
-                                    else if (response.statusCode == 200 && email == admin) {
-                                      Map<String, dynamic> map =
-                                      json.decode(response.body);
-                                      var token = map['token'];
-                                      await _storage.write(
-                                          key: "token", value: token);
-                                      print("Recieved token  " + token);
-                                      print(json.decode(response.body));
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => AccessCodes(),
                                         ),
                                       );
                                     }
@@ -293,13 +243,17 @@ class _LoginAccessCodeState extends State<LoginAccessCode> {
       ),
     );
   }
-  Future<http.Response> authentication(String email, String password) {
+  Future<http.Response> authentication(String code) async{
+    final storage = FlutterSecureStorage();
+    final token = await storage.read(key: "token");
+
     return http.post(
-      Uri.parse('http://${Provider.of<CaloriesProvider>(context).url}/api/users/signin'),
+      Uri.parse('http://10.0.2.2/api/users/activate'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': token,
       },
-      body: jsonEncode(<String, String>{"email": email, "password": password}),
+      body: jsonEncode(<String, String>{"code": email}),
     );
   }
 }

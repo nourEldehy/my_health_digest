@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'dart:async';
 import 'dart:convert';
 
 List title = [];
@@ -63,20 +62,19 @@ class SearchSymptoms extends SearchDelegate<String> {
               ),
         )
         .toList();
-      // here the query will be on change
-        print("Input  : " + query);
-        getRequest(query);
-            return ListView.builder(
-              itemCount: allsymptomsSugg.length,
-              itemBuilder: (context, index) => ListTile(
-                title: Text(allsymptomsSugg[index]),
-                onTap: () {
-                  query = allsymptomsSugg[index];
-                  // print(query);
-                  close(context, query);
-                },
-              ),
-            );
+    // here the query will be on change
+    getRequest(query);
+    return ListView.builder(
+      itemCount: allsymptomsSugg.length,
+      itemBuilder: (context, index) => ListTile(
+        title: Text(allsymptomsSugg[index]),
+        onTap: () {
+          query = allsymptomsSugg[index];
+          // print(query);
+          close(context, query);
+        },
+      ),
+    );
   }
 }
 
@@ -84,11 +82,11 @@ getRequest(String query) async {
   //replace your restFull API here.
   title = [];
   String url = "http://10.0.2.2/api/sym-checker/autocomplete";
-  final response = await http.post(url,
+  final response = await http.post(
+    url,
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
     body: jsonEncode(<String, String>{"search": query}),
   );
-  print(json.decode(response.body));
 }
