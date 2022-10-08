@@ -433,7 +433,7 @@ class _SignupState extends State<Signup> {
                                 onPressed: () async {
                                   http.Response received = await newuser(
                                       u.name,
-                                      u.email,
+                                      u.email.toLowerCase(),
                                       u.password,
                                       u.gender,
                                       u.age,
@@ -505,7 +505,7 @@ Future<http.Response> newuser(String name, String email, String password,
     "company": company,
   };
   return http.post(
-    Uri.parse('http://10.0.2.2/api/users/signup'),
+    Uri.parse('http://143.244.213.94/api/users/signup'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },

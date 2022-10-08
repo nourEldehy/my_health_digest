@@ -250,7 +250,7 @@ class BottomContainer extends StatelessWidget {
                                 child: InkWell(
                                     onTap: () => {
                                           url =
-                                              "http://10.0.2.2/api/med-reminder/delete/" +
+                                              "http://143.244.213.94/api/med-reminder/delete/" +
                                                   map[i]['_id'].toString(),
                                           http.delete(
                                             url,
@@ -308,7 +308,7 @@ Future<void> getreminder() async {
   savedtoken = token;
 
   final response = await http.get(
-    "http://10.0.2.2/api/med-reminder/get",
+    "http://143.244.213.94/api/med-reminder/get",
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': token,

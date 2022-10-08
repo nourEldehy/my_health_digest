@@ -103,7 +103,7 @@ class _DrawGraphState extends State<DrawGraph> {
     final token = await storage.read(key: "token");
 
     final response = await http.get(
-      "http://10.0.2.2/api/weight-mon/weight",
+      "http://143.244.213.94/api/weight-mon/weight",
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': token,

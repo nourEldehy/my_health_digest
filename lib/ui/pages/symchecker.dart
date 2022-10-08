@@ -205,7 +205,7 @@ class _SymcheckerState extends State<Symchecker> {
     allSym = [];
 
     final response = await http.get(
-      "http://10.0.2.2/api/sym-checker/symptoms",
+      "http://143.244.213.94/api/sym-checker/symptoms",
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -224,7 +224,7 @@ class _SymcheckerState extends State<Symchecker> {
     };
 
     final response = await http.post(
-      "http://10.0.2.2/api/sym-checker/find-disease",
+      "http://143.244.213.94/api/sym-checker/find-disease",
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

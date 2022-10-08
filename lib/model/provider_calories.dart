@@ -9,7 +9,7 @@ var map;
 
 class CaloriesProvider extends ChangeNotifier {
   bool english = true;
-  String url = "10.0.2.2";
+  String url = "143.244.213.94";
   int dailyCalories = 0;
   int consumedCalories = 0; //read from db
   int burntCalories = 0;
@@ -25,7 +25,7 @@ class CaloriesProvider extends ChangeNotifier {
     // Done
     dailyCalories = newValue;
     senddata("calGoal", dailyCalories,
-        'http://10.0.2.2/api/weight-mon/weight/cal-goal');
+        'http://143.244.213.94/api/weight-mon/weight/cal-goal');
     notifyListeners();
   }
 
@@ -33,21 +33,21 @@ class CaloriesProvider extends ChangeNotifier {
     // Done
     burntCalories = newValue;
     senddata("exercise", burntCalories,
-        'http://10.0.2.2/api/weight-mon/weight/exercise');
+        'http://143.244.213.94/api/weight-mon/weight/exercise');
     notifyListeners();
   }
 
   void changeConsumedCalories(int newValue) {
     consumedCalories = newValue;
     senddata("calProgress", consumedCalories,
-        'http://10.0.2.2/api/weight-mon/weight/cal-progress');
+        'http://143.244.213.94/api/weight-mon/weight/cal-progress');
     notifyListeners();
   }
 
   void changeConsumedWater(double newValue) {
     consumedWater = newValue;
     senddouble(
-        "water", consumedWater, 'http://10.0.2.2/api/weight-mon/weight/water');
+        "water", consumedWater, 'http://143.244.213.94/api/weight-mon/weight/water');
     notifyListeners();
   }
 
@@ -61,7 +61,7 @@ Future<void> getcalories(context) async {
   final token = await storage.read(key: "token");
 
   final response = await http.get(
-    "http://10.0.2.2/api/weight-mon/weight",
+    "http://143.244.213.94/api/weight-mon/weight",
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': token,

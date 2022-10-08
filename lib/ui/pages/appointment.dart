@@ -258,7 +258,7 @@ class BottomContainer extends StatelessWidget {
                                     onTap: () => {
                                       print(map[i]['_id'].toString()),
                                       url =
-                                          "http://10.0.2.2/api/doc-app/delete",
+                                          "http://143.244.213.94/api/doc-app/delete",
                                       http.post(
                                         url,
                                         headers: <String, String>{
@@ -316,7 +316,7 @@ Future<void> getreminder() async {
   savedtoken = token;
 
   final response = await http.get(
-    "http://10.0.2.2/api/doc-app/get",
+    "http://143.244.213.94/api/doc-app/get",
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': token,

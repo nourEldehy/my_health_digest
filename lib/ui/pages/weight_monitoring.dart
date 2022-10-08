@@ -568,7 +568,7 @@ class _WeightMonitoringState extends State<WeightMonitoring> {
                 TextButton(
                     onPressed: () async{
                       senddata("weight", w,
-                          'http://10.0.2.2/api/weight-mon/weight/push');
+                          'http://143.244.213.94/api/weight-mon/weight/push');
                       await Future.delayed(Duration(seconds: 1));
                       Navigator.of(context).pop();
                       Navigator.pushReplacement(

@@ -136,7 +136,7 @@ getRequest() async {
   title = [];
   link = [];
   images = [];
-  String url = "http://10.0.2.2/api/pdfs/get-pdfs/en/news";
+  String url = "http://143.244.213.94/api/pdfs/get-pdfs/en/news";
   final response = await http.get(url);
   // final loadedData = await rootBundle.loadString('assets/Women/women.txt');
   var responseData = json.decode(response.body);

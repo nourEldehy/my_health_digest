@@ -81,7 +81,7 @@ class SearchSymptoms extends SearchDelegate<String> {
 getRequest(String query) async {
   //replace your restFull API here.
   title = [];
-  String url = "http://10.0.2.2/api/sym-checker/autocomplete";
+  String url = "http://143.244.213.94/api/sym-checker/autocomplete";
   final response = await http.post(
     url,
     headers: <String, String>{

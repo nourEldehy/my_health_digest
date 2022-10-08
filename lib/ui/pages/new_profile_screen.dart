@@ -13,6 +13,7 @@ import 'package:training_and_diet_app/model/meal.dart';
 import 'package:training_and_diet_app/model/provider_calories.dart';
 import 'package:training_and_diet_app/model/water_progress.dart';
 import 'package:training_and_diet_app/ui/pages/add_appointment.dart';
+import 'package:training_and_diet_app/ui/pages/firstpage.dart';
 import 'package:training_and_diet_app/ui/pages/reminders.dart';
 import 'package:training_and_diet_app/ui/pages/appointment.dart';
 import 'package:training_and_diet_app/ui/pages/contact_us.dart';
@@ -28,6 +29,8 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:training_and_diet_app/ui/pages/women.dart';
 import 'package:training_and_diet_app/ui/pages/availablespec.dart';
 import 'package:training_and_diet_app/ui/pages/myhealth.dart';
+
+import '../../main.dart';
 
 var receive;
 
@@ -65,6 +68,44 @@ class _ProfileScreenState extends State<ProfileScreen> {
     getRequest();
     super.initState();
   }
+
+  addConfirmDialog() => showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: Text("Do you want to logout?",
+                  style: TextStyle(
+                    color: Color.fromRGBO(255, 10, 55, 1),
+                  )),
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      isUserLoggedIn = false ;
+                      Navigator.of(context).pop();
+                    },
+                    child: Text(
+                      "No",
+                      style: TextStyle(
+                        color: Color.fromRGBO(255, 10, 55, 1),
+                      ),
+                    )),
+                TextButton(
+                    onPressed: () async {
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => Homepage()));
+                    },
+                    child: Text("Yes",
+                        style: TextStyle(
+                          color: Color.fromRGBO(255, 10, 55, 1),
+                        )))
+              ],
+            );
+          },
+        );
+      });
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -115,6 +156,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 ListTile(
+                  trailing: IconButton(
+                    icon: Icon(
+                      Icons.logout,
+                    ),
+                    onPressed: () {
+                      addConfirmDialog();
+                    },
+                  ),
                   title: Text(
                     "${DateFormat("EEEE").format(today)}, ${DateFormat("d MMMM").format(today)}",
                     style: TextStyle(
@@ -184,7 +233,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final storage = FlutterSecureStorage();
     final token = await storage.read(key: "token");
 
-    String url = "http://10.0.2.2/api/users/currentuser";
+    String url = "http://143.244.213.94/api/users/currentuser";
     final response = await http.get(url,
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
@@ -383,7 +432,7 @@ class _MealCard extends StatelessWidget {
                             ? () async {
                                 const url ="https://thecliniconline.org/";
                                 if (await canLaunch(url)) {
-                                  await launch(url,forceWebView: true);
+                                  await launch(url);
                                 } else {
                                   throw 'Could not launch $url';
                                 }

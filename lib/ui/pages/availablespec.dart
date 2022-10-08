@@ -22,7 +22,7 @@
 //   getRequest() async {
 //     String text;
 //     //replace your restFull API here.
-//     // String url = "http://10.0.2.2/api/pdfs/get-pdfs/en/available-specs";
+//     // String url = "http://143.244.213.94/api/pdfs/get-pdfs/en/available-specs";
 //     // final response = await http.get(url);
 //     final loadedData = await rootBundle.loadString('assets/Specs/specs.txt');
 //     var responseData = loadedData;
@@ -303,7 +303,7 @@ class _AvailablespecState extends State<Availablespec> {
     title = [];
     link = [];
     images = [];
-    String url = "http://10.0.2.2/api/pdfs/get-pdfs/en/available-specs";
+    String url = "http://143.244.213.94/api/pdfs/get-pdfs/en/available-specs";
     final response = await http.get(url);
     var responseData = json.decode(response.body);
     var response2 = responseData.toString().split(",");

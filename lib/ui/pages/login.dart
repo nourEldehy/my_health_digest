@@ -8,9 +8,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:training_and_diet_app/model/provider_calories.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:training_and_diet_app/ui/New%20folder/accesscodes.dart';
 import 'package:training_and_diet_app/ui/pages/loginaccesscode.dart';
 import 'package:training_and_diet_app/ui/pages/new_profile_screen.dart';
+
+const kKeepMeLoggedIn = "KeepMeLoggedIn";
 
 class Login extends StatefulWidget {
   @override
@@ -25,6 +28,7 @@ class _LoginState extends State<Login> {
 
   bool _isObscure = true;
   bool isloading = false;
+  bool KeepMeLoggedIn= false;
   String email = "";
   String password = "";
   String admin = "myhealthdigest@myhealthdigest.com";
@@ -152,34 +156,35 @@ class _LoginState extends State<Login> {
                 ),
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Padding(
-                      padding: EdgeInsets.fromLTRB(25, 0.0, 25.0, 0),
-                      child: GestureDetector(
-                        onTap: () {
-                        },
-                        child: SizedBox(
-                          width: 150,
-                          height: 40,
-                          child: Center(
-                            child: Text(
-                              "Forget Password?",
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ),
-                      )),
+                  Checkbox(
+                    activeColor: Color.fromRGBO(255, 10, 55, 1),
+                      value: KeepMeLoggedIn,
+                      onChanged: (value)
+                      {
+                        setState(() {
+                          KeepMeLoggedIn = value;
+                        });
+                      }
+                  ),
+                  Text("Remember me",
+                    style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                  ),)
                 ],
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 18.0),
-                child: Text(
-                  text,
-                  style: TextStyle(
-                    color: Colors.red,
-                    fontSize: 14,
+                child: Center(
+                  child: Text(
+                    text,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.red,
+                      fontSize: 14,
+                    ),
                   ),
                 ),
               ),
@@ -198,8 +203,12 @@ class _LoginState extends State<Login> {
                             borderRadius: BorderRadius.circular(50)),
                       ),
                       onPressed: () async {
+                        if(KeepMeLoggedIn == true)
+                          {
+                            keepUserLoggedin();
+                          }
                         if (_formKey.currentState.validate()) {
-                          http.Response response = await authentication(email, password);
+                          http.Response response = await authentication(email.toLowerCase(), password);
                           if (response.statusCode == 200 && email != admin) {
                             Map<String, dynamic> map =
                                 json.decode(response.body);
@@ -225,8 +234,7 @@ class _LoginState extends State<Login> {
                                 );
                               }
                           }
-                          else if (response.statusCode == 200 &&
-                              email == admin) {
+                          else if (response.statusCode == 200 && email == admin) {
                             Map<String, dynamic> map =
                                 json.decode(response.body);
                             var token = map['token'];
@@ -237,21 +245,25 @@ class _LoginState extends State<Login> {
                                 builder: (context) => AccessCodes(),
                               ),
                             );
-                          } else if (response.statusCode == 400) {
+                          }
+                          else if (response.statusCode == 400) {
                             setState(() {
-                              text = "Wrong Email or Password";
+                              text = "Wrong email or password";
                             });
-                          } else if (response.statusCode == 408) {
+                          }
+                          else if (response.statusCode == 408) {
                             setState(() {
-                              text = "Request Timeout";
+                              text = "Request timeout";
                             });
-                          } else if (response.statusCode == 500) {
+                          }
+                          else if (response.statusCode == 500) {
                             setState(() {
-                              text = "Internal Server Error";
+                              text = "Internal server error";
                             });
-                          } else {
+                          }
+                          else {
                             setState(() {
-                              text = "Generic Error";
+                              text = "Generic error";
                             });
                           }
                         }
@@ -277,7 +289,7 @@ class _LoginState extends State<Login> {
     final storage = FlutterSecureStorage();
     final token = await storage.read(key: "token");
 
-    String url = "http://10.0.2.2/api/users/currentuser";
+    String url = "http://143.244.213.94/api/users/currentuser";
     final response = await http.get(url,
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
@@ -288,11 +300,17 @@ class _LoginState extends State<Login> {
       receive = responseData['activated'];
     print(receive);
   }
+
+  void keepUserLoggedin() async
+  {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setBool(kKeepMeLoggedIn, KeepMeLoggedIn);
+  }
 }
 
 Future<http.Response> authentication(String email, String password) {
   return http.post(
-    Uri.parse('http://10.0.2.2/api/users/signin'),
+    Uri.parse('http://143.244.213.94/api/users/signin'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },

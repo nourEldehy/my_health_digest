@@ -301,7 +301,7 @@ Future<http.Response> remindersaver(String Name, String date, String token) {
     "date": date,
   };
   return http.post(
-    Uri.parse('http://10.0.2.2/api/doc-app/add'),
+    Uri.parse('http://143.244.213.94/api/doc-app/add'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': token,

@@ -248,7 +248,7 @@ class _LoginAccessCodeState extends State<LoginAccessCode> {
     final token = await storage.read(key: "token");
 
     return http.post(
-      Uri.parse('http://10.0.2.2/api/users/activate'),
+      Uri.parse('http://143.244.213.94/api/users/activate'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': token,

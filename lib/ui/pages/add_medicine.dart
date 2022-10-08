@@ -845,7 +845,7 @@ class _AddMedicineState extends State<AddMedicine> {
 
 Future<http.Response> getmedicinename(String barcode, String token) {
   return http.post(
-    Uri.parse('http://192.168.43.113/api/barcode/check'),
+    Uri.parse('http://143.244.213.94/api/barcode/check'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': token,
@@ -863,7 +863,7 @@ Future<http.Response> remindersaver(String enName, int dosage, int duration, Str
     "time": time
   };
   return http.post(
-    Uri.parse('http://10.0.2.2/api/med-reminder/add'),
+    Uri.parse('http://143.244.213.94/api/med-reminder/add'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': token,

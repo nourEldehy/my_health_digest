@@ -613,7 +613,7 @@ class _BottomContainerState extends State<BottomContainer> {
                           child: InkWell(
                               onTap: () => {
                                     url =
-                                        "http://10.0.2.2/api/users/codes/delete",
+                                        "http://143.244.213.94/api/users/codes/delete",
                                     http.post(
                                       url,
                                       headers: <String, String>{
@@ -671,7 +671,7 @@ Future<void> getreminder() async {
   savedtoken = token;
 
   final response = await http.get(
-    "http://10.0.2.2/api/users/codes",
+    "http://143.244.213.94/api/users/codes",
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': token,
@@ -690,7 +690,7 @@ Future<http.Response> accesscode(String codes, String duration, String company,
     "company": company,
   };
   return http.post(
-    Uri.parse('http://10.0.2.2/api/users/generate'),
+    Uri.parse('http://143.244.213.94/api/users/generate'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': token,
@@ -701,7 +701,7 @@ Future<http.Response> accesscode(String codes, String duration, String company,
 
 Future<http.Response> deleteaccesscode(String token) {
   Map<String, dynamic> data = {"id": selected};
-  url = "http://10.0.2.2/api/users/codes/delete";
+  url = "http://143.244.213.94/api/users/codes/delete";
   return http.post(
     url,
     headers: <String, String>{
