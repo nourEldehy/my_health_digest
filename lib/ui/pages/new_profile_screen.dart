@@ -75,7 +75,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: Text("Do you want to logout?",
+              title: Text("Do you want to logout?" ,
                   style: TextStyle(
                     color: Color.fromRGBO(255, 10, 55, 1),
                   )),
