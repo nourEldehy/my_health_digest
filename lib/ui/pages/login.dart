@@ -14,6 +14,7 @@ import 'package:training_and_diet_app/ui/pages/loginaccesscode.dart';
 import 'package:training_and_diet_app/ui/pages/new_profile_screen.dart';
 
 const kKeepMeLoggedIn = "KeepMeLoggedIn";
+bool KeepMeLoggedIn= false;
 
 class Login extends StatefulWidget {
   @override
@@ -22,13 +23,12 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   String text = "";
-  bool receive;
+  bool activated;
   final _formKey = GlobalKey<FormState>();
   final _storage = FlutterSecureStorage();
 
   bool _isObscure = true;
   bool isloading = false;
-  bool KeepMeLoggedIn= false;
   String email = "";
   String password = "";
   String admin = "myhealthdigest@myhealthdigest.com";
@@ -155,26 +155,6 @@ class _LoginState extends State<Login> {
                   ),
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Checkbox(
-                    activeColor: Color.fromRGBO(255, 10, 55, 1),
-                      value: KeepMeLoggedIn,
-                      onChanged: (value)
-                      {
-                        setState(() {
-                          KeepMeLoggedIn = value;
-                        });
-                      }
-                  ),
-                  Text("Remember me",
-                    style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 16,
-                  ),)
-                ],
-              ),
               Padding(
                 padding: const EdgeInsets.only(top: 18.0),
                 child: Center(
@@ -203,10 +183,6 @@ class _LoginState extends State<Login> {
                             borderRadius: BorderRadius.circular(50)),
                       ),
                       onPressed: () async {
-                        if(KeepMeLoggedIn == true)
-                          {
-                            keepUserLoggedin();
-                          }
                         if (_formKey.currentState.validate()) {
                           http.Response response = await authentication(email.toLowerCase(), password);
                           if (response.statusCode == 200 && email != admin) {
@@ -216,7 +192,10 @@ class _LoginState extends State<Login> {
                             await _storage.write(key: "token", value: token);
                             getRequest();
                             await Future.delayed(Duration(seconds: 2));
-                            if (receive) {
+                            if (activated == true) {
+                              print("Activateddddd");
+                              KeepMeLoggedIn = true;
+                                keepUserLoggedin();
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
@@ -226,6 +205,8 @@ class _LoginState extends State<Login> {
                             }
                             else
                               {
+                                KeepMeLoggedIn = false;
+                                print("Nottt Activated");
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
@@ -297,8 +278,16 @@ class _LoginState extends State<Login> {
       },
     );
     var responseData = json.decode(response.body);
-      receive = responseData['activated'];
-    print(receive);
+      activated = responseData['activated'];
+      if(activated == false)
+        {
+          KeepMeLoggedIn = false;
+        }
+      else
+        {
+          KeepMeLoggedIn = true;
+        }
+    print("Activated: " + activated.toString());
   }
 
   void keepUserLoggedin() async

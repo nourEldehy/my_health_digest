@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:animations/animations.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +27,7 @@ import 'package:training_and_diet_app/model/calculator_brain.dart';
 import 'package:vector_math/vector_math_64.dart' as math;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:training_and_diet_app/ui/pages/women.dart';
+import 'package:training_and_diet_app/ui/pages/login.dart';
 import 'package:training_and_diet_app/ui/pages/availablespec.dart';
 import 'package:training_and_diet_app/ui/pages/myhealth.dart';
 
@@ -82,7 +83,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               actions: [
                 TextButton(
                     onPressed: () {
-                      isUserLoggedIn = false ;
                       Navigator.of(context).pop();
                     },
                     child: Text(
@@ -93,6 +93,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     )),
                 TextButton(
                     onPressed: () async {
+                      // KeepMeLoggedIn = false;
+                      SharedPreferences preferences = await SharedPreferences.getInstance();
+                      preferences.setBool(kKeepMeLoggedIn, false);
+                      // isUserLoggedIn = false;
+                      print("kKeepMeLoggedIn: " + kKeepMeLoggedIn);
+                      print("isUserLoggedIn: " + isUserLoggedIn.toString());
+                      Navigator.of(context).pop();
                       Navigator.pushReplacement(context,
                           MaterialPageRoute(builder: (context) => Homepage()));
                     },
