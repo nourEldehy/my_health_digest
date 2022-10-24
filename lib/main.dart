@@ -27,8 +27,6 @@ class MyApp extends StatelessWidget {
           else
             {
               isUserLoggedIn = snapshot.data.getBool(kKeepMeLoggedIn) ?? false ;
-              print(snapshot.data.getBool(kKeepMeLoggedIn));
-              print("isUserLoggedIn: " + isUserLoggedIn.toString());
               return ChangeNotifierProvider<CaloriesProvider>(
                 create: (_) => CaloriesProvider(),
                 child: MaterialApp(

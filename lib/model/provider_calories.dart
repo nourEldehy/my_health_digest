@@ -69,7 +69,13 @@ Future<void> getcalories(context) async {
   );
   map = json.decode(response.body);
   Provider.of<CaloriesProvider>(context, listen: false)
-      .changeDailyCalories(map['cal_goal']);
+      .changeDailyCalories(map['cal_goal']+map['exercise']-map['cal_progress']);
+  // Provider.of<CaloriesProvider>(context, listen: false)
+  //     .changeConsumedWater(map['water']);
+  Provider.of<CaloriesProvider>(context, listen: false)
+      .changeConsumedCalories(map['cal_progress']);
+  Provider.of<CaloriesProvider>(context, listen: false)
+      .changeBurntCalories(map['exercise']);
 }
 
 Future<http.Response> senddata(

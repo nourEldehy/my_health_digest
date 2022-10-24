@@ -193,7 +193,6 @@ class _LoginState extends State<Login> {
                             getRequest();
                             await Future.delayed(Duration(seconds: 2));
                             if (activated == true) {
-                              print("Activateddddd");
                               KeepMeLoggedIn = true;
                                 keepUserLoggedin();
                               Navigator.pushReplacement(
@@ -206,7 +205,6 @@ class _LoginState extends State<Login> {
                             else
                               {
                                 KeepMeLoggedIn = false;
-                                print("Nottt Activated");
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
@@ -287,7 +285,6 @@ class _LoginState extends State<Login> {
         {
           KeepMeLoggedIn = true;
         }
-    print("Activated: " + activated.toString());
   }
 
   void keepUserLoggedin() async

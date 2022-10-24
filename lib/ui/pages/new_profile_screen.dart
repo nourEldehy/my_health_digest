@@ -93,12 +93,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     )),
                 TextButton(
                     onPressed: () async {
-                      // KeepMeLoggedIn = false;
                       SharedPreferences preferences = await SharedPreferences.getInstance();
                       preferences.setBool(kKeepMeLoggedIn, false);
-                      // isUserLoggedIn = false;
-                      print("kKeepMeLoggedIn: " + kKeepMeLoggedIn);
-                      print("isUserLoggedIn: " + isUserLoggedIn.toString());
                       Navigator.of(context).pop();
                       Navigator.pushReplacement(context,
                           MaterialPageRoute(builder: (context) => Homepage()));
@@ -239,6 +235,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   getRequest() async {
     final storage = FlutterSecureStorage();
     final token = await storage.read(key: "token");
+    print(token);
 
     String url = "http://143.244.213.94/api/users/currentuser";
     final response = await http.get(url,
